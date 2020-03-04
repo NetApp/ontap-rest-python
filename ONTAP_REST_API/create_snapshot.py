@@ -7,11 +7,11 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create snapshot.
+Purpose: Script to create snapshot using ONTAP REST API.
 
-usage: create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -sn SVM_NAME
+usage: python3 create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
                           [-u API_USER] [-p API_PASS]
-create_snapshot.py: the following arguments are required: -c/--cluster, -v/--volume_name, -s/--snapshot_name -sn/--svm_name
+create_snapshot.py: the following arguments are required: -c/--cluster, -v/--volume_name, -s/--snapshot_name -vs/--svm_name
 
 """
 
@@ -84,7 +84,7 @@ def parse_args() -> argparse.Namespace:
         "-s", "--snapshot_name", required=True, help="Snapshot name"
     )
     parser.add_argument(
-        "-sn", "--svm_name", required=True, help="Snapshot name"
+        "-vs", "--svm_name", required=True, help="Snapshot name"
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")

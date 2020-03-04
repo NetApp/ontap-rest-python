@@ -7,11 +7,11 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list all the snapshots in a cluster.
+Purpose: Script to list all the snapshots in a cluster using ONTAP REST API.
 
-Usage: list_snapshots.py [-h] -c CLUSTER -v VOLUME_NAME -s SVM_NAME [-u API_USER]
+Usage: python3 list_snapshots.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME [-u API_USER]
                          [-p API_PASS]
-list_snapshots.py:  the following arguments are required: -c/--cluster, -s/--svm_name ,-v/--volume_name
+list_snapshots.py:  the following arguments are required: -c/--cluster, -vs/--svm_name ,-v/--volume_name
 API Password> ]
 """
 
@@ -65,7 +65,7 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="This script will list snapshots in an ONTAP volume",
+        description="This script will list snapshots in given ONTAP volume",
     )
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
@@ -74,7 +74,7 @@ def parse_args() -> argparse.Namespace:
         "-v", "--volume_name", required=True, help="Volume from which snapshot need to be listed."
     )
     parser.add_argument(
-        "-s", "--svm_name", required=True, help="Volume from which snapshot need to be listed."
+        "-vs", "--svm_name", required=True, help="SVM name from which snapshot need to be listed."
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")

@@ -7,13 +7,13 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create SVM, Volume and associated Export Policy.
+Purpose: Script to create SVM, Volume and associated Export Policy using ONTAP REST API.
 
-usage: create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vn VSERVER_NAME
-                            -vs VOLUME_SIZE -a AGGR_NAME -er
+usage: python3 create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME
+                            -sz VOLUME_SIZE -a AGGR_NAME -er
                             EXPORT_POLICY_RULE -en EXPORT_POLICY_NAME
                             [-u API_USER] [-p API_PASS]
-create_svm_volume.py:  the following arguments are required: -c/--cluster, -v/--volume_name, -vn/--vserver_name, -vs/--volume_size, -a/--aggr_name, -er/--export_policy_rule, -en/--export_policy_name
+create_svm_volume.py:  the following arguments are required: -c/--cluster, -v/--volume_name, -vs/--svm_name, -sz/--volume_size, -a/--aggr_name, -er/--export_policy_rule, -en/--export_policy_name
 """
 
 import time
@@ -31,16 +31,16 @@ def get_size(volume_size):
     tmp = int(volume_size) * 1024 * 1024
     return tmp
 
-def make_volume(cluster,volume_name,vserver_name,volume_size,aggr_name,export_policy_name,base64string,headers):
+def make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_name,base64string,headers):
     v_size=get_size(volume_size)
     print ("Vol Size is :{}".format(v_size))
 
     url = "https://{}/api/storage/volumes".format(cluster)
     payload = {
     "aggregates.name" : [aggr_name],
-    "svm.name": vserver_name,
+    "svm.name": svm_name,
     "name": volume_name,
-    "size": volume_size,
+    "size": v_size,
     "nas": {
     		"export_policy": {
       				"name": export_policy_name
@@ -59,11 +59,11 @@ def make_volume(cluster,volume_name,vserver_name,volume_size,aggr_name,export_po
     return
 
 
-def get_key_svms(cluster,vserver_name,base64string,headers):
+def get_key_svms(cluster,svm_name,base64string,headers):
     tmp = dict(get_svms(cluster,base64string,headers))
     svms = tmp['records']
     for i in svms:
-        if i['name'] == vserver_name:
+        if i['name'] == svm_name:
             # print i
             return i['uuid']
 
@@ -73,9 +73,9 @@ def get_svms(cluster,base64string,headers):
     return r.json()
 
 
-def create_export_policy(cluster,export_policy_name,export_policy_rule,vserver_name,base64string,headers):
+def create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,base64string,headers):
     url = "https://{}/api/protocols/nfs/export-policies".format(cluster)
-    svm_uuid = get_key_svms(cluster,vserver_name,base64string,headers)
+    svm_uuid = get_key_svms(cluster,svm_name,base64string,headers)
     payload = {
   	"name": export_policy_name,
   	"rules": [
@@ -102,26 +102,26 @@ def create_export_policy(cluster,export_policy_name,export_policy_rule,vserver_n
     response = requests.post(url,headers=headers,json=payload,verify=False)
     url_text = response.json()
 
-def check_job_status(cluster,job_status,volume_name,vserver_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):    
+def check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):    
     if (job_status['state'] == "failure"):
         if (job_status['code'] == 460770):
             print ("SVM Already Exists, hence using it to create export policy")
-            create_export_policy(cluster,export_policy_name,export_policy_rule,vserver_name,base64string,headers)
-            make_volume(cluster,volume_name,vserver_name,volume_size,aggr_name,export_policy_name,base64string,headers)
+            create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,base64string,headers)
+            make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_name,base64string,headers)
         else:
             print ("SVM creation failed due to :{}".format(job_status['message']))
             return
     elif(job_status['state'] == "success"):
         print ("SVM created successfully")
-        create_export_policy(cluster,export_policy_name,export_policy_rule,vserver_name,base64string,headers)
-        make_volume(cluster,volume_name,vserver_name,volume_size,aggr_name,export_policy_name,base64string,headers)
+        create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,base64string,headers)
+        make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_name,base64string,headers)
         return
     else:
         job_status_url = "https://{}/api/cluster/jobs/{}".format(cluster,job_status['uuid'])
         job_response = requests.get(job_status_url,headers=headers,verify=False)
         job_status = job_response.json()
         time.sleep (5)
-        check_job_status(cluster,job_status,volume_name,vserver_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+        check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
 
 def check_vol_job_status(cluster,job_status,headers):
     if (job_status['state'] == "failure"):
@@ -141,17 +141,17 @@ def check_vol_job_status(cluster,job_status,headers):
         time.sleep (5)
         check_vol_job_status(cluster,job_status,headers)
 
-def make_svm(cluster,volume_name,vserver_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):
+def make_svm(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):
     url = "https://{}/api/svm/svms".format(cluster)
     payload = {
-    "name": vserver_name
+    "name": svm_name
     }
     response = requests.post(url,headers=headers,json=payload,verify=False)
     url_text = response.json()    
     job_status = "https://{}{}".format(cluster,url_text['job']['_links']['self']['href'])
     job_response = requests.get(job_status,headers=headers,verify=False)
     job_status = job_response.json()
-    check_job_status(cluster,job_status,volume_name,vserver_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+    check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
     return
 
     
@@ -168,10 +168,10 @@ def parse_args() -> argparse.Namespace:
         "-v", "--volume_name", required=True, help="Name of the volume that needs to be created."
     )
     parser.add_argument(
-        "-vn", "--vserver_name", required=True, help="SVM that needs to be created."
+        "-vs", "--svm_name", required=True, help="SVM that needs to be created."
     )
     parser.add_argument(
-        "-vs", "--volume_size", required=True, help="Size of the Volume."
+        "-sz", "--volume_size", required=True, help="Size of the Volume."
     )
     parser.add_argument(
         "-a", "--aggr_name", required=True, help="Aggregate Name."
@@ -207,4 +207,4 @@ if __name__ == "__main__":
     'accept': "application/json"
     }
 	
-    make_svm(args.cluster,args.volume_name,args.vserver_name,args.volume_size,args.aggr_name,args.export_policy_rule,args.export_policy_name,base64string,headers)    
+    make_svm(args.cluster,args.volume_name,args.svm_name,args.volume_size,args.aggr_name,args.export_policy_rule,args.export_policy_name,base64string,headers)    

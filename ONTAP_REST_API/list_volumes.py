@@ -7,11 +7,11 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list volumes.
+Purpose: Script to list volumes using ONTAP REST API.
 
-Usage: list_volumes.py [-h] -c CLUSTER -vs VSERVER_NAME [-u API_USER]
+Usage: list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                        [-p API_PASS]
-list_volumes.py: the following arguments are required: -c/--cluster, -vs/--vserver_name
+list_volumes.py: the following arguments are required: -c/--cluster, -vs/--svm_name
 
 """
 import base64
@@ -25,15 +25,15 @@ from getpass import getpass
 import logging
 requests.packages.urllib3.disable_warnings()
 
-def get_volumes(cluster,vserver_name,base64string,headers):
+def get_volumes(cluster,svm_name,base64string,headers):
     
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(cluster,vserver_name)
+    url = "https://{}/api/storage/volumes/?svm.name={}".format(cluster,svm_name)
     response = requests.get(url, headers=headers,verify=False)
     return response.json()
 
-def disp_vol(cluster,vserver_name,base64string,headers):
+def disp_vol(cluster,svm_name,base64string,headers):
     ctr = 0
-    tmp = dict(get_volumes(cluster,vserver_name,base64string,headers))
+    tmp = dict(get_volumes(cluster,svm_name,base64string,headers))
     vols = tmp['records']
     tab = tt.Texttable()
     header = ['Volume name']
@@ -59,7 +59,7 @@ def parse_args() -> argparse.Namespace:
         "-c", "--cluster", required=True, help="API server IP:port details"
     )
     parser.add_argument(
-        "-vs", "--vserver_name", required=True, help="SVM Name"
+        "-vs", "--svm_name", required=True, help="SVM Name"
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
@@ -86,4 +86,4 @@ if __name__ == "__main__":
     'accept': "application/json"
     }
 	
-    disp_vol(args.cluster,args.vserver_name,base64string,headers) 
+    disp_vol(args.cluster,args.svm_name,base64string,headers) 

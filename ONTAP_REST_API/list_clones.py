@@ -7,9 +7,9 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list clones.
+Purpose: Script to list all clone volumes in a cluster using ONTAP REST API.
 
-usage: list_clones.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+usage: python3 list_clones.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
 list_clones.py: the following arguments are required: -c/--cluster
 """
 
@@ -42,7 +42,7 @@ def disp_vol(cluster,base64string,headers):
             row = [vol]
             tab.add_row(row)
             tab.set_cols_align(['c'])
-    print ("Number of Cloned Volumes for this Storage Tenant:{}".format(ctr))
+    print ("Number of Cloned Volumes in this cluster:{}".format(ctr))
     cloneoutput = tab.draw()
     print (cloneoutput)
 

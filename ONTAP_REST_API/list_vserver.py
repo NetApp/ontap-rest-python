@@ -7,7 +7,7 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list SVMs.
+Purpose: Script to list SVMs using ONTAP REST API.
 
 Usage: list_vserver.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
 list_vserver.py: the following arguments are required: -c/--cluster
@@ -45,7 +45,7 @@ def disp_vservers(cluster,base64string,headers):
         row = [cl]
         tab.add_row(row)
         tab.set_cols_align(['c'])
-    print ("Number of Storage Tenants on the NetApp cluster :{}".format(ctr))
+    print ("Number of Storage VMs on this NetApp cluster :{}".format(ctr))
     s = tab.draw()
     print (s)
 

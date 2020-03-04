@@ -6,12 +6,12 @@ ONTAP REST API Python Sample Scripts
 This script was developed by NetApp to help demonstrate NetApp technologies. This
 script is not officially supported as a standard NetApp product.
 
-Purpose: Script to create snapshot using the netapp_ontap library.
+Purpose: Script to create snapshot using the REST API PYTHON CLIENT LIBRARY.
 
-usage: create_snap_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME
+usage: python3 create_snap_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
                           [-u API_USER] [-p API_PASS]
 create_snap_pcl.py: the following arguments are required: -c/--cluster,
- -v/--volume_name, -s/--snapshot_name
+ -v/--volume_name, -s/--snapshot_name, -vs/--svm_name
 """
 
 import argparse
@@ -22,10 +22,10 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Volume, Snapshot
 
 
-def make_snap_pycl(vol_name: str, snapshot_name: str) -> None:
+def make_snap_pycl(vol_name: str, snapshot_name: str,svm_name: str) -> None:
     """Create a new snapshot with default settings for a given volume"""
 
-    volume = Volume.find(name=vol_name)
+    volume = Volume.find(**{'svm.name': svm_name, 'name': vol_name})
     snapshot = Snapshot(volume.uuid, name=snapshot_name)
 
     try:
@@ -42,13 +42,16 @@ def parse_args() -> argparse.Namespace:
         description="This script will create a new snapshot for an existing ONTAP volume"
     )
     parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
+        "-c", "--cluster", required=True, help="API server IP"
     )
     parser.add_argument(
-        "-v", "--volume_name", required=True, help="Volume to create or clone from"
+        "-v", "--volume_name", required=True, help="Volume Name"
     )
     parser.add_argument(
-        "-s", "--snapshot_name", required=True, help="Snapshot to create or clone from"
+        "-s", "--snapshot_name", required=True, help="Snapshot Name"
+    )
+    parser.add_argument(
+        "-vs", "--svm_name", required=True, help="SVM Name"
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
@@ -71,4 +74,4 @@ if __name__ == "__main__":
         args.cluster, username=args.api_user, password=args.api_pass, verify=False,
     )
 
-    make_snap_pycl(args.volume_name, args.snapshot_name)
+    make_snap_pycl(args.volume_name, args.snapshot_name,args.svm_name)

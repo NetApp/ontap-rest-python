@@ -7,9 +7,9 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list all the aggregates in a cluster.
+Purpose: Script to list all the aggregates in a cluster using ONTAP REST API.
 
-usage: list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+usage:python3 list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
 list_aggregates.py:  the following arguments are required: -c/--cluster
 """
 import base64

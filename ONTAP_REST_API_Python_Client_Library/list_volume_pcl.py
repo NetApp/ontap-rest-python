@@ -1,15 +1,16 @@
 #! /usr/bin/env python3
 
 
-""" ONTAP REST API Python Client Library Sample Scripts
+""" 
+ONTAP REST API Python Client Library Sample Scripts
 
 This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list aggregates using Python Client Library.
+Purpose: Script to list aggregates using ONTAP REST API Python Client Library.
 
-usage: list_volume_pcl.py [-h] -c CLUSTER -vn VSERVER_NAME [-u API_USER]
+usage: python3 list_volume_pcl.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                           [-p API_PASS]
 list_volume_pcl.py:  the following arguments are required: -c/--cluster,                                -vn/--vserver_name
 """
@@ -21,12 +22,12 @@ import logging
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Volume
 
-def list_volume_pycl(vserver_name: str) -> None:
+def list_volume_pycl(svm_name: str) -> None:
     """List Volumes in a SVM """
 
     print ("\n List of Volumes:- \n")
     try:
-        for volume in Volume.get_collection(**{"svm.name": vserver_name}):
+        for volume in Volume.get_collection(**{"svm.name": svm_name}):
             volume.get()
             print (volume.name)
     except NetAppRestError as err:
@@ -37,13 +38,13 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="This script will list ONTAP volume in an SVM",
+        description="This script will list ONTAP volumes in an SVM",
     )
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details",
     )
     parser.add_argument(
-        "-vn", "--vserver_name", required=True, help="SVM to create the volume from",
+        "-vs", "--svm_name", required=True, help="SVM to create the volume from",
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
@@ -66,4 +67,4 @@ if __name__ == "__main__":
         args.cluster, username=args.api_user, password=args.api_pass, verify=False,
     )
 
-    list_volume_pycl(args.vserver_name)
+    list_volume_pycl(args.svm_name)

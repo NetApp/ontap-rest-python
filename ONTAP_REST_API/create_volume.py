@@ -7,11 +7,11 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create Volume.
+Purpose: Script to create Volume using ONTAP REST API.
 
-usage: create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vn VSERVER_NAME -a
-                        AGGR_NAME -vs VOLUME_SIZE [-u API_USER] [-p API_PASS]
-create_volume.py: the following arguments are required: -c/--cluster, -v/--volume_name, -vn/--vserver_name, -a/--aggr_name, -vs/--volume_size
+usage:python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a
+                        AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+create_volume.py: the following arguments are required: -c/--cluster, -v/--volume_name, -vs/--svm_name, -a/--aggr_name, -sz/--volume_size
 """
 
 
@@ -31,11 +31,11 @@ def get_svms(cluster,base64string,headers):
     return response.json()
 
 
-def get_key_svms(cluster,vserver_name,base64string,headers):
+def get_key_svms(cluster,svm_name,base64string,headers):
     tmp = dict(get_svms(cluster,base64string,headers))
     svms = tmp['records']
     for i in svms:
-        if i['name'] == vserver_name:
+        if i['name'] == svm_name:
             return i['uuid']
 
     
@@ -62,15 +62,15 @@ def check_job_status(cluster,job_status,base64string,headers):
         job_status = job_response.json()
         check_job_status(cluster,job_status,base64string,headers)
 
-def make_volume(cluster,volume_name,vserver_name,aggr_name,volume_size,base64string,headers):
-    svm_key=get_key_svms(cluster,vserver_name,base64string,headers)
+def make_volume(cluster,volume_name,svm_name,aggr_name,volume_size,base64string,headers):
+    svm_key=get_key_svms(cluster,svm_name,base64string,headers)
     v_size=get_size(volume_size)
     print ("Vol Size is :{}".format(v_size))
 
     url = "https://{}/api/storage/volumes".format(cluster) 
     payload = {
     "aggregates.name" : [aggr_name],
-    "svm.name": vserver_name,
+    "svm.name": svm_name,
     "name": volume_name,
     "size": v_size
     }
@@ -97,13 +97,13 @@ def parse_args() -> argparse.Namespace:
         "-v", "--volume_name", required=True, help="Name of the volume that needs to be created."
     )
     parser.add_argument(
-        "-vn", "--vserver_name", required=True, help="vserver name"
+        "-vs", "--svm_name", required=True, help="svm name"
     )
     parser.add_argument(
         "-a", "--aggr_name", required=True, help="Aggregate Name"
     )
     parser.add_argument(
-        "-vs", "--volume_size", required=True, help="Volume Size"
+        "-sz", "--volume_size", required=True, help="Volume Size"
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
@@ -130,6 +130,6 @@ if __name__ == "__main__":
     'accept': "application/json"
     }
 	
-    make_volume(args.cluster,args.volume_name,args.vserver_name,args.aggr_name,args.volume_size,base64string,headers)    
+    make_volume(args.cluster,args.volume_name,args.svm_name,args.aggr_name,args.volume_size,base64string,headers)    
 
 

@@ -7,12 +7,12 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create volume using Python Client Library.
+Purpose: Script to create volume using ONTAP REST API Python Client Library.
 
-usage: create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vn VSERVER_NAME -a
-                            AGGR_NAME -s VOLUME_SIZE [-u API_USER]
+usage: python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs VSERVER_NAME -a
+                            AGGR_NAME -sz VOLUME_SIZE(MBs) [-u API_USER]
                             [-p API_PASS]
-create_volume_pcl.py:  the following arguments are required: -c/--cluster,                              -v/--volume_name, -vn/--vserver_name, -a/--aggr_name, -s/--volume_size
+create_volume_pcl.py:  the following arguments are required: -c/--cluster,-v/--volume_name, -vs/--vserver_name, -a/--aggr_name, -sz/--volume_size
 """
 
 import argparse
@@ -22,14 +22,18 @@ import logging
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Volume
 
-def make_volume_pycl(volume_name: str, vserver_name: str, aggr_name: str, volume_size: int) -> None:
-    """Creates a new volume in a SVM"""
+def get_size(volume_size):
+    tmp = int(volume_size) * 1024 * 1024
+    return tmp
 
+def make_volume_pycl(volume_name: str, svm_name: str, aggr_name: str, volume_size: int) -> None:
+    """Creates a new volume in a SVM"""
+    v_size=get_size(volume_size)
     volume = Volume.from_dict({
     'name': volume_name,
-    'svm': {'name':vserver_name},
+    'svm': {'name':svm_name},
     'aggregates': [{'name': aggr_name }],
-    'size': volume_size
+    'size': v_size
     })
 
     try:
@@ -49,16 +53,16 @@ def parse_args() -> argparse.Namespace:
         "-c", "--cluster", required=True, help="API server IP:port details"
     )
     parser.add_argument(
-        "-v", "--volume_name", required=True, help="Volume to create or clone from"
+        "-v", "--volume_name", required=True, help="Volume Name"
     )
     parser.add_argument(
-        "-vn", "--vserver_name", required=True, help="SVM to create the volume from"
+        "-vs", "--svm_name", required=True, help="SVM Name"
     )
     parser.add_argument(
-        "-a", "--aggr_name", required=True, help="Aggregate to create the volume from"
+        "-a", "--aggr_name", required=True, help="Aggregate Name"
     )
     parser.add_argument(
-        "-s", "--volume_size", required=True, help="Size of the volume."
+        "-sz", "--volume_size", required=True, help="Size of the volume(MBs)."
     )
     parser.add_argument("-u", "--api_user", default="admin", help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
@@ -81,4 +85,4 @@ if __name__ == "__main__":
         args.cluster, username=args.api_user, password=args.api_pass, verify=False,
     )
 
-    make_volume_pycl(args.volume_name, args.vserver_name, args.aggr_name , args.volume_size)
+    make_volume_pycl(args.volume_name, args.svm_name, args.aggr_name , args.volume_size)

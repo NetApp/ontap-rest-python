@@ -7,13 +7,13 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create a clone.
+Purpose: Script to create a clone using ONTAP REST API.
 
-usage: create_clone.py [-h] -c CLUSTER -v VOLUME_NAME -vn VSERVER_NAME -sn
+usage: python3 create_clone.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -s
                        SNAPSHOT_NAME -cn CLONE_NAME -a AGGR_NAME [-u API_USER]
                        [-p API_PASS]
 create_clone.py: the following arguments are required: -c/--cluster,
- -v/--volume_name, -vn/--vserver_name, -sn/--snapshot_name, -cn/--clone_name,
+ -v/--volume_name, -vs/--svm_name, -s/--snapshot_name, -cn/--clone_name,
  -a/--aggr_name
 """
 
@@ -57,11 +57,11 @@ def check_job_status(cluster,job_status,base64string,headers):
         job_status = job_response.json()
         check_job_status(job_status,base64string,headers)
 
-def make_clone(cluster,volume_name,vserver_name,snapshot_name,aggr_name,clone_name,base64string,headers):
-    vol_key=get_key_vol(cluster,vserver_name,base64string,headers)
+def make_clone(cluster,volume_name,svm_name,snapshot_name,aggr_name,clone_name,base64string,headers):
+    vol_key=get_key_vol(cluster,svm_name,base64string,headers)
     url = "https://{}/api/storage/volumes".format(cluster) 
     payload = {
-    "svm.name": vserver_name,
+    "svm.name": svm_name,
     "clone.is_flexclone": "true",
     "clone.parent_snapshot.name": snapshot_name,
     "clone.parent_volume.name": volume_name,
@@ -90,10 +90,10 @@ def parse_args() -> argparse.Namespace:
         "-v", "--volume_name", required=True, help="Volume from which clone need to be created."
     )
     parser.add_argument(
-        "-vn", "--vserver_name", required=True, help="SVM to create the Clone from"
+        "-vs", "--svm_name", required=True, help="SVM to create the Clone from"
     )
     parser.add_argument(
-        "-sn", "--snapshot_name", required=True, help="Snapshot name"
+        "-s", "--snapshot_name", required=True, help="Snapshot name"
     )
     parser.add_argument(
         "-cn", "--clone_name", required=True, help="Clone name"
@@ -126,5 +126,5 @@ if __name__ == "__main__":
     'accept': "application/json"
     }
 	
-    make_clone(args.cluster,args.volume_name,args.vserver_name,args.snapshot_name,args.aggr_name,args.clone_name,base64string,headers)    
+    make_clone(args.cluster,args.volume_name,args.svm_name,args.snapshot_name,args.aggr_name,args.clone_name,base64string,headers)    
 
