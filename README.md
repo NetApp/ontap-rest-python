@@ -5,7 +5,7 @@ Sample scripts for illustrating the use of ONTAP REST APIs and  ONTAP REST API P
 ## Using ONTAP REST API
 
 
-Starting NetApp® ONTAP® 9.6 adds support for an expanded RESTful API. In comparison to the ONTAPI® application, the ONTAP REST APIs offer a vastly simplified workflow-driven user experience, enabling you to perform multiple operations on a given storage object with a single API. RESTful APIs are the industry standard, and as enterprises are standardizing on RESTful APIs, we have a tremendous opportunity to make inroads into new segments.
+NetApp® ONTAP® version 9.6 and above, adds support for an expanded RESTful API. In comparison to the ONTAPI® application, the ONTAP REST APIs offer a vastly simplified workflow-driven user experience, enabling you to perform multiple operations on a given storage object with a single API. RESTful APIs are the industry standard, and as enterprises are standardizing on RESTful APIs, we have a tremendous opportunity to make inroads into new segments.
 
 The ONTAP_REST_API folder contains samples scripts to illustrate how ONTAP REST APIs can be used.
 
