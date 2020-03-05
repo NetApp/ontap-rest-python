@@ -27,7 +27,6 @@ def list_aggregate_pycl() -> None:
     print ("\n List of Aggregates:- \n")
     try:
         for aggregatelist in Aggregate.get_collection():
-            aggregatelist.get()
             print (aggregatelist.name)
     except NetAppRestError as err:
             print("Error: Aggregate list was not created: %s" % err)

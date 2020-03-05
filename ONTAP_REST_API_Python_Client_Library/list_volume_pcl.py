@@ -28,7 +28,6 @@ def list_volume_pycl(svm_name: str) -> None:
     print ("\n List of Volumes:- \n")
     try:
         for volume in Volume.get_collection(**{"svm.name": svm_name}):
-            volume.get()
             print (volume.name)
     except NetAppRestError as err:
         print("Error: Volume list  was not created: %s" % err)
