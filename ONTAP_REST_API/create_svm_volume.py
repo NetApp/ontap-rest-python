@@ -49,13 +49,15 @@ def make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy
     }
     
     response = requests.post(url,headers=headers,json=payload,verify=False)
-    tt = time.time()
+    time.sleep(5)
     url_text = response.json()
-    job_status = "https://{}/{}".format(cluster,url_text['job']['_links']['self']['href'])
-    job_response = requests.get(job_status,headers=headers,verify=False)
-    job_status = job_response.json()
-    check_vol_job_status(cluster,job_status,headers)
-    tt = time.time()
+    try:
+        job_status = "https://{}/{}".format(cluster,url_text['job']['_links']['self']['href'])
+        job_response = requests.get(job_status,headers=headers,verify=False)
+        job_status = job_response.json()
+        check_vol_job_status(cluster,job_status,headers)
+    except:
+        print (url_text)
     return
 
 
@@ -104,24 +106,22 @@ def create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,
 
 def check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):    
     if (job_status['state'] == "failure"):
-        if (job_status['code'] == 460770):
-            print ("SVM Already Exists, hence using it to create export policy")
-            create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,base64string,headers)
-            make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_name,base64string,headers)
-        else:
-            print ("SVM creation failed due to :{}".format(job_status['message']))
-            return
+        print ("SVM creation failed due to :{}".format(job_status['message']))
+        return
     elif(job_status['state'] == "success"):
         print ("SVM created successfully")
         create_export_policy(cluster,export_policy_name,export_policy_rule,svm_name,base64string,headers)
         make_volume(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_name,base64string,headers)
         return
     else:
-        job_status_url = "https://{}/api/cluster/jobs/{}".format(cluster,job_status['uuid'])
-        job_response = requests.get(job_status_url,headers=headers,verify=False)
-        job_status = job_response.json()
-        time.sleep (5)
-        check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+        try:
+            job_status_url = "https://{}/api/cluster/jobs/{}".format(cluster,job_status['uuid'])
+            job_response = requests.get(job_status_url,headers=headers,verify=False)
+            job_status = job_response.json()
+            time.sleep (5)
+            check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+        except:
+            print ("Job errored out. ")
 
 def check_vol_job_status(cluster,job_status,headers):
     if (job_status['state'] == "failure"):
@@ -135,11 +135,14 @@ def check_vol_job_status(cluster,job_status,headers):
         print ("Volume created successfully")
         return
     else:
-        job_status_url = "https://{}/api/cluster/jobs/{}".format(cluster,job_status['uuid'])
-        job_response = requests.get(job_status_url,headers=headers,verify=False)
-        job_status = job_response.json()
-        time.sleep (5)
-        check_vol_job_status(cluster,job_status,headers)
+        try:
+            job_status_url = "https://{}/api/cluster/jobs/{}".format(cluster,job_status['uuid'])
+            job_response = requests.get(job_status_url,headers=headers,verify=False)
+            job_status = job_response.json()
+            time.sleep (5)
+            check_vol_job_status(cluster,job_status,headers)
+        except:
+            print ("The job errored out.")
 
 def make_svm(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers):
     url = "https://{}/api/svm/svms".format(cluster)
@@ -147,11 +150,16 @@ def make_svm(cluster,volume_name,svm_name,volume_size,aggr_name,export_policy_ru
     "name": svm_name
     }
     response = requests.post(url,headers=headers,json=payload,verify=False)
+    time.sleep(5)
     url_text = response.json()    
-    job_status = "https://{}{}".format(cluster,url_text['job']['_links']['self']['href'])
-    job_response = requests.get(job_status,headers=headers,verify=False)
-    job_status = job_response.json()
-    check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+    try:
+        job_status = "https://{}{}".format(cluster,url_text['job']['_links']['self']['href'])
+        job_response = requests.get(job_status,headers=headers,verify=False)
+        job_status = job_response.json()
+        check_job_status(cluster,job_status,volume_name,svm_name,volume_size,aggr_name,export_policy_rule,export_policy_name,base64string,headers)
+    except:
+        print ("The job errored out.")
+        print (url_text)
     return
 
     
