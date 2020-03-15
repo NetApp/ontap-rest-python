@@ -13,6 +13,14 @@ usage: python3 create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAM
                           [-u API_USER] [-p API_PASS]
 create_snapshot.py: the following arguments are required: -c/--cluster, -v/--volume_name, -s/--snapshot_name -vs/--svm_name
 
+Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
+
+Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+https://opensource.org/licenses/BSD-3-Clause
+
 """
 
 import subprocess

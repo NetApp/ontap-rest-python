@@ -13,6 +13,14 @@ Usage: list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                        [-p API_PASS]
 list_volumes.py: the following arguments are required: -c/--cluster, -vs/--svm_name
 
+Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
+
+Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+https://opensource.org/licenses/BSD-3-Clause
+
 """
 import base64
 import argparse

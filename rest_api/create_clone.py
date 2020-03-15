@@ -15,6 +15,15 @@ usage: python3 create_clone.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -s
 create_clone.py: the following arguments are required: -c/--cluster,
  -v/--volume_name, -vs/--svm_name, -s/--snapshot_name, -cn/--clone_name,
  -a/--aggr_name
+
+Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
+
+Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+https://opensource.org/licenses/BSD-3-Clause
+
 """
 
 import time
