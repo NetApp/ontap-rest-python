@@ -49,3 +49,6 @@ eg:-
 python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a
                         AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
 
+## Support
+
+Report any issues to: https://github.com/NetApp/ontap-rest-api/issues . For any questions or concerns ,please mail to the following mail id: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM). 
