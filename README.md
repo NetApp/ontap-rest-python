@@ -8,11 +8,9 @@ This repository contains sample scripts illustrating how to use the ONTAP REST A
 
 The Python client library is a package you can use when writing scripts to access the ONTAP REST API. It provides support for several underlying services, including connection management, asynchronous request processing, and exception handling. By using the Python client library, you can quickly develop robust code to support the automation of your ONTAP deployments.
 
-Before you begin, you need to install the library. See the following site for requirements and download instructions, as well as documentation for the library:
+Before beginning, you need to install the library. See the following web site for requirements and download instructions, as well as documentation for the library: [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/)
 
-[PyPI netapp-ontap](https:pypi.org/project/netapp-ontap)
-
-The folder **python_client_library** contains samples scripts you can use to access the ONTAP REST API through the Python client library. You must run each of the scripts with the appropriate parameters. For example:
+The repository folder **python_client_library** contains samples scripts you can use to access the ONTAP REST API through the Python client library. You must run each of the scripts with the appropriate parameters. For example:
 
 ```
 python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
@@ -21,7 +19,7 @@ python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAM
 
 ## Directly accessing the ONTAP REST API
 
-The folder **rest_api** contains samples scripts you can use to directly access the ONTAP REST API through Python. You must run each of the scripts with the appropriate parameters. For example:
+The repository folder **rest_api** contains samples scripts you can use to directly access the ONTAP REST API through Python. You must run each of the scripts with the appropriate parameters. For example:
 
 ```
 python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
