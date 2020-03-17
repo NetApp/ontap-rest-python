@@ -1,54 +1,29 @@
 # ONTAP-REST-API
 
-Sample scripts for illustrating the use of ONTAP REST APIs and  ONTAP REST API Python Client Libraries.
+NetApp® ONTAP® version 9.6 and later includes support for an expansive RESTful web services API. In comparison to the ONTAPI® application, the REST API offers a vastly simplified and workflow-driven user experience, allowing you to perform multiple operations on the storage objects with a single API. REST is the industry standard for APIs and provides a tremendous opportunity to automate your storage deployments.
 
-## Using ONTAP REST API
+This repository contains sample scripts that illustrate how to use the ONTAP REST API. You can access the REST API through the Python client library, which is preferable in most situations. If needed, you can also connect directly to the API using the native capabilities provided with Python.
 
-
-NetApp® ONTAP® version 9.6 and above, adds support for an expanded RESTful API. In comparison to the ONTAPI® application, the ONTAP REST APIs offer a vastly simplified workflow-driven user experience, enabling you to perform multiple operations on a given storage object with a single API. RESTful APIs are the industry standard, and as enterprises are standardizing on RESTful APIs, we have a tremendous opportunity to make inroads into new segments.
-
-The ONTAP_REST_API folder contains samples scripts to illustrate how ONTAP REST APIs can be used.
-
-
-Deploy the scripts with the appropriate parameters.
-
-eg:-
-
-python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a
-                            AGGR_NAME -sz VOLUME_SIZE [-u API_USER]
-                            [-p API_PASS]
-
-## Using ONTAP REST API Python Client Library 
+## Using the Python client library
 
 The Python client library is a package you can use when writing scripts to access the ONTAP REST API. It provides support for several underlying services, including connection management, asynchronous request processing, and exception handling. By using the Python client library, you can quickly develop robust code to support the automation of your ONTAP deployments.
 
-### Software requirements:
+Before you begin, you need to install the library. See the following location for xxx
 
-Before installing the Python client library, you must make sure the following packages are installed on your system:
+The folder *python_client_library* contains samples scripts you can use to access the ONTAP REST API through the Python client library. You must run each of the scripts with the appropriate parameters. For example:
 
-    * python 3.5 or later
-    * requests 2.21.0 or later
-    * marshmallow 3.2.1 or later
+```
+python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+```
 
-### Installing and importing the package :
+## Directly accessing the ONTAP REST API
 
-You must install the package using the pip utility:
+The folder *rest_api* contains samples scripts you can use to directly access the ONTAP REST API through Python. You must run each of the scripts with the appropriate parameters. For example:
 
-    * pip install netapp-ontap
-
-After installing the package, you can import the objects you need into your application:
-
-    * from netapp_ontap.resources import Volume, Snapshot
-
-The ONTAP_REST_API_Python_Client_Library folder contains samples scripts to illustrate how ONTAP REST API Python Client Libraries can be used.
-
-Deploy the scripts with the appropriate parameters.
-
-eg:-
-
-python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a
-                        AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+```
+python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+```
 
 ## Support
 
-Report any issues to: https://github.com/NetApp/ontap-rest-api/issues . For any questions or concerns ,please mail to the following mail id: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM). 
+Report any issues to: https://github.com/NetApp/ontap-rest-api/issues . For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
