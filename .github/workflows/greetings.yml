@@ -1,0 +1,17 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+          Thank you for reporting an issue! If you haven't already [joined our Slack community](https://netapppub.slack.com/join/shared_invite/enQtNzc0MDAwNzQ5MDc2LTE4ZDQxODgwZmY3NGUwNWM2OGVkMDlkNjZjNTEzZDYwMDMwYWM1M2E4ZmNiNzYyMWE5NmVkYTMyODdlMzhhOTI),
+          then we invite you to do so. This is a great place to get help and ask questions from our community.
+        pr-message: |
+          Thank you for submitting a pull request! If you haven't already [joined our Slack community](https://netapppub.slack.com/join/shared_invite/enQtNzc0MDAwNzQ5MDc2LTE4ZDQxODgwZmY3NGUwNWM2OGVkMDlkNjZjNTEzZDYwMDMwYWM1M2E4ZmNiNzYyMWE5NmVkYTMyODdlMzhhOTI),
+          then we invite you to do so. It is a good place to discuss requests with the community.
