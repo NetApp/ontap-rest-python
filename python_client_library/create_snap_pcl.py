@@ -51,7 +51,7 @@ def main() -> None:
         Argument("-vs", "--svm_name", "SVM Name"),
     ]
     args = parse_args(
-        "This script will create a new snapshot for an existing ONTAP volume", arguments,
+        "This script will create a new snapshot for an existing ONTAP volume", arguments,  # create a bad pr with a lint error
     )
     setup_logging()
     setup_connection(args)
