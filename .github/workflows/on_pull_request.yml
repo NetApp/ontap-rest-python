@@ -1,0 +1,28 @@
+name: on_pull_request
+on: [pull_request]
+jobs:
+  reviewdog:
+    name: reviewdog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install reviewdog
+        run: |
+          curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s
+      - name: Install pylint
+        run: |
+          python3 -m pip install pylint
+      - name: Run reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 -m pylint python_client_library | bin/reviewdog -reporter=github-pr-check -diff="git diff master" -efm="%f:%l:%c: %m"
+  greet:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+          Thank you for reporting an issue! If you haven't already [joined our Slack community](https://netapppub.slack.com/join/shared_invite/enQtNzc0MDAwNzQ5MDc2LTE4ZDQxODgwZmY3NGUwNWM2OGVkMDlkNjZjNTEzZDYwMDMwYWM1M2E4ZmNiNzYyMWE5NmVkYTMyODdlMzhhOTI),
+          then we invite you to do so. This is a great place to get help and ask questions from our community.
+        pr-message: |
+          Thank you for submitting a pull request! If you haven't already [joined our Slack community](https://netapppub.slack.com/join/shared_invite/enQtNzc0MDAwNzQ5MDc2LTE4ZDQxODgwZmY3NGUwNWM2OGVkMDlkNjZjNTEzZDYwMDMwYWM1M2E4ZmNiNzYyMWE5NmVkYTMyODdlMzhhOTI),
+          then we invite you to do so. It is a good place to discuss requests with the community.
