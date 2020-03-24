@@ -13,6 +13,8 @@ jobs:
           echo ::add-path::$HOME/bin
           python3 -m pip install setuptools
           python3 -m pip install pylint
+          python3 -m pip install netapp-ontap
+      - uses: actions/checkout@v2
       - name: Run reviewdog
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
