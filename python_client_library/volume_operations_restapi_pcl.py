@@ -26,10 +26,12 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Aggregate
 
 def get_size(vol_size):
+    """Convert MBs to Byte"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def show_aggregate():
+    """Lists the Aggregate"""
     print("\n List of Aggregates:- \n")
     try:
         for aggregatelist in Aggregate.get_collection():
@@ -39,6 +41,7 @@ def show_aggregate():
         print("Exception caught :" + str(error))
 
 def show_svm():
+    """Lists SVM"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -50,6 +53,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """Lists Volumes"""
     show_svm()
     print()
     svm_name = input(
@@ -68,6 +72,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def create_volume():
+    """Create volumes"""
     print()
     show_svm()
     print()
@@ -202,13 +207,14 @@ def create_volume():
 
     try:
         volume = Volume.from_dict(dataobj)
-        if(volume.post(poll=True)):
+        if volume.post(poll=True):
             print("SVM  %s created Successfully" % volume.name)
     except NetAppRestError as error:
         print("HTTP Error Code is " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
 def patch_volume():
+    """Update Volume"""
     print("=============================================")
     print()
     show_volume()
@@ -347,6 +353,7 @@ def patch_volume():
         print("Exception caught :" + str(error))
 
 def delete_volume():
+    """Delete Volume"""
     print("=============================================")
     print()
     show_volume()
@@ -367,6 +374,7 @@ def delete_volume():
         print("Exception caught :" + str(error))
 
 def clone_volume():
+    """Clone volume"""
     print("=============================================")
     print()
     show_volume()
@@ -414,6 +422,7 @@ def clone_volume():
         print("Exception caught :" + str(error))
 
 def volume_ops():
+    """Volume Operations"""
     print()
     print("THE FOLLOWING SCRIPT SHOWS VOLUME OPERATIONS USING REST API PYTHON CLIENT LIBRARY:- ")
     print("====================================================================================")
@@ -435,7 +444,7 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS VOLUME OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
+        description="VOLUME OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )

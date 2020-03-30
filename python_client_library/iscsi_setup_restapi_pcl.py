@@ -25,10 +25,12 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Igroup, Lun, LunMap
 
 def get_size(vol_size):
+    """Convert MBs to Bytes"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def show_svm():
+    """Show SVMs in a cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -40,6 +42,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume(svm_name):
+    """Show volumes in a SVM"""
     print()
     print("Getting Volume Details")
     print("===================")
@@ -54,6 +57,7 @@ def show_volume(svm_name):
         print("Exception caught :" + str(error))
 
 def iscsi_setup():
+    """ Script demostrates the ISCSI Lun Setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES ISCSI LUN SETUP USING REST API PCL.")
     print("====================================================================")
     print()

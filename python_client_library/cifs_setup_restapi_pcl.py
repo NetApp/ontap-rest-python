@@ -28,10 +28,12 @@ from netapp_ontap.resources import Svm, Volume
 from netapp_ontap.resources import CifsShare
 
 def get_size(vol_size):
+    """ Convert MB to Bytes"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def show_svm():
+    """ Shows SVM on the storage cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -43,6 +45,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """Shows Volumes in a SVM"""
     print("The List of SVMs")
     show_svm()
     print()
@@ -62,7 +65,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def cifs_setup():
-
+    """Script demostrates the CIFS setup using REST API PCL"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES CIFS SETUP USING REST API PCL.")
     print("===========================================================")
     print()

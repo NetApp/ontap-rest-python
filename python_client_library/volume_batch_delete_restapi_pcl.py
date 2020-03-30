@@ -27,6 +27,7 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume
 
 def show_svm():
+    """List SVM in a cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -38,6 +39,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """List Volumes in a SVM"""
     print("The List of SVMs")
     show_svm()
     print()
@@ -56,6 +58,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def delete_collection_volume():
+    """Delete a collection of volumes"""
     print("=============================================")
     print()
     show_volume()

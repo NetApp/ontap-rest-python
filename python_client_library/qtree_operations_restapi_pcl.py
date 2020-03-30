@@ -28,10 +28,12 @@ from netapp_ontap.resources import Svm, Volume, Qtree
 
 
 def get_size(vol_size):
+    """Convert MBs to Bytes"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def show_svm():
+    """ Show SVMs in a cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -43,6 +45,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume(svm_name):
+    """Show volumes in a SVM"""
     print()
     print("Getting Volume Details")
     print("======================")
@@ -55,6 +58,7 @@ def show_volume(svm_name):
         print("Exception caught :" + str(error))
 
 def show_qtree():
+    """List Qtrees in a Volume"""
     print()
     print("The List of SVMs:-")
     show_svm()
@@ -74,9 +78,10 @@ def show_qtree():
     except NetAppRestError as error:
         print("HTTP Error Code is " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
-    return (vol_uuid)
+    return vol_uuid
 
 def create_qtree():
+    """Create qtrees"""
     print()
     print("The List of SVMs")
     print("================")
@@ -107,6 +112,7 @@ def create_qtree():
         print("Exception caught :" + str(error))
 
 def patch_qtree():
+    """Update Qtree"""
     print("=============================================")
     print()
     vol_uuid = show_qtree()
@@ -136,6 +142,7 @@ def patch_qtree():
         print("Exception caught :" + str(error))
 
 def delete_qtree():
+    """Delete Qtree"""
     print("=============================================")
     print()
     vol_uuid = show_qtree()
@@ -159,6 +166,7 @@ def delete_qtree():
         print("Exception caught :" + str(error))
 
 def qtree_ops():
+    """Qtree Operations"""
     print("THE FOLLOWING SCRIPT SHOWS QTREE OPERATIONS USING REST API PYTHON CLIENT LIBRARY.")
     print("==================================================================")
     print()

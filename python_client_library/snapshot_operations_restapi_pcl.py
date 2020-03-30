@@ -27,10 +27,12 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Snapshot
 
 def get_size(vol_size):
+    """Convert MBs to Bytes"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def show_svm():
+    """Show SVM in a cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -42,6 +44,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume(svm_name):
+    """List volumes in a SVM"""
     print()
     print("Getting Volume Details")
     print("======================")
@@ -54,6 +57,7 @@ def show_volume(svm_name):
         print("Exception caught :" + str(error))
 
 def show_snapshot():
+    """List Snapshots in a volume"""
     print()
     print("The List of SVMs:-")
     show_svm()
@@ -73,9 +77,10 @@ def show_snapshot():
     except NetAppRestError as error:
         print("HTTP Error Code is " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
-    return (vol_uuid)
+    return vol_uuid
 
 def create_snapshot():
+    """Create snapshot """
     print()
     print("The List of SVMs")
     show_svm()
@@ -106,6 +111,7 @@ def create_snapshot():
         print("Exception caught :" + str(error))
 
 def patch_snapshot():
+    """Update Snapshot"""
     print("=============================================")
     print()
     vol_uuid = show_snapshot()
@@ -138,7 +144,7 @@ def patch_snapshot():
         print("Exception caught :" + str(error))
 
 def delete_snapshot():
-
+    """Delete Snapshot"""
     print("=============================================")
     print()
     vol_uuid = show_snapshot()
@@ -164,6 +170,7 @@ def delete_snapshot():
         print("Exception caught :" + str(error))
 
 def snapshot_ops():
+    """Snapshot Operation"""
     print("THE FOLLOWING SCRIPT SHOWS SNAPSHOT OPERATIONS USING REST API PCL.")
     print("==================================================================")
     print()
@@ -182,7 +189,7 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS SNAPSHOT OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
+        description="SNAPSHOT OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )

@@ -26,6 +26,7 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, SnapmirrorRelationship, Snapshot
 
 def show_svm():
+    """Show SVMs in a cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -37,6 +38,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """List volumes in a SVM"""
     print("The List of SVMs")
     print("===================")
     show_svm()
@@ -56,6 +58,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def show_snapshot():
+    """List Snapshots in a volume"""
     print()
     print("The List of SVMs:-")
     show_svm()
@@ -77,6 +80,7 @@ def show_snapshot():
         print("Exception caught :" + str(error))
 
 def show_snapmirror():
+    """List Snapmirror"""
     print("List of SnapMirror Relationships:")
     print("=================================")
 
@@ -95,6 +99,7 @@ def show_snapmirror():
         print("Exception caught :" + str(error))
 
 def create_snapmirror():
+    """Create snapmirror relationship"""
     print("===================")
     print("Please enter the following details:-")
     src_svm_name = input("Enter the Source SVM :-")
@@ -118,6 +123,7 @@ def create_snapmirror():
         print("Exception caught :" + str(error))
 
 def patch_snapmirror():
+    """Update Snapmirror Relation"""
     print("=============================================")
     print()
     show_snapmirror()
@@ -135,6 +141,7 @@ def patch_snapmirror():
         print("Exception caught :" + str(error))
 
 def delete_snapmirror():
+    """Delete Snapmirror"""
     print("=============================================")
     print()
     show_snapmirror()
@@ -150,6 +157,7 @@ def delete_snapmirror():
         print("Exception caught :" + str(error))
 
 def sm_ops():
+    """SnapMirror Operations"""
     print("THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATION USING REST API PYTHON CLIENT LIBRARY")
     print("====================================================================================")
     print()
@@ -169,7 +177,7 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
+        description="SNAPMIRROR OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )

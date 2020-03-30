@@ -26,6 +26,7 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume
 
 def show_svm():
+    """List the SVMs"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -37,6 +38,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """List volumes"""
     print("The List of SVMs")
     show_svm()
     print()
@@ -55,6 +57,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def patch_collection_volume():
+    """Update the volume collection"""
     """Turn the given volumes off then on again"""
     print("=============================================")
     print()
@@ -86,7 +89,7 @@ def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS VOLUME BATCH PATCHING OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
+        description="VOLUME BATCH PATCHING OPERATIONS USING PYTHON CLIENT LIBRARY:-")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )

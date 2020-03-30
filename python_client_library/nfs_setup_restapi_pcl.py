@@ -26,25 +26,24 @@ from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, ExportPolicy, NfsService
 
 def get_size(vol_size):
+    """Convert MBs to Bytes"""
     tmp = int(vol_size) * 1024 * 1024
     return tmp
 
 def get_key_svms(svm_name):
+    """Get SVM Keys"""
     print()
     try:
         for svm in Svm.get_collection(fields="uuid"):
             if svm.name == svm_name:
                 print(svm.uuid)
-                return(svm.uuid)
+                return svm.uuid
     except NetAppRestError as error:
         print("HTTP Error Code is " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def get_size(vol_size):
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
 def show_svm():
+    """Show the SVMs in the cluster"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -56,6 +55,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def show_volume():
+    """Show volumes in the SVMs"""
     print("The List of SVMs")
     show_svm()
     print()
@@ -75,6 +75,7 @@ def show_volume():
         print("Exception caught :" + str(error))
 
 def nfs_setup():
+    """Script demostrates NFS setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES NFS SETUP USING REST API .")
     print("====================================================================")
     print()

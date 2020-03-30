@@ -24,9 +24,10 @@ from getpass import getpass
 import logging
 
 from netapp_ontap import config, HostConnection, NetAppRestError
-from netapp_ontap.resources import Svm, Volume, Node
+from netapp_ontap.resources import Svm, Node
 
 def show_node():
+    """List nodes"""
     print(" Getting Node Details")
     print("=====================")
 
@@ -38,6 +39,7 @@ def show_node():
         print("Exception caught :" + str(error))
 
 def show_svm():
+    """List SVM in a cluster"""
     print("Getting SVM Details")
     print("===================")
 
@@ -50,6 +52,7 @@ def show_svm():
         print("Exception caught :" + str(error))
 
 def create_svm():
+    """Create SVM"""
     print()
     svmname = input("Enter the name of the SVM: ")
     dataobj = {}
@@ -129,6 +132,7 @@ def create_svm():
         print("Exception caught :" + str(error))
 
 def patch_svm():
+    """Update SVM"""
     print()
     show_svm()
     print("=============================================")
@@ -162,6 +166,7 @@ def patch_svm():
         print("Exception caught :" + str(error))
 
 def start_svm():
+    """Start SVM"""
     print()
     show_svm()
     print()
@@ -179,6 +184,7 @@ def start_svm():
         print("Exception caught :" + str(error))
 
 def stop_svm():
+    """Stop SVM"""
     print()
     show_svm()
     print("=============================================")
@@ -196,6 +202,7 @@ def stop_svm():
         print("Exception caught :" + str(error))
 
 def delete_svm():
+    """Delete SVM"""
     print()
     show_svm()
     print("=============================================")
@@ -215,6 +222,7 @@ def delete_svm():
         print("Exception caught :" + str(error))
 
 def svm_ops():
+    """SVM Operation"""
     print()
     print("THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API PYTHON CLIENT LIBRARY:- ")
     print("=================================================================================")
