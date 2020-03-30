@@ -1,12 +1,9 @@
 """
 This module is used by the other example modules in this directory. It is not
 meant as a stand-alone application.
-
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause "New" or "Revised" License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 """
@@ -56,9 +53,3 @@ def setup_logging() -> None:
     )
 
 
-def setup_connection(args: argparse.Namespace) -> None:
-    """Set up a global connection to the ONTAP cluster"""
-
-    config.CONNECTION = HostConnection(
-        args.cluster, username=args.api_user, password=args.api_pass, verify=False,
-    )
