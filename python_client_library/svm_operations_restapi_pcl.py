@@ -10,7 +10,7 @@ Purpose: THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API PCL
 
 usage: python3 svm_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER]
                                      [-p API_PASS]
-									 
+
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
@@ -23,236 +23,230 @@ import argparse
 from getpass import getpass
 import logging
 
-from netapp_ontap import config,HostConnection, NetAppRestError
+from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Node
 
-
 def show_node():
-    print (" Getting Node Details")
-    print ("=====================")
-	
+    print(" Getting Node Details")
+    print("=====================")
+
     try:
         for node in Node.get_collection(fields="uuid"):
-            print ("Node name:-%s ; Node uuid:-%s " % (node.name,node.uuid))
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
-    
+            print("Node name:-%s ; Node uuid:-%s " % (node.name, node.uuid))
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
+def show_svm():
+    print("Getting SVM Details")
+    print("===================")
 
-def show_svm():	
-    print ("Getting SVM Details")
-    print ("===================")
-	
     try:
         for svm in Svm.get_collection(fields="uuid"):
             svm.get()
-            print ("SVM name:-%s ; SVM uuid:-%s " % (svm.name,svm.uuid))
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
-	
-	
-def create_svm():  
+            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
+
+def create_svm():
     print()
     svmname = input("Enter the name of the SVM: ")
-    dataObj = {}
-    dataObj['name']=svmname
-    dataObj['language']="c.utf_8"
-    ipspaceobj={"name":"Default"}
-    dataObj['ipspace']=ipspaceobj
+    dataobj = {}
+    dataobj['name'] = svmname
+    dataobj['language'] = "c.utf_8"
+    ipspaceobj = {"name": "Default"}
+    dataobj['ipspace'] = ipspaceobj
     intbool = input("Would you like to configure an Interface (y/n): ")
     if intbool == 'y':
         mgmtlif = input("Enter the name of Management LIF: ")
-        ip = input("Enter the IP address: ")
-        nm = input("Enter the NetMask: ")
-        bd = input("Enter the broadcast-domain: ")
+        ipadd = input("Enter the IP address: ")
+        nmask = input("Enter the NetMask: ")
+        bdomain = input("Enter the broadcast-domain: ")
         show_node()
-        hn = input("Enter the Home Node: ")
-        uuid = input("Enter the UUID: ")
-        intjson=[
-				{
-				"ip":
-						{
-						"address":ip,
-						"netmask":nm
-						},
-				"location":
-						{
-						"broadcast_domain":
-											{
-											"name":bd
-											},
-						"home_node":{
-									"name":hn,
-									"uuid":uuid
-									}
-						},
-				"name":mgmtlif,
-				"service_policy":"default-data-files"
-				}
-				]
-        dataObj['ip_interfaces']=intjson
+        hnode = input("Enter the Home Node: ")
+        uuids = input("Enter the UUID: ")
+        intjson = [
+            {
+                "ip":
+                {
+                    "address": ipadd,
+                    "netmask": nmask
+                },
+                "location":
+                {
+                    "broadcast_domain":
+                    {
+                        "name": bdomain
+                    },
+                    "home_node": {
+                        "name": hnode,
+                        "uuid": uuids
+                    }
+                },
+                "name": mgmtlif,
+                "service_policy": "default-data-files"
+            }
+        ]
+        dataobj['ip_interfaces'] = intjson
     nfsbool = input("Would you like to configure an NFS (y/n): ")
     if nfsbool == 'y':
-        nfsjson={"enabled":bool("true")}
-        dataObj['nfs']=nfsjson
-        print(dataObj)
+        nfsjson = {"enabled": bool("true")}
+        dataobj['nfs'] = nfsjson
+        print(dataobj)
     cifsbool = input("Would you like to configure an CIFS (y/n): ")
     if cifsbool == 'y':
         fqdn = input("Enter the name of FQDN: ")
         aduser = input("Enter the User: ")
         adpassword = input("Enter the password: ")
         adname = input("Enter the AD Name: ")
-        cifsjson={
-				"ad_domain":
-							{
-							"fqdn":fqdn,
-							"password":adpassword,
-							"user":aduser
-							},
-				"enabled":bool("true"),
-				"name":adname
-				}
-        dataObj['cifs']=cifsjson
-        print(dataObj)
+        cifsjson = {
+            "ad_domain":
+            {
+                "fqdn": fqdn,
+                "password": adpassword,
+                "user": aduser
+            },
+            "enabled": bool("true"),
+            "name": adname
+        }
+        dataobj['cifs'] = cifsjson
+        print(dataobj)
     dnsbool = input("Would you like to configure an DNS (y/n): ")
     if dnsbool == 'y':
         domain = input("Enter the name of Domain: ")
         server = input("Enter the Server: ")
-        dnsjson={"domains":[domain],"servers":[server]}
-        dataObj['dns']=dnsjson 
-        print(dataObj)
-	   
+        dnsjson = {"domains": [domain], "servers": [server]}
+        dataobj['dns'] = dnsjson
+        print(dataobj)
+
     try:
-        svm = Svm.from_dict(dataObj)
-        if(svm.post(poll=True)):
-            print ("SVM  %s created Successfully" % svm.name)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
-	
+        svm = Svm.from_dict(dataobj)
+        if svm.post(poll=True):
+            print("SVM  %s created Successfully" % svm.name)
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
 def patch_svm():
     print()
     show_svm()
-    print ("=============================================")
+    print("=============================================")
     svmname = input("Enter the name of the SVM that needs to be updated: ")
     svm = Svm.find(name=svmname)
     lanbool = input("Would you like to update language (y/n): ")
     if lanbool == 'y':
         lan = input("Enter the name of language the you would like to update: ")
-        svm.language=lan
+        svm.language = lan
     namebool = input("Would you like to update the name (y/n): ")
     if namebool == 'y':
         nam = input("Enter the name of SVM: ")
-        svm.name=nam
+        svm.name = nam
     snapbool = input("Would you like to update an SnapShot Policy (y/n): ")
     if snapbool == 'y':
-        snap = input("Enter the name of default snapshot policy that needs to ne updated : ")
-        svm.snapshot_policy=snap
-    aggrbool = input("Would you like to update the SVM with new Aggregate (y/n): ")
+        snap = input(
+            "Enter the name of default snapshot policy that needs to ne updated : ")
+        svm.snapshot_policy = snap
+    aggrbool = input(
+        "Would you like to update the SVM with new Aggregate (y/n): ")
     if aggrbool == 'y':
-        aggr = input("Enter the name of aggregates(with commas) that needs to be updated : ")
-        svm.aggregates.name=aggr 
-	   
-    try:   
-        if(svm.patch(poll=True)):
-            print ("SVM  %s has been updated/patched Successfully" % svm.name)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
+        aggr = input(
+            "Enter the name of aggregates(with commas) that needs to be updated : ")
+        svm.aggregates.name = aggr
+
+    try:
+        if svm.patch(poll=True):
+            print("SVM  %s has been updated/patched Successfully" % svm.name)
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
 def start_svm():
     print()
     show_svm()
     print()
-    print ("=============================================")
-    svmname = input("Enter the name of the SVM name that needs to be started: ")
+    print("=============================================")
+    svmname = input(
+        "Enter the name of the SVM name that needs to be started: ")
     svm = Svm.find(name=svmname)
-    svm.state="running"
-	
+    svm.state = "running"
+
     try:
-        if(svm.patch(poll=True)):
-            print ("SVM  %s has been started Successfully" % svm.name)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
+        if svm.patch(poll=True):
+            print("SVM  %s has been started Successfully" % svm.name)
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
 def stop_svm():
     print()
     show_svm()
-    print ("=============================================")
+    print("=============================================")
     print()
-    svmname = input("Enter the name of the SVM name that needs to be stopped: ")
+    svmname = input(
+        "Enter the name of the SVM name that needs to be stopped: ")
     svm = Svm.find(name=svmname)
-    svm.state="stopped"
-	
+    svm.state = "stopped"
+
     try:
-        if(svm.patch(poll=True)):
-            print ("SVM  %s has been stopped Successfully." % svm.name)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
+        if svm.patch(poll=True):
+            print("SVM  %s has been stopped Successfully." % svm.name)
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
 def delete_svm():
     print()
     show_svm()
-    print ("=============================================")
+    print("=============================================")
     print()
     svmname = input("Enter the name of the SVM that needs to be deleted: ")
     try:
         svm = Svm.find(name=svmname)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-	
-    try:
-        if(svm.delete(poll=True)):
-            print ("SVM  %s has been deleted Successfully." % svm.name)
-    except NetAppRestError as e:
-        print ("HTTP Error Code is " % e.http_err_response.http_response.text)
-        print("Exception caught :" + str(e))
-    return
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
+    try:
+        if svm.delete(poll=True):
+            print("SVM  %s has been deleted Successfully." % svm.name)
+    except NetAppRestError as error:
+        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Exception caught :" + str(error))
 
 def svm_ops():
-    
     print()
     print("THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API PYTHON CLIENT LIBRARY:- ")
     print("=================================================================================")
     print()
-    svmget = input("What SVM Operation would you like to do? [show/create/update/start/stop/delete:- ] ")
-    if (svmget  == 'show'):
+    svmget = input(
+        "What SVM Operation would you like to do? [show/create/update/start/stop/delete:- ] ")
+    if svmget == 'show':
         show_svm()
-    if (svmget  == 'create'):
+    if svmget == 'create':
         create_svm()
-    if (svmget  == 'update'):
+    if svmget == 'update':
         patch_svm()
-    if (svmget  == 'start'):
+    if svmget == 'start':
         start_svm()
-    if (svmget  == 'stop'):
+    if svmget == 'stop':
         stop_svm()
-    if (svmget  == 'delete'):
+    if svmget == 'delete':
         delete_svm()
-    return
-	
+
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API PCL:-"
-    )
+        description="THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API PCL:-")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )
-    parser.add_argument("-u", "--api_user", default="admin", help="API Username")
+    parser.add_argument(
+        "-u",
+        "--api_user",
+        default="admin",
+        help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
     parsed_args = parser.parse_args()
 
@@ -262,17 +256,17 @@ def parse_args() -> argparse.Namespace:
 
     return parsed_args
 
-
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
-    args = parse_args()
+    ARGS = parse_args()
     config.CONNECTION = HostConnection(
-        args.cluster, username=args.api_user, password=args.api_pass, verify=False,
+        ARGS.cluster,
+        username=ARGS.api_user,
+        password=ARGS.api_pass,
+        verify=False,
     )
 
     svm_ops()
-
-
