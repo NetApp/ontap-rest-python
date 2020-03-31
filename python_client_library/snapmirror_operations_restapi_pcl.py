@@ -24,8 +24,9 @@ import logging
 
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, SnapmirrorRelationship, Snapshot
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
 
-def show_svm():
+def show_svm() -> None:
     """Show SVMs in a cluster"""
     print()
     print("Getting SVM Details")
@@ -34,10 +35,10 @@ def show_svm():
         for svm in Svm.get_collection(fields="uuid"):
             print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_volume():
+def show_volume() -> None:
     """List volumes in a SVM"""
     print("The List of SVMs")
     print("===================")
@@ -54,10 +55,10 @@ def show_volume():
                 **{"svm.name": svm_name}, fields="uuid"):
             print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_snapshot():
+def show_snapshot() -> None:
     """List Snapshots in a volume"""
     print()
     print("The List of SVMs:-")
@@ -76,10 +77,10 @@ def show_snapshot():
         for snapshot in Snapshot.get_collection(vol_uuid):
             print(snapshot.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_snapmirror():
+def show_snapmirror() -> None:
     """List Snapmirror"""
     print("List of SnapMirror Relationships:")
     print("=================================")
@@ -95,10 +96,10 @@ def show_snapmirror():
             print(snapmirror1.state)
             print("-----------------------------")
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def create_snapmirror():
+def create_snapmirror() -> None:
     """Create snapmirror relationship"""
     print("===================")
     print("Please enter the following details:-")
@@ -119,10 +120,10 @@ def create_snapmirror():
         if snapmirrorrelationship.post(poll=True):
             print("SnapmirrorRelationship  %s created Successfully")
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def patch_snapmirror():
+def patch_snapmirror() -> None:
     """Update Snapmirror Relation"""
     print("=============================================")
     print()
@@ -137,10 +138,10 @@ def patch_snapmirror():
         if snapmirrortransfer.patch(poll=True):
             print("Snapmirror Relationship   Updated Successfully")
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def delete_snapmirror():
+def delete_snapmirror() -> None:
     """Delete Snapmirror"""
     print("=============================================")
     print()
@@ -153,13 +154,13 @@ def delete_snapmirror():
         if snapmirrorrelationship.delete(poll=True):
             print("Snapmirror Relationship has been deleted Successfully.")
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def sm_ops():
+def sm_ops() -> None:
     """SnapMirror Operations"""
-    print("THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATION USING REST API PYTHON CLIENT LIBRARY")
-    print("====================================================================================")
+    print("Demonstrates SnapMirror Operations using REST API Python Client Library.")
+    print("========================================================================")
     print()
     snapmirrorbool = input(
         "What state SnapMirror Operation would you like? SnapMirror [show/create/update/delete] ")
@@ -173,38 +174,19 @@ def sm_ops():
     if snapmirrorbool == 'delete':
         delete_snapmirror()
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
+def main() -> None:
+    """Main function"""
 
-    parser = argparse.ArgumentParser(
-        description="SNAPMIRROR OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details"),
+            ]
+    args = parse_args(
+        "Demonstrates SnapMirror Operations using REST API Python Client Library.", arguments,
     )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+    setup_logging()
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
+    sm_ops()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    config.CONNECTION = HostConnection(
-        ARGS.cluster,
-        username=ARGS.api_user,
-        password=ARGS.api_pass,
-        verify=False,
-    )
-    sm_ops()
+    main()

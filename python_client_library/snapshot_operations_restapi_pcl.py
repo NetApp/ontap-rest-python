@@ -25,13 +25,9 @@ import logging
 
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Snapshot
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
 
-def get_size(vol_size):
-    """Convert MBs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-def show_svm():
+def show_svm() -> None:
     """Show SVM in a cluster"""
     print()
     print("Getting SVM Details")
@@ -40,7 +36,7 @@ def show_svm():
         for svm in Svm.get_collection(fields="uuid"):
             print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
 def show_volume(svm_name):
@@ -53,10 +49,10 @@ def show_volume(svm_name):
                 **{"svm.name": svm_name}, fields="uuid"):
             print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_snapshot():
+def show_snapshot() -> None:
     """List Snapshots in a volume"""
     print()
     print("The List of SVMs:-")
@@ -75,11 +71,11 @@ def show_snapshot():
         for snapshot in Snapshot.get_collection(vol_uuid):
             print(snapshot.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
     return vol_uuid
 
-def create_snapshot():
+def create_snapshot() -> None:
     """Create snapshot """
     print()
     print("The List of SVMs")
@@ -107,10 +103,10 @@ def create_snapshot():
         if snapshot.post(poll=True):
             print("Snapshot  %s created Successfully" % snapshot.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def patch_snapshot():
+def patch_snapshot() -> None:
     """Update Snapshot"""
     print("=============================================")
     print()
@@ -140,10 +136,10 @@ def patch_snapshot():
         if snapshot.patch(poll=True):
             print("Snapshot  %s Updated Successfully" % snapshot.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def delete_snapshot():
+def delete_snapshot() -> None:
     """Delete Snapshot"""
     print("=============================================")
     print()
@@ -157,7 +153,7 @@ def delete_snapshot():
     try:
         snapshot = Snapshot.find(vol_uuid, name=snapshotname)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
@@ -166,13 +162,13 @@ def delete_snapshot():
                 "Snapshot  %s has been deleted Successfully." %
                 snapshot.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def snapshot_ops():
+def snapshot_ops() -> None:
     """Snapshot Operation"""
-    print("THE FOLLOWING SCRIPT SHOWS SNAPSHOT OPERATIONS USING REST API PCL.")
-    print("==================================================================")
+    print("Demonstrates Snapshot Operations using REST API Python Client Library.")
+    print("======================================================================")
     print()
     snapshotbool = input(
         "What Snapshot Operation would you like to do? [show/create/update/delete] ")
@@ -185,38 +181,20 @@ def snapshot_ops():
     if snapshotbool == 'delete':
         delete_snapshot()
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
+def main() -> None:
+    """Main function"""
 
-    parser = argparse.ArgumentParser(
-        description="SNAPSHOT OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details"),
+            ]
+    args = parse_args(
+        "Demonstrates Snapshot Operations using REST API Python Client Library.", arguments,
     )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+    setup_logging()
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
+    snapshot_ops()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    config.CONNECTION = HostConnection(
-        ARGS.cluster,
-        username=ARGS.api_user,
-        password=ARGS.api_pass,
-        verify=False,
-    )
-    snapshot_ops()
+    main()
+    

@@ -25,14 +25,9 @@ import logging
 
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Qtree
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
 
-
-def get_size(vol_size):
-    """Convert MBs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-def show_svm():
+def show_svm() -> None:
     """ Show SVMs in a cluster"""
     print()
     print("Getting SVM Details")
@@ -41,10 +36,10 @@ def show_svm():
         for svm in Svm.get_collection(fields="uuid"):
             print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_volume(svm_name):
+def show_volume(svm_name) -> None:
     """Show volumes in a SVM"""
     print()
     print("Getting Volume Details")
@@ -54,7 +49,7 @@ def show_volume(svm_name):
                 **{"svm.name": svm_name}, fields="uuid"):
             print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
 def show_qtree():
@@ -76,11 +71,11 @@ def show_qtree():
         for qtree in Qtree.get_collection(**{"volume.uuid": vol_uuid}):
             print("Name:- %s  ID:- %s" % (qtree.name, qtree.id))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
     return vol_uuid
 
-def create_qtree():
+def create_qtree() -> None:
     """Create qtrees"""
     print()
     print("The List of SVMs")
@@ -108,10 +103,10 @@ def create_qtree():
         if qtree.post(poll=True):
             print("Qtree  %s created Successfully" % qtree.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def patch_qtree():
+def patch_qtree() -> None:
     """Update Qtree"""
     print("=============================================")
     print()
@@ -126,7 +121,7 @@ def patch_qtree():
     try:
         qtree = Qtree.find(vol_uuid, name=qtree_name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     nambool = input("Would you like to update the Qtree name (y/n): ")
@@ -138,10 +133,10 @@ def patch_qtree():
         if qtree.patch(poll=True):
             print("Qtree  %s Updated Successfully" % qtree.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def delete_qtree():
+def delete_qtree() -> None:
     """Delete Qtree"""
     print("=============================================")
     print()
@@ -155,19 +150,19 @@ def delete_qtree():
     try:
         qtree = Qtree.find(vol_uuid, name=qtree_name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
         if qtree.delete(poll=True):
             print("Qtree  %s has been deleted Successfully." % qtree.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def qtree_ops():
+def qtree_ops() -> None:
     """Qtree Operations"""
-    print("THE FOLLOWING SCRIPT SHOWS QTREE OPERATIONS USING REST API PYTHON CLIENT LIBRARY.")
+    print("Demonstrates Qtree Operations using REST API Python Client Library.")
     print("==================================================================")
     print()
     qtreebool = input(
@@ -181,39 +176,20 @@ def qtree_ops():
     if qtreebool == 'delete':
         delete_qtree()
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
+def main() -> None:
+    """Main function"""
 
-    parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS QTREE OPERATIONS USING REST API PYTHON CLIENT LIBRARY:-")
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details"),
+            ]
+    args = parse_args(
+        "Demonstrates Qtree Operations using REST API Python Client Library.", arguments,
     )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+    setup_logging()
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
-
+    qtree_ops()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    config.CONNECTION = HostConnection(
-        ARGS.cluster,
-        username=ARGS.api_user,
-        password=ARGS.api_pass,
-        verify=False,
-    )
-    qtree_ops()
+    main()
+    

@@ -31,13 +31,17 @@ from netapp_ontap.resources import Volume
 from utils import Argument, parse_args, setup_logging, setup_connection
 
 
-def make_volume_pycl(volume_name: str, svm_name: str, aggr_name: str, volume_size: int) -> None:
+def make_volume_pycl(
+        volume_name: str,
+        svm_name: str,
+        aggr_name: str,
+        volume_size: int) -> None:
     """Creates a new volume in a SVM"""
 
     v_size = int(volume_size) * 1024 * 1024  # MB -> Bytes
     volume = Volume.from_dict({
         'name': volume_name,
-        'svm': {'name':svm_name},
+        'svm': {'name': svm_name},
         'aggregates': [{'name': aggr_name}],
         'size': v_size,
     })
@@ -61,9 +65,13 @@ def main() -> None:
     ]
     args = parse_args("This script will create a new volume.", arguments)
     setup_logging()
-    setup_connection(args)
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
-    make_volume_pycl(args.volume_name, args.svm_name, args.aggr_name, args.volume_size)
+    make_volume_pycl(
+        args.volume_name,
+        args.svm_name,
+        args.aggr_name,
+        args.volume_size)
 
 
 if __name__ == "__main__":

@@ -24,13 +24,9 @@ import logging
 
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume, ExportPolicy, NfsService
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
 
-def get_size(vol_size):
-    """Convert MBs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-def get_key_svms(svm_name):
+def get_key_svms(svm_name) -> None:
     """Get SVM Keys"""
     print()
     try:
@@ -39,10 +35,10 @@ def get_key_svms(svm_name):
                 print(svm.uuid)
                 return svm.uuid
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_svm():
+def show_svm() -> None:
     """Show the SVMs in the cluster"""
     print()
     print("Getting SVM Details")
@@ -51,10 +47,10 @@ def show_svm():
         for svm in Svm.get_collection(fields="uuid"):
             print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def show_volume():
+def show_volume() -> None:
     """Show volumes in the SVMs"""
     print("The List of SVMs")
     show_svm()
@@ -71,10 +67,10 @@ def show_volume():
                 "Volume name:-%s ; Volume uuid:-%s " %
                 (volume.name, volume.uuid))
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def nfs_setup():
+def nfs_setup() -> None:
     """Script demostrates NFS setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES NFS SETUP USING REST API .")
     print("====================================================================")
@@ -109,7 +105,7 @@ def nfs_setup():
                 print("NFS Service created  created Successfully")
         except NetAppRestError as error:
             print(
-                "HTTP Error Code is " %
+                "Error:- " %
                 error.http_err_response.http_response.text)
             print("Exception caught :" + str(error))
 
@@ -152,7 +148,7 @@ def nfs_setup():
         if exportpolicy.post(poll=True):
             print("Export Policy created  created Successfully")
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     print()
@@ -180,43 +176,24 @@ def nfs_setup():
         if volume.post(poll=True):
             print("Volume created  %s created Successfully" % volume.name)
     except NetAppRestError as error:
-        print("HTTP Error Code is " % error.http_err_response.http_response.text)
+        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     return
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
+def main() -> None:
+    """Main function"""
 
-    parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS NFS SETUP USING REST API PYTHON CLIENT LIBRARY:-")
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details"),
+            ]
+    args = parse_args(
+        "Demonstrates NFS Setup using REST API Python Client Library", arguments,
     )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+    setup_logging()
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
+    nfs_setup()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    config.CONNECTION = HostConnection(
-        ARGS.cluster,
-        username=ARGS.api_user,
-        password=ARGS.api_pass,
-        verify=False,
-    )
-    nfs_setup()
+    main()
