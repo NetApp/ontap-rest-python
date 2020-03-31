@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATIONS USING REST API PCL
 
-Usage: volume_operations_restapi_pcl.py -a <Cluster Address> -u <User Name> -p <Password Name>
+Usage: snapmirror_operations_restapi_pcl.py -a <Cluster Address> -u <User Name> -p <Password Name>
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
@@ -18,13 +18,9 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 
-import argparse
-from getpass import getpass
-import logging
-
-from netapp_ontap import config, HostConnection, NetAppRestError
+from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Svm, Volume, SnapmirrorRelationship, Snapshot
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from utils import Argument, parse_args, setup_logging, setup_connection
 
 def show_svm() -> None:
     """Show SVMs in a cluster"""
@@ -132,7 +128,7 @@ def patch_snapmirror() -> None:
     snapmirror_uuid = input("Enter the UUID of the snapmirror to be updated:-")
     snapmirrortransfer = SnapmirrorRelationship.find(uuid=snapmirror_uuid)
     snapchoice = input(
-        "What state update would you like? [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
+        "What state update would you like?                                                                                         [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
     snapmirrortransfer.state = snapchoice
     try:
         if snapmirrortransfer.patch(poll=True):
@@ -178,8 +174,7 @@ def main() -> None:
     """Main function"""
 
     arguments = [
-        Argument("-c", "--cluster", "API server IP:port details"),
-            ]
+        Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
         "Demonstrates SnapMirror Operations using REST API Python Client Library.", arguments,
     )

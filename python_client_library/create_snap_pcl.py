@@ -48,8 +48,7 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details"),
         Argument("-v", "--volume_name", "Volume Name"),
         Argument("-s", "--snapshot_name", "Snapshot Name"),
-        Argument("-vs", "--svm_name", "SVM Name"),
-    ]
+        Argument("-vs", "--svm_name", "SVM Name")]
     args = parse_args(
         "This script will create a new snapshot for an existing ONTAP volume",
         arguments,

@@ -19,11 +19,7 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 
-import argparse
-from getpass import getpass
-import logging
-
-from netapp_ontap import config, HostConnection, NetAppRestError
+from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Svm, Volume, Snapshot
 from utils import Argument, parse_args, setup_logging, setup_connection, get_size
 
@@ -185,8 +181,7 @@ def main() -> None:
     """Main function"""
 
     arguments = [
-        Argument("-c", "--cluster", "API server IP:port details"),
-            ]
+        Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
         "Demonstrates Snapshot Operations using REST API Python Client Library.", arguments,
     )

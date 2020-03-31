@@ -44,8 +44,7 @@ def main() -> None:
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details"),
-        Argument("-vs", "--svm_name", "SVM Name"),
-    ]
+        Argument("-vs", "--svm_name", "SVM Name")]
     args = parse_args(
         "This script will list ONTAP volumes in an SVM",
         arguments)

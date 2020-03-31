@@ -61,8 +61,7 @@ def main() -> None:
         Argument("-v", "--volume_name", "Volume Name"),
         Argument("-vs", "--svm_name", "SVM Name"),
         Argument("-a", "--aggr_name", "Aggregate Name"),
-        Argument("-sz", "--volume_size", "Size of the volume(MBs)."),
-    ]
+        Argument("-sz", "--volume_size", "Size of the volume(MBs).")]
     args = parse_args("This script will create a new volume.", arguments)
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
