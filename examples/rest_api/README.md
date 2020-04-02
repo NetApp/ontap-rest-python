@@ -2,6 +2,11 @@
 
 The repository folder **rest_api** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed using the requests library.
 
+Before running the example scripts , make sure the following packages are installed.
+
+* requests 2.21.0 or later
+* texttable 1.6.2 
+
 ## How to Use
 
 To make use of these scripts you must run each of the scripts with the appropriate parameters.Please refer the table for more information:-
