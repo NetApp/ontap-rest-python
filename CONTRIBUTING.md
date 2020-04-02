@@ -15,4 +15,4 @@ Be sure to sign off your commits using the `-s` flag or adding `Signed-off-By: N
 ```bash
 git commit -s -m 'Informative commit message'
 ```
-For more information on how you could contribute, refer the [ONTAP REST API Contribution](https://github.com/NetApp/ontap-rest-api/blob/master/ontap_rest_api_github_contribution_process_03_25_2020.pdf) documentation. 
+For more information on how you could contribute, refer the [ONTAP REST API Contribution](https://github.com/NetApp/ontap-rest-python/wiki/contributing_to_ontaprestapi) documentation. 
