@@ -48,13 +48,13 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details"),
         Argument("-v", "--volume_name", "Volume Name"),
         Argument("-s", "--snapshot_name", "Snapshot Name"),
-        Argument("-vs", "--svm_name", "SVM Name"),
-    ]
+        Argument("-vs", "--svm_name", "SVM Name")]
     args = parse_args(
-        "This script will create a new snapshot for an existing ONTAP volume", arguments,
+        "This script will create a new snapshot for an existing ONTAP volume",
+        arguments,
     )
     setup_logging()
-    setup_connection(args)
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
     make_snap_pycl(args.volume_name, args.snapshot_name, args.svm_name)
 

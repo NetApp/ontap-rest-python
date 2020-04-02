@@ -33,7 +33,8 @@ def list_volume_pycl(svm_name: str) -> None:
 
     print("\n List of Volumes:- \n")
     try:
-        print(*(vol.name for vol in Volume.get_collection(**{"svm.name": svm_name})), sep="\n")
+        print(*(vol.name for vol in Volume.get_collection(**
+                                                          {"svm.name": svm_name})), sep="\n")
     except NetAppRestError as err:
         print("Error: Volume list  was not created: %s" % err)
 
@@ -43,11 +44,12 @@ def main() -> None:
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details"),
-        Argument("-vs", "--svm_name", "SVM Name"),
-    ]
-    args = parse_args("This script will list ONTAP volumes in an SVM", arguments)
+        Argument("-vs", "--svm_name", "SVM Name")]
+    args = parse_args(
+        "This script will list ONTAP volumes in an SVM",
+        arguments)
     setup_logging()
-    setup_connection(args)
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
     list_volume_pycl(args.svm_name)
 

@@ -43,7 +43,7 @@ def main() -> None:
     arguments = [Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args("This script will list the aggregates.", arguments)
     setup_logging()
-    setup_connection(args)
+    setup_connection(args.cluster, args.api_user, args.api_pass)
 
     list_aggregate_pycl()
 
