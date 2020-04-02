@@ -1,18 +1,28 @@
-# ONTAP-REST-Python Examples
+# ONTAP REST Python Client Library Examples
 
-NetApp® ONTAP® version 9.6 and later includes support for an expansive RESTful web services API. In comparison to an ONTAPI® application, the REST API offers a vastly simplified and workflow-driven user experience, allowing you to perform multiple operations on the storage objects with a single API. REST is the industry standard for APIs and the ONTAP REST API provides a tremendous opportunity to automate your storage deployments.
+The repository folder **python_client_library** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed through the Python client library.
 
-This repository contains sample scripts illustrating how to use the ONTAP REST API. You can access the API through the Python client library, which is preferable in most situations. If needed, you can also connect directly to the API using the native capabilities provided with Python.
 
 ## Using the Python client library
 
-The Python client library is a package you can use when writing scripts to access the ONTAP REST API. It provides support for several underlying services, including connection management, asynchronous request processing, and exception handling. By using the Python client library, you can quickly develop robust code to support the automation of your ONTAP deployments.
+To make use of these scripts you must run each of the scripts with the appropriate parameters.Please refer the table for more information:-
 
-Before beginning, you need to install the library. See the following web site for requirements and download instructions, as well as documentation for the library: [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/)
-
-The repository folder **python_client_library** contains samples scripts you can use to access the ONTAP REST API through the Python client library. You must run each of the scripts with the appropriate parameters. For example:
-
-```
-python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
--sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
-```
+| Script                               | Purpose       | Syntax  |
+|:------------------------------------:|:-------------:|:-----:|
+| cifs_setup_restapi_pcl.py  | Script demonsrates CIFS Setups. | python3 cifs_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| create_snap_pcl.py  | Script demonstrates Volume Snapshot creation. | python3 create_snap_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
+| create_volume_pcl.py  | Script to create Volume. | python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs VSERVER_NAME -a
+ AGGR_NAME -sz VOLUME_SIZE(MBs) [-u API_USER][-p API_PASS]] |
+| iscsi_setup_restapi_pcl.py  | Script demonsrates ISCSI setup. | iscsi_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_aggregates_pcl.py  | Script to list all the aggregates in a cluster. | python3 list_aggregates_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_volume_pcl.py   | Script to list volumes. |  python3 list_volume_pcl.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]                        [-p API_PASS] |
+| nfs_setup_restapi_pcl.py   | Script demonsrates NFS Setups. | python3 nfs_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
+| qtree_operations_restapi_pcl.py   | Script demonstrates Qtree Operations. | python3 qtree_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| snapmirror_operations_restapi_pcl.py   | Script demonstrates SnapMirror Operations. | python3 snapmirror_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| snapshot_operations_restapi_pcl.py    | Script demonstrates Snapshot Operations. | python3 snapshot_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
+| svm_operations_restapi_pcl.py    | Script demonsrates CIFS Setups. | python3 cifs_u API_USER]  [-p API_PASS] |
+| snapshot_operations_restapi_pcl.py    | Script demonsrates CIFS Setups. | python3 cifs_u API_USER]  [-p API_PASS] |
+| volume_batch_delete_restapi_pcl.py    | Script demonsrates CIFS Setups. | python3 cifs_u API_USER]  [-p API_PASS] |
+| volume_batch_patch_restapi_pcl.py    | Script demonsrates CIFS Setups. | python3 cifs_u API_USER]  [-p API_PASS] |
+| volume_operations_restapi_pcl.py    | Script demonsrates CIFS Setups. | python3 cifs_u API_USER]  [-p API_PASS] |
+  
