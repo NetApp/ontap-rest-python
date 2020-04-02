@@ -1,6 +1,6 @@
 # ONTAP REST API Python Examples
 
-The repository folder **rest_api** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed using the requests library
+The repository folder **rest_api** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed using the requests library.
 
 ## How to Use
 
