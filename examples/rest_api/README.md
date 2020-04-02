@@ -12,3 +12,8 @@ The repository folder **rest_api** contains samples scripts you can use to direc
 python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
 -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
 ```
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
