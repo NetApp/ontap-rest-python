@@ -4,7 +4,7 @@ NetApp® ONTAP® version 9.6 and later includes support for an expansive RESTful
 
 This repository contains sample scripts illustrating how to use the ONTAP REST API. You can access the API through the Python client library, which is preferable in most situations. If needed, you can also connect directly to the API using the native capabilities provided with Python.
 
-## Directly accessing the ONTAP REST API
+## How to Use
 
 The repository folder **rest_api** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed using the requests library. You must run each of the scripts with the appropriate parameters.
 
