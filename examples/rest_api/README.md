@@ -13,7 +13,7 @@ python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR
 -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
 ```
 | Script                               | Purpose       | Syntax  |
-| ------------------------------------ |:-------------:| -----:|
+| :----------------------------------: |:-------------:| -----:|
 | cifs_setup_restapi_api.py            | right-aligned | $1600 |
 | create_clone.py                      | centered      |   $12 |
 | create_snapshot.py                   | are neat      |    $1 |
