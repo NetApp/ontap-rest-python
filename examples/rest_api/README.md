@@ -12,8 +12,22 @@ The repository folder **rest_api** contains samples scripts you can use to direc
 python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
 -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
 ```
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| Script                               | Purpose       | Syntax  |
+| ------------------------------------ |:-------------:| -----:|
+| cifs_setup_restapi_api.py            | right-aligned | $1600 |
+| create_clone.py                      | centered      |   $12 |
+| create_snapshot.py                   | are neat      |    $1 |
+| create_svm_volume.py                 | are neat      |    $1 |
+| create_volume.py                     | are neat      |    $1 |
+| iscsi_setup_restapi_api.py           | are neat      |    $1 |
+| list_aggregates.py                   | are neat      |    $1 |
+| list_clones.py                       | are neat      |    $1 |
+| list_snapshots.py                    | are neat      |    $1 |
+| list_volumes.py                      | are neat      |    $1 |
+| list_vserver.py                      | are neat      |    $1 |
+| nfs_setup_restapi_api.py             | are neat      |    $1 |
+| qtree_operations_restapi_api.py      | are neat      |    $1 |
+| snapmirror_operations_restapi_api.py | are neat      |    $1 |
+| snapshot_operations_restapi_api.py   | are neat      |    $1 |
+| svm_operations_restapi_api.py        | are neat      |    $1 |
+| volume_operations_restapi_api.py     | are neat      |    $1 |
