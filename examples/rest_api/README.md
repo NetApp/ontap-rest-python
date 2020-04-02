@@ -6,7 +6,7 @@ This repository contains sample scripts illustrating how to use the ONTAP REST A
 
 ## Directly accessing the ONTAP REST API
 
-The repository folder **rest_api** contains samples scripts you can use to directly access the ONTAP REST API using the requests library. You must run each of the scripts with the appropriate parameters.
+The repository folder **rest_api** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed using the requests library. You must run each of the scripts with the appropriate parameters.
 
 | Script                               | Purpose       | Syntax  |
 |:------------------------------------:|:-------------:|:-----:|
