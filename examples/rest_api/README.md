@@ -22,6 +22,6 @@ To make use of these scripts you must run each of the scripts with the appropria
 | nfs_setup_restapi_api.py             | Script demonstrates NFS setup.      |     python3 nfs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
 | qtree_operations_restapi_api.py      | Script demonstrates Qtree Operations.      |    python3 qtree_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
 | snapmirror_operations_restapi_api.py | Script demonstrates SnapMirror Operations.       |     python3 snapmirror_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| snapshot_operations_restapi_api.py   | Script demonstrates Snapshot Operations.     | python3 svm_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS]    |
+| snapshot_operations_restapi_api.py   | Script demonstrates Snapshot Operations.     | python3 snapshot_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS]    |
 | svm_operations_restapi_api.py        | Script demonstrates SVM Operations.      |   python3 svm_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
 | volume_operations_restapi_api.py     | Script demonstrates Volume Operations.      |    python3 volume_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
