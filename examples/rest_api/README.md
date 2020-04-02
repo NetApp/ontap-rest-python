@@ -14,11 +14,11 @@ To make use of these scripts you must run each of the scripts with the appropria
 | create_svm_volume.py      |  Script demonstrates SVM, Volume and associated Export Policy creation.      |  python3   create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -sz VOLUME_SIZE -a AGGR_NAME -er EXPORT_POLICY_RULE -en EXPORT_POLICY_NAME [-u API_USER] [-p API_PASS] |
 | create_volume.py                     | Script to create Volume     |   python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS] |
 | iscsi_setup_restapi_api.py           | Script demonsrates ISCSI setup.      |    python3 iscsi_setup__restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| list_aggregates.py                   | Script to list all the aggregates in a cluster.      |   list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_aggregates.py                   | Script to list all the aggregates in a cluster.      |   python3 list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
 | list_clones.py                       | Script to list all clone volumes in a cluster.       |     python3 list_clones.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
 | list_snapshots.py                    | Script to list all the snapshots.      |     python3 list_snapshots.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
-| list_volumes.py                      | Script to list volumes.     |   list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER] [-p API_PASS] |
-| list_vserver.py                      | Script to list SVMs using ONTAP REST API.      |    list_vserver.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_volumes.py                      | Script to list volumes.     |   python3 list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER] [-p API_PASS] |
+| list_vserver.py                      | Script to list SVMs using ONTAP REST API.      |    python3 list_vserver.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
 | nfs_setup_restapi_api.py             | Script demonsrates NFS setup.      |     python3 nfs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
 | qtree_operations_restapi_api.py      | Script demonsrates Qtree Operations.      |    python3 qtree_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
 | snapmirror_operations_restapi_api.py | Script demonsrates SnapMirror Operations.       |     python3 snapmirror_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
