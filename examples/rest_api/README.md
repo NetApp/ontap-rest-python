@@ -19,16 +19,16 @@ python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR
 | create_snapshot.py                   | Script to create snapshot using ONTAP REST API.      |    python3 create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
 | create_svm_volume.py                 | Script to create SVM, Volume and associated Export Policy using ONTAP REST API      |    create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -sz VOLUME_SIZE -a AGGR_NAME -er EXPORT_POLICY_RULE -en EXPORT_POLICY_NAME
  [-u API_USER] [-p API_PASS] |
-| create_volume.py                     | are neat      |    $1 |
-| iscsi_setup_restapi_api.py           | are neat      |    $1 |
-| list_aggregates.py                   | are neat      |    $1 |
-| list_clones.py                       | are neat      |    $1 |
-| list_snapshots.py                    | are neat      |    $1 |
-| list_volumes.py                      | are neat      |    $1 |
-| list_vserver.py                      | are neat      |    $1 |
-| nfs_setup_restapi_api.py             | are neat      |    $1 |
-| qtree_operations_restapi_api.py      | are neat      |    $1 |
-| snapmirror_operations_restapi_api.py | are neat      |    $1 |
-| snapshot_operations_restapi_api.py   | are neat      |    $1 |
-| svm_operations_restapi_api.py        | are neat      |    $1 |
-| volume_operations_restapi_api.py     | are neat      |    $1 |
+| create_volume.py                     | Script to create Volume using ONTAP REST API.      |   python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME -sz VOLUME_SIZE [-u API_USER] [-p API_PASS] |
+| iscsi_setup_restapi_api.py           | THE FOLLOWING SCRIPT SHOWS ISCSI SETUP USING REST API.      |    python3 iscsi_setup__restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_aggregates.py                   | Script to list all the aggregates in a cluster using ONTAP REST API.      |   list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_clones.py                       | Script to list all clone volumes in a cluster using ONTAP REST API.      |     python3 list_clones.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| list_snapshots.py                    | Script to list all the snapshots in a cluster using ONTAP REST API.      |     python3 list_snapshots.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
+| list_volumes.py                      | Script to list volumes using ONTAP REST API.      |   list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER] [-p API_PASS] |
+| list_vserver.py                      | Script to list SVMs using ONTAP REST API.      |    list_vserver.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| nfs_setup_restapi_api.py             | THE FOLLOWING SCRIPT SHOWS NFS SETUP OPERATIONS USING REST API.      |     python3 nfs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
+| qtree_operations_restapi_api.py      | THE FOLLOWING SCRIPT SHOWS QTREE OPERATIONS USING REST API.      |    python3 qtree_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| snapmirror_operations_restapi_api.py | THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATIONS USING REST API.      |     python3 snapmirror_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| snapshot_operations_restapi_api.py   | THE FOLLOWING SCRIPT SHOWS SNAPSHOT OPERATIONS USING REST API     | python3 svm_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS]    |
+| svm_operations_restapi_api.py        | THE FOLLOWING SCRIPT SHOWS SVM OPERATIONS USING REST API      |   python3 svm_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
+| volume_operations_restapi_api.py     | THE FOLLOWING SCRIPT SHOWS VOLUME OPERATIONS USING REST API      |    python3 volume_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
