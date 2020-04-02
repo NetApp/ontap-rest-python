@@ -14,7 +14,7 @@ python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR
 ```
 | Script                               | Purpose       | Syntax  |
 | :----------------------------------: |:-------------:| -----:|
-| cifs_setup_restapi_api.py            | right-aligned | $1600 |
+| cifs_setup_restapi_api.py            | THE FOLLOWING SCRIPT SHOWS CIFS SETUP OPERATIONS USING REST API. | python3 cifs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER]  [-p API_PASS] |
 | create_clone.py                      | centered      |   $12 |
 | create_snapshot.py                   | are neat      |    $1 |
 | create_svm_volume.py                 | are neat      |    $1 |
