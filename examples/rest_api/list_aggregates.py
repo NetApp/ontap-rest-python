@@ -22,55 +22,51 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 import base64
-import requests
-import time
-from subprocess import call
-import texttable as tt
 import argparse
-from getpass import getpass
 import logging
-
+from getpass import getpass
+import texttable as tt
+import requests
 requests.packages.urllib3.disable_warnings()
 
 
-def get_aggr(cluster,base64string,headers):
+def get_aggr(cluster: str, headers_inc: str):
+    """Get  Aggregates"""
     url = "https://{}/api/storage/aggregates".format(cluster)
-    response = requests.get(url, headers=headers,verify=False)
+    response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
 
-
-def disp_aggr(cluster,base64string,headers):
+def disp_aggr(cluster: str, headers_inc: str):
     ctr = 0
-    tmp = dict(get_aggr(cluster,base64string,headers))
+    tmp = dict(get_aggr(cluster, headers_inc))
     aggr = tmp['records']
-    #print aggr
     tab = tt.Texttable()
     header = ['Aggregate name']
     tab.header(header)
     tab.set_cols_align(['c'])
     for i in aggr:
         ctr = ctr + 1
-        ag = i['name']
-	#si = i['size_avail']
-        #si = si/1024/1024/1024
-        row = [ag]
+        aggre = i['name']
+        row = [aggre]
         tab.add_row(row)
         tab.set_cols_align(['c'])
-    print ("Number of Aggregates for the NetApp cluster:{}".format(ctr))
-    s = tab.draw()
-    print (s)
+    print("Number of Aggregates for the NetApp cluster:{}".format(ctr))
+    setdisplay = tab.draw()
+    print(setdisplay)
 
-	
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-    description="This script will list aggregates.",
-    )
+        description="This script will list aggregates.")
     parser.add_argument(
         "-c", "--cluster", required=True, help="API server IP:port details"
     )
-    parser.add_argument("-u", "--api_user", default="admin", help="API Username")
+    parser.add_argument(
+        "-u",
+        "--api_user",
+        default="admin",
+        help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
     parsed_args = parser.parse_args()
 
@@ -86,16 +82,15 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
-    args = parse_args()
-    base64string = base64.encodestring(('%s:%s' %(args.api_user,args.api_pass)).encode()).decode().replace('\n', '')
-	
+    ARGS = parse_args()
+    base64string = base64.encodestring(
+        ('%s:%s' %
+         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
+
     headers = {
-    'authorization': "Basic %s" % base64string,
-    'content-type': "application/json",
-    'accept': "application/json"
+        'authorization': "Basic %s" % base64string,
+        'content-type': "application/json",
+        'accept': "application/json"
     }
-	
-    disp_aggr(args.cluster,base64string,headers)
-    
 
-
+    disp_aggr(ARGS.cluster, headers)

@@ -24,52 +24,53 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 import base64
 import argparse
-import requests
-import time
-from subprocess import call
-import texttable as tt
-import argparse
 from getpass import getpass
 import logging
+import texttable as tt
+import requests
 requests.packages.urllib3.disable_warnings()
 
-def get_volumes(cluster,svm_name,base64string,headers):
-    
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(cluster,svm_name)
-    response = requests.get(url, headers=headers,verify=False)
+def get_volumes(cluster: str, svm_name: str, headers_inc: str):
+    """Get Volumes"""
+    url = "https://{}/api/storage/volumes/?svm.name={}".format(
+        cluster, svm_name)
+    response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
 
-def disp_vol(cluster,svm_name,base64string,headers):
+def disp_vol(cluster: str, svm_name: str, headers_inc: str):
+    """Display Volumes"""
     ctr = 0
-    tmp = dict(get_volumes(cluster,svm_name,base64string,headers))
+    tmp = dict(get_volumes(cluster, svm_name, headers_inc))
     vols = tmp['records']
     tab = tt.Texttable()
     header = ['Volume name']
     tab.header(header)
     tab.set_cols_align(['c'])
     for volumelist in vols:
-            ctr = ctr + 1
-            vol = volumelist['name']
-            row = [vol]
-            tab.add_row(row)
-            tab.set_cols_align(['c'])
-    print ("Number of Volumes for this Storage Tenant:{}")
-    s = tab.draw()
-    print (s)
+        ctr = ctr + 1
+        vol = volumelist['name']
+        row = [vol]
+        tab.add_row(row)
+        tab.set_cols_align(['c'])
+    print("Number of Volumes for this Storage Tenant:{}")
+    setdisplay = tab.draw()
+    print(setdisplay)
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
 
     parser = argparse.ArgumentParser(
-        description="This script will list volumes in a SVM",
-    )
+        description="This script will list volumes in a SVM")
     parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
-    )
+        "-c", "--cluster", required=True, help="API server IP:port details")
     parser.add_argument(
         "-vs", "--svm_name", required=True, help="SVM Name"
     )
-    parser.add_argument("-u", "--api_user", default="admin", help="API Username")
+    parser.add_argument(
+        "-u",
+        "--api_user",
+        default="admin",
+        help="API Username")
     parser.add_argument("-p", "--api_pass", help="API Password")
     parsed_args = parser.parse_args()
 
@@ -85,13 +86,15 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
-    args = parse_args()
-    base64string = base64.encodestring(('%s:%s' %(args.api_user,args.api_pass)).encode()).decode().replace('\n', '')
-	
+    ARGS = parse_args()
+    base64string = base64.encodestring(
+        ('%s:%s' %
+         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
+
     headers = {
-    'authorization': "Basic %s" % base64string,
-    'content-type': "application/json",
-    'accept': "application/json"
+        'authorization': "Basic %s" % base64string,
+        'content-type': "application/json",
+        'accept': "application/json"
     }
-	
-    disp_vol(args.cluster,args.svm_name,base64string,headers) 
+
+    disp_vol(ARGS.cluster, ARGS.svm_name, headers)
