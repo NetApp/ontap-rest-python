@@ -13,21 +13,21 @@ Before running the example scripts , make sure the following packages are instal
 
 To make use of these scripts you must run each of the scripts with the appropriate parameters.Please refer the table for more information:-
 
-| Script                               | Purpose       | Syntax  |
-|:------------------------------------:|:-------------:|:-----:|
-| cifs_setup_restapi_pcl.py  | Script demonstrates CIFS Setups. | python3 cifs_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| create_snap_pcl.py  | Script demonstrates Volume Snapshot creation. | python3 create_snap_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
-| create_volume_pcl.py  | Script to create Volume. | python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs VSERVER_NAME -a AGGR NAME -sz VOLUME_SIZE(MBs) [-u API_USER][-p API_PASS] |
-| iscsi_setup_restapi_pcl.py  | Script demonstrates ISCSI setup. | python3 iscsi_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| list_aggregates_pcl.py  | Script to list all the aggregates in a cluster. | python3 list_aggregates_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| list_volume_pcl.py   | Script to list volumes. |  python3 list_volume_pcl.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]                        [-p API_PASS] |
-| nfs_setup_restapi_pcl.py   | Script demonstrates NFS Setups. | python3 nfs_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
-| qtree_operations_restapi_pcl.py   | Script demonstrates Qtree operations. | python3 qtree_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| snapmirror_operations_restapi_pcl.py   | Script demonstrates SnapMirror operations. | python3 snapmirror_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| snapshot_operations_restapi_pcl.py    | Script demonstrates Snapshot operations. | python3 snapshot_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
-| svm_operations_restapi_pcl.py    | Script demonstrates SVM operations. | python3 svm_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER][-p API_PASS] |
-| snapshot_operations_restapi_pcl.py    | Script demonstrates Volume operations. | python3 volume_operations_restapi_api.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| volume_batch_delete_restapi_pcl.py    | Script demonstrates batch delete operations. | python3 volume_batch_delete_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
-| volume_batch_patch_restapi_pcl.py    | Script demonstrates batch update operations. | python3 volume_batch_patch_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]  |
-| volume_operations_restapi_pcl.py    | Script demonsrates volume operations. | python3 volume_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS] |
+| Script                               | Purpose       | 
+|:------------------------------------:|:-------------:|
+| cifs_setup.py  | Script demonstrates CIFS Setups. | 
+| create_snap.py  | Script demonstrates Volume Snapshot creation. | 
+| create_volume.py  | Script to create Volume. | 
+| iscsi_setup_restapi.py  | Script demonstrates ISCSI setup. | 
+| list_aggregates.py  | Script to list all the aggregates in a cluster. | 
+| list_volume.py   | Script to list volumes. |  
+| nfs_setup_restapi.py   | Script demonstrates NFS Setups. | 
+| qtree_operations.py   | Script demonstrates Qtree operations. | 
+| snapmirror_operations.py   | Script demonstrates SnapMirror operations. | 
+| snapshot_operations.py    | Script demonstrates Snapshot operations. | 
+| svm_operations.py    | Script demonstrates SVM operations. | 
+| snapshot_operations.py    | Script demonstrates Volume operations. | 
+| volume_batch_delete.py    | Script demonstrates batch delete operations. | 
+| volume_batch_patch.py    | Script demonstrates batch update operations. | 
+| volume_operations.py    | Script demonsrates volume operations. | 
   
