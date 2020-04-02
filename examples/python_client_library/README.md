@@ -2,6 +2,12 @@
 
 The repository folder **python_client_library** contains samples scripts you can refer to understand how the ONTAP REST API can be accessed through the Python client library.
 
+Before running the example scripts , make sure the following packages are installed.
+
+* python 3.5 or later
+* requests 2.21.0 or later
+* marshmallow 3.2.1 or later
+
 
 ## Using the Python client library
 
