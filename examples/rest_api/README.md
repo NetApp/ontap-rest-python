@@ -13,11 +13,12 @@ python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR
 -sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
 ```
 | Script                               | Purpose       | Syntax  |
-| :----------------------------------: |:-------------:| -----:|
+|:------------------------------------:|:-------------:|:-----:|
 | cifs_setup_restapi_api.py            | THE FOLLOWING SCRIPT SHOWS CIFS SETUP OPERATIONS USING REST API. | python3 cifs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER]  [-p API_PASS] |
-| create_clone.py                      | centered      |   $12 |
-| create_snapshot.py                   | are neat      |    $1 |
-| create_svm_volume.py                 | are neat      |    $1 |
+| create_clone.py                      | Script to create a clone using ONTAP REST API.      |  python3 create_clone.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -s SNAPSHOT_NAME -cn CLONE_NAME  [-u API_USER]  [-p API_PASS] |
+| create_snapshot.py                   | Script to create snapshot using ONTAP REST API.      |    python3 create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME [-u API_USER] [-p API_PASS] |
+| create_svm_volume.py                 | Script to create SVM, Volume and associated Export Policy using ONTAP REST API      |    create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -sz VOLUME_SIZE -a AGGR_NAME -er EXPORT_POLICY_RULE -en EXPORT_POLICY_NAME
+ [-u API_USER] [-p API_PASS] |
 | create_volume.py                     | are neat      |    $1 |
 | iscsi_setup_restapi_api.py           | are neat      |    $1 |
 | list_aggregates.py                   | are neat      |    $1 |
