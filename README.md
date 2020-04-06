@@ -14,24 +14,22 @@ Before beginning, you need to install the package containing the library. For ex
 pip install netapp-ontap
 ```
 
-You should review the following web site for detailed system requirements and further instructions, as well as reference documentation for the library: [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/)
+You should review the package web site for detailed system requirements and further instructions, as well as reference documentation for the library: [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/)
 
-The repository folder **examples/python_client_library** contains samples scripts you can use to access the ONTAP REST API through the Python client library. You must run each of the scripts with the appropriate parameters. For example:
+The repository folder **examples/python_client_library** contains samples scripts you can use to access the ONTAP REST API through the Python client library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
 
 ```
-python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
--sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+python3 list_volume.py -h
 ```
 
 ## Directly accessing the ONTAP REST API
 
-The repository folder **examples/rest_api** contains samples scripts you can use to directly access the ONTAP REST API using the requests library. You must run each of the scripts with the appropriate parameters. For example:
+The repository folder **examples/rest_api** contains samples scripts you can use to directly access the ONTAP REST API using the requests library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
 
 ```
-python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -a AGGR_NAME
--sz VOLUME_SIZE [-u API_USER] [-p API_PASS]
+python3 create_volume.py -h
 ```
 
 ## Support
 
-Report any issues to: https://github.com/NetApp/ontap-rest-api/issues . For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
+Report any issues to: https://github.com/NetApp/ontap-rest-api/issues. For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
