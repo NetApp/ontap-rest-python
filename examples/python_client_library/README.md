@@ -25,8 +25,8 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 | nfs_setup_restapi.py   | Demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount. |
 | qtree_operations.py   | Demonstrates Qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library. |
 | snapmirror_operations.py   | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API Python Client Library.. |
-| snapshot_operations.py    | Script demonstrates Snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API Python Client Library.. |
-| svm_operations.py    | Script demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
-| volume_batch_delete.py    | Script demonstrates volume batch delete operations using ONTAP REST API Python Client Library. |
-| volume_batch_patch.py    | Script demonstrates volume batch update operations using ONTAP REST API Python Client Library. |
-| volume_operations.py    | Script demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API Python Client Library. |
+| snapshot_operations.py    | Demonstrates Snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
+| svm_operations.py    | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
+| volume_batch_delete.py    | Demonstrates volume batch delete operations using ONTAP REST API Python Client Library. |
+| volume_batch_patch.py    | Demonstrates volume batch update operations using ONTAP REST API Python Client Library. |
+| volume_operations.py    | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API Python Client Library. |
