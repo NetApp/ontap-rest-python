@@ -12,21 +12,21 @@ Before running the example scripts , make sure the following packages are instal
 
 ## Summary of the Python client library scripts
 
-The following table summaries the scripts used to access the ONTAP REST API using the Python client library. Make sure to run each of the scripts with the appropriate parameters.
+The following table lists the description of each scripts which accesses the ONTAP REST API using the Python client library. Make sure to run each of the scripts with the appropriate parameters.
 
 | Script                               | Description       |
 |:------------------------------------|:-------------|
-| cifs_setup.py  | Demonstrates how CIFS shares can be setup using ONTAP REST API Python Client Library. It creates a volume and then creates a share on the volume.   |
-| create_snap.py  | Creates a snapshot using ONTAP REST API Python Client Library on the specified volume.  |
-| create_volume.py  | creates a volume using ONTAP REST API Python Client Library on the specified SVM . |
-| iscsi_setup_restapi.py  | Demonstrates how ISCSI Luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group. |
-| list_aggregates.py  | Lists all the aggregates using ONTAP REST API Python Client Library in a cluster. |
-| list_volume.py   | Lists all the volumes using ONTAP REST API Python Client Library in the specified SVM. |  
-| nfs_setup_restapi.py   | Demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount. |
-| qtree_operations.py   | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library. |
-| snapmirror_operations.py   | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
-| snapshot_operations.py    | Demonstrates snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
-| svm_operations.py    | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
-| volume_batch_delete.py    | Demonstrates volume batch delete operations using ONTAP REST API Python Client Library. |
-| volume_batch_patch.py    | Demonstrates volume batch update operations using ONTAP REST API Python Client Library. |
-| volume_operations.py    | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API Python Client Library. |
+| cifs_setup.py  | The script demonstrates how CIFS shares can be setup using ONTAP REST API Python Client Library. It creates a volume and then creates a share on the volume.   |
+| create_snap.py  | The script creates a snapshot using ONTAP REST API Python Client Library on the specified volume.  |
+| create_volume.py  | The script creates a volume using ONTAP REST API Python Client Library on the specified SVM . |
+| iscsi_setup_restapi.py  | The script demonstrates how ISCSI Luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group. |
+| list_aggregates.py  | The script lists all the aggregates using ONTAP REST API Python Client Library in a cluster. |
+| list_volume.py   | The script lists all the volumes using ONTAP REST API Python Client Library in the specified SVM. |  
+| nfs_setup_restapi.py   | The script demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount. |
+| qtree_operations.py   | The script demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library. |
+| snapmirror_operations.py   | The script demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
+| snapshot_operations.py    | The script demonstrates snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
+| svm_operations.py    | The script demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
+| volume_batch_delete.py    | The script demonstrates volume batch delete operations using ONTAP REST API Python Client Library. |
+| volume_batch_patch.py    | The script demonstrates volume batch update operations using ONTAP REST API Python Client Library. |
+| volume_operations.py    | The script demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API Python Client Library. |
