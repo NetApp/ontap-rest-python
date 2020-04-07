@@ -7,7 +7,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: Script to create snapshot using the REST API PYTHON CLIENT LIBRARY.
 
-usage: python3 create_snap_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
+usage: python3 create_snap.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
                           [-u API_USER] [-p API_PASS]
 create_snap_pcl.py: the following arguments are required: -c/--cluster, -v/--volume_name,
                                                           -s/--snapshot_name, -vs/--svm_name
