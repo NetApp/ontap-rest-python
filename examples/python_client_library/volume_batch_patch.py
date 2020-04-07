@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS VOLUME BATCH PATCHING OPERATIONS USING REST API PYTHON CLIENT LIBRARY
 
-usage: python3 volume_batch_patch_restapi_pcl.py [-h] -c CLUSTER [-u API_USER]
+usage: python3 volume_batch_patch.py [-h] -c CLUSTER [-u API_USER]
                                          [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
