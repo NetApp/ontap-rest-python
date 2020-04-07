@@ -8,9 +8,9 @@ standard NetApp product.
 
 Purpose: Script to list aggregates using ONTAP REST API Python Client Library.
 
-usage: python3 list_volume_pcl.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
+usage: python3 list_volume.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                           [-p API_PASS]
-list_volume_pcl.py:  the following arguments are required: -c/--cluster, -vn/--vserver_name
+list_volume.py:  the following arguments are required: -c/--cluster, -vn/--vserver_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 

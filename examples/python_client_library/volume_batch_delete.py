@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS VOLUME BATCH DELETE USING REST API PCL
 
-usage: python3 volume_batch_delete_restapi_pcl.py [-h] -c CLUSTER [-u API_USER]
+usage: python3 volume_batch_delete.py [-h] -c CLUSTER [-u API_USER]
                                           [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.

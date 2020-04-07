@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS NFS SETUP USING REST API PCL
 
-usage: nfs_setup_restapi_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+usage: nfs_setup.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");

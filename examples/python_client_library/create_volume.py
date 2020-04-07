@@ -8,10 +8,10 @@ standard NetApp product.
 
 Purpose: Script to create volume using ONTAP REST API Python Client Library.
 
-usage: python3 create_volume_pcl.py [-h] -c CLUSTER -v VOLUME_NAME -vs VSERVER_NAME -a
+usage: python3 create_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs VSERVER_NAME -a
                             AGGR_NAME -sz VOLUME_SIZE(MBs) [-u API_USER]
                             [-p API_PASS]
-create_volume_pcl.py:  the following arguments are required: -c/--cluster, -v/--volume_name,
+create_volume.py:  the following arguments are required: -c/--cluster, -v/--volume_name,
                                                              -vs/--vserver_name, -a/--aggr_name,
                                                              -sz/--volume_size
 

@@ -8,8 +8,8 @@ standard NetApp product.
 
 Purpose: Script to list aggregates using Python Client Library.
 
-usage: python3 list_aggregates_pcl.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-list_aggregates_pcl.py:  the following arguments are required: -c/--cluster
+usage: python3 list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+list_aggregates.py:  the following arguments are required: -c/--cluster
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 

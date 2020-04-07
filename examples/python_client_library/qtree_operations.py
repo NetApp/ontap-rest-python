@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS QTREE OPERATIONS USING REST API PCL
 
-usage: python3 qtree_operations_restapi_pcl.py [-h] -c CLUSTER [-u API_USER]
+usage: python3 qtree_operations.py [-h] -c CLUSTER [-u API_USER]
                                        [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.

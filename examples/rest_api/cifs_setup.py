@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS CIFS SETUP OPERATIONS USING REST API.
 
-usage: python3 cifs_setup_restapi_api.py [-h] -c CLUSTER [-u API_USER]
+usage: python3 cifs_setup.py [-h] -c CLUSTER [-u API_USER]
                                      [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
