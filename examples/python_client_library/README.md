@@ -16,7 +16,7 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 
 | Script                               | Description       |
 |:------------------------------------|:-------------|
-| cifs_setup.py  | Script demonstrates CIFS Setups. |
+| cifs_setup.py  | Script demonstrates how CIFS Shares should be setup using ONTAP REST API Python Client Library. It creates a volume and creates a Share on the volume.   |
 | create_snap.py  | Script demonstrates Volume Snapshot creation. |
 | create_volume.py  | Script to create Volume. |
 | iscsi_setup_restapi.py  | Script demonstrates ISCSI setup. |
