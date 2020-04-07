@@ -7,7 +7,7 @@ This script was developed by NetApp to help demonstrate NetApp technologies. Thi
 script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS ISCSI SETUP USING REST API.
-usage: python3 iscsi_setup__restapi_api.py [-h] -c CLUSTER [-u API_USER]
+usage: python3 iscsi_setup.py [-h] -c CLUSTER [-u API_USER]
                                      [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
