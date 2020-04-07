@@ -9,7 +9,7 @@ Purpose: Script to create snapshot using the REST API PYTHON CLIENT LIBRARY.
 
 usage: python3 create_snap.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
                           [-u API_USER] [-p API_PASS]
-create_snap_pcl.py: the following arguments are required: -c/--cluster, -v/--volume_name,
+create_snap.py: the following arguments are required: -c/--cluster, -v/--volume_name,
                                                           -s/--snapshot_name, -vs/--svm_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
