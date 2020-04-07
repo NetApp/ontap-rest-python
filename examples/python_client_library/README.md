@@ -19,7 +19,7 @@ The following table lists the description of each scripts which accesses the ONT
 | cifs_setup.py  | The script demonstrates how CIFS shares can be setup using ONTAP REST API Python Client Library. It creates a volume and then creates a share on the volume.   |
 | create_snap.py  | The script creates a snapshot using ONTAP REST API Python Client Library on the specified volume.  |
 | create_volume.py  | The script creates a volume using ONTAP REST API Python Client Library on the specified SVM . |
-| iscsi_setup_restapi.py  | The script demonstrates how ISCSI Luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group. |
+| iscsi_setup_restapi.py  | The script demonstrates how ISCSI luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group. |
 | list_aggregates.py  | The script lists all the aggregates using ONTAP REST API Python Client Library in a cluster. |
 | list_volume.py   | The script lists all the volumes using ONTAP REST API Python Client Library in the specified SVM. |  
 | nfs_setup_restapi.py   | The script demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount. |
