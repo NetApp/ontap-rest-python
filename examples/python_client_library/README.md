@@ -21,10 +21,10 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 | create_volume.py  | creates a volume using ONTAP REST API Python Client Library on the specified SVM . |
 | iscsi_setup_restapi.py  | Demonstrates how ISCSI Luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group. |
 | list_aggregates.py  | Lists all the aggregates using ONTAP REST API Python Client Library in a cluster. |
-| list_volume.py   | Script to list volumes. |  
-| nfs_setup_restapi.py   | Script demonstrates NFS Setups. |
-| qtree_operations.py   | Script demonstrates Qtree operations. |
-| snapmirror_operations.py   | Script demonstrates SnapMirror operations. |
+| list_volume.py   | Lists all the volumes using ONTAP REST API Python Client Library in the specified SVM. |  
+| nfs_setup_restapi.py   | Demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount. |
+| qtree_operations.py   | Demonstrates Qtree operations like qtree creation, updation, deletion and listing |
+| snapmirror_operations.py   | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing. |
 | snapshot_operations.py    | Script demonstrates Snapshot operations. |
 | svm_operations.py    | Script demonstrates SVM operations. |
 | snapshot_operations.py    | Script demonstrates Volume operations. |
