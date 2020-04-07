@@ -8,7 +8,7 @@ script is not officially supported as a standard NetApp product.
 
 Purpose: THE FOLLOWING SCRIPT SHOWS SNAPMIRROR OPERATIONS USING REST API PCL
 
-Usage: snapmirror_operations_restapi_pcl.py -a <Cluster Address> -u <User Name> -p <Password Name>
+Usage: snapmirror_operations.py -a <Cluster Address> -u <User Name> -p <Password Name>
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
