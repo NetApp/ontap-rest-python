@@ -11,7 +11,7 @@ Before running the example scripts , make sure the following packages are instal
 
 ## Summary of the REST API scripts
 
-The following table summaries the scripts used to access the ONTAP REST API using the Python client library. Make sure to run each of the scripts with the appropriate parameters.
+The following table summaries the scripts used to access the ONTAP REST API . Make sure to run each of the scripts with the appropriate parameters.
 
 | Script                               | Description       |
 |:------------------------------------|:-------------|
