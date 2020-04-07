@@ -15,20 +15,19 @@ The following table summaries the scripts used to directly access the ONTAP REST
 
 | Script                               | Description       |
 |:------------------------------------|:-------------|
-| cifs_setup.py            | Script demonstrates CIFS Setups. |
-| create_clone.py                      | Script demonstrates Volume Clone creation.      |  
-| create_snapshot.py                   | Script demonstrates Volume Snapshot creation.      |    
-| create_svm_volume.py      |  Script demonstrates SVM, Volume and associated Export Policy creation.      |
-| create_volume.py                     | Script to create Volume     |  
-| iscsi_setup.py           | Script demonsrates ISCSI setup.      |    
-| list_aggregates.py                   | Script to list all the aggregates in a cluster.      |   
-| list_clones.py                       | Script to list all clone volumes in a cluster.       |     
-| list_snapshots.py                    | Script to list all the snapshots.      |     
-| list_volumes.py                      | Script to list volumes.     |   
-| list_vserver.py                      | Script to list SVMs using ONTAP REST API.      |    
-| nfs_setup.py             | Script demonstrates NFS setup.      |     
-| qtree_operations.py      | Script demonstrates Qtree Operations.      |    
-| snapmirror_operations.py | Script demonstrates SnapMirror Operations.       |     
-| snapshot_operations.py   | Script demonstrates Snapshot Operations.     |
-| svm_operations.py        | Script demonstrates SVM Operations.      |   
-| volume_operations.py     | Script demonstrates Volume Operations.      |    
+| cifs_setup.py            | Demonstrates how CIFS shares can be setup using ONTAP REST API. It creates a volume and then creates a share on the volume. |
+| create_clone.py                      | Demonstrates clone creation using ONTAP REST API on the specified volume.      |  
+| create_snapshot.py                   | Demonstrates snapshot creation using ONTAP REST API on the specified volume.      |    
+| create_svm_volume.py      |  Demonstrates SVM creation, volume creation and the associated Export Policy creation using ONTAP REST API.      |
+| create_volume.py                     | Demonstrates volume creation using ONTAP REST API on the specified SVM.     |  
+| iscsi_setup.py           | Demonstrates how ISCSI luns can be setup using ONTAP REST API. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group.      |    
+| list_aggregates.py                   | Lists all the aggregates in a cluster using ONTAP REST API.      |   
+| list_clones.py                       | Lists all the clones in a cluster using ONTAP REST API.       |     
+| list_snapshots.py                    | Lists all the snapshots in the specified volume using ONTAP REST API.      |     
+| list_volumes.py                      | Lists all the volumes in a SVM using ONTAP REST API.     |   
+| list_vserver.py                      | Lists all the SVMs in a cluster using ONTAP REST API.      |    
+| nfs_setup.py             | Demonstrates NFS Setup using ONTAP REST API. The script creates an export-policy and a volume and then, sets up a mount.      |     
+| qtree_operations.py      | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API.      |    
+| snapmirror_operations.py | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API.     |     
+| svm_operations.py        | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API.   |   
+| volume_operations.py     | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API.   |    
