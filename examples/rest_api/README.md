@@ -24,7 +24,7 @@ The following table lists the description of each scripts which directly accesse
 | list_aggregates.py                   | The script lists all the aggregates in a cluster using ONTAP REST API.      |   
 | list_clones.py                       | The script lists all the clones in a cluster using ONTAP REST API.       |     
 | list_snapshots.py                    | The script lists all the snapshots in the specified volume using ONTAP REST API.      |     
-| list_volumes.py                      | The script lists all the volumes in a cluster using ONTAP REST API.     |   
+| list_volumes.py                      | The script lists all the volumes in a SVM using ONTAP REST API.     |   
 | list_vserver.py                      | The script lists all the SVMs in a cluster using ONTAP REST API.      |    
 | nfs_setup.py             | The script demonstrates NFS Setup using ONTAP REST API. The script creates an export-policy and a volume and then, sets up a mount.      |     
 | qtree_operations.py      | The script demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API.      |    
