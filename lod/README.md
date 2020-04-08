@@ -12,10 +12,10 @@ Makes sure that you have the NetApp Support account to log in to the Lab On Dema
 
 2. Log into the "rhel1" machine in the provisioned lab and clone the following respository.
 
-`git clone https://github.com/NetApp/ontap-rest-python.git`
+   `git clone https://github.com/NetApp/ontap-rest-python.git`
 
 3. Initialize the environment by running the lab init script.
 
-`./lod/lod_init.py`
+   `./lod/lod_init.py`
 
 4. Execute scripts from examples/python-client-library and examples/rest-api subfolders.
