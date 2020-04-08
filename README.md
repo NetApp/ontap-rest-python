@@ -30,6 +30,10 @@ The repository folder **examples/rest_api** contains samples scripts you can use
 python3 create_volume.py -h
 ```
 
+## Running Sample Scripts on LOD
+
+The `lod` folder contains initilization script and instructions to start using the sample scripts on the Lab On Demand.
+
 ## Support
 
 Report any issues to: https://github.com/NetApp/ontap-rest-api/issues. For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
