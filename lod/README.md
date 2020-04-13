@@ -1,23 +1,29 @@
-# Using Sample Scripts on Lab On Demand
+# Using the Lab on Demand to run sample scripts
 
-This section will walk you through on how to use the sample scripts found in the example folder in the Lab On Demand Environment.
+The NetApp Lab on Demand (LOD) provides a convenient and secure environment for testing your sample Python scripts. Before running the scripts, you'll need to initialize the LOD environment.
 
-## Prerequiste
+## Before you begin
 
-Makes sure that you have the NetApp Support account to log in to the Lab On Demand. 
+You need a NetApp support account to sign in to the Lab on Demand.
 
-## Setup
+## Steps
 
-1. Log in to [Lab On Demand](https://labondemand.netapp.com/catalog) and from the *Full Library*, choose "Exploring the ONTAP REST API v1.2" Lab-On-Demand solution.
+1. Using a browser, access the [Lab On Demand](https://labondemand.netapp.com/) web site and sign in using your NetApp account.
 
-2. Log into the "rhel1" machine in the provisioned lab and clone the following respository.
+2. Click *Full Library* on the left and choose the "Exploring the ONTAP REST API v1.2" Lab-On-Demand solution.
+
+3. Sign in to the `rhel1` machine in the provisioned lab.
+
+4. Clone the `ontap-rest-python` repository using the following command at the CLI prompt:
 
    `git clone https://github.com/NetApp/ontap-rest-python.git`
 
-3. Initialize the environment by running the lab init script. If *permission denied* error is shown, give the lod_init.py script execute permission.  
+5. Initialize the lab environment by running the `lod_init.sh` initialization script provided in the **lod** folder of this repository.
 
-   `chmod 777 ./lod/lod_init.py`
+   `./lod/lod_init.sh`
 
-   `./lod/lod_init.py`
+6. If you encounter a *permission denied* error, modify the execute permission using the following command and then rerun the script.
 
-4. Execute the sample scripts from examples/python-client-library and examples/rest-api subfolders.
+   `chmod 777 ./lod/lod_init.sh`
+
+7. Run the sample scripts in the repository subfolders **examples/python_client_library** and **examples/rest-api**.
