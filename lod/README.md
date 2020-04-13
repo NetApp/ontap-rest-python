@@ -1,4 +1,4 @@
-# Using the Lab on Demand to run sample scripts
+# Preparing the Lab on Demand to run the sample scripts
 
 The NetApp Lab on Demand (LOD) provides a convenient and secure environment for testing your sample Python scripts. Before running the scripts, you'll need to initialize the LOD environment.
 
@@ -10,7 +10,7 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
 1. Using a browser, access the [Lab On Demand](https://labondemand.netapp.com/) web site and sign in using your NetApp account.
 
-2. Click *Full Library* on the left and choose the "Exploring the ONTAP REST API v1.2" Lab-On-Demand solution.
+2. Click *Full Library* on the left and choose the *Exploring the ONTAP REST API v1.2* Lab-On-Demand solution.
 
 3. Sign in to the `rhel1` machine in the provisioned lab.
 
@@ -22,8 +22,10 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
    `./lod/lod_init.sh`
 
-6. If you encounter a *permission denied* error, modify the execute permission using the following command and then rerun the script.
+6. If you encounter a *permission denied* error, modify the execute permission of the script using the following command and rerun the script.
 
    `chmod 777 ./lod/lod_init.sh`
 
-7. Run the sample scripts in the repository subfolders **examples/python_client_library** and **examples/rest-api**.
+## After you finish
+
+You can run the sample Python scripts in the repository subfolders **examples/python_client_library** and **examples/rest-api**.
