@@ -1,6 +1,6 @@
 # Preparing the Lab on Demand to run the sample scripts
 
-The NetApp Lab on Demand (LOD) provides a convenient and secure environment for testing your sample Python scripts. Before running the scripts, you'll need to initialize the LOD environment.
+The NetApp Lab on Demand (LOD) provides a convenient and secure environment for testing your sample Python scripts. Before running the scripts, you'll need to prepare the LOD environment.
 
 ## Before you begin
 
@@ -18,7 +18,7 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
    `git clone https://github.com/NetApp/ontap-rest-python.git`
 
-5. Initialize the lab environment by running the `lod_init.sh` initialization script provided in the **lod** folder of this repository.
+5. Initialize the lab environment by running the `lod_init.sh` script provided in the **lod** folder of this repository.
 
    `./lod/lod_init.sh`
 
@@ -28,4 +28,4 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
 ## After you finish
 
-You can run the sample Python scripts in the repository subfolders **examples/python_client_library** and **examples/rest-api**.
+You can run the sample Python scripts contained in the repository subfolders **examples/python_client_library** and **examples/rest-api**.
