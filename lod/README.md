@@ -8,7 +8,7 @@ Makes sure that you have the NetApp Support account to log in to the Lab On Dema
 
 ## Setup
 
-1. Log in to [Lab On Demand](https://labondemand.netapp.com/catalog) and from the Library, choose "Exploring the ONTAP REST API v1.2" Lab-On-Demand solution.
+1. Log in to [Lab On Demand](https://labondemand.netapp.com/catalog) and from the *Full Library*, choose "Exploring the ONTAP REST API v1.2" Lab-On-Demand solution.
 
 2. Log into the "rhel1" machine in the provisioned lab and clone the following respository.
 
