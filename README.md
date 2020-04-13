@@ -14,9 +14,9 @@ Before beginning, you need to install the package containing the library. For ex
 pip install netapp-ontap
 ```
 
-You should review the package web site for detailed system requirements and further instructions, as well as reference documentation for the library: [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/)
+You should also review the [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/) package web page for detailed system requirements and further instructions, as well as reference documentation for the library.
 
-The repository folder **examples/python_client_library** contains samples scripts to access the ONTAP REST API through the Python client library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
+The repository folder **examples/python_client_library** contains sample scripts to access the ONTAP REST API through the Python client library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
 
 ```
 python3 list_volume.py -h
@@ -24,7 +24,7 @@ python3 list_volume.py -h
 
 ## Directly accessing the ONTAP REST API
 
-The repository folder **examples/rest_api** contains samples scripts to directly access the ONTAP REST API using the requests library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
+The repository folder **examples/rest_api** contains sample scripts to directly access the ONTAP REST API using the `requests` library. You need to run each of the scripts with the appropriate parameters. Use the help provided with each script to get started. For example:
 
 ```
 python3 create_volume.py -h
@@ -32,7 +32,7 @@ python3 create_volume.py -h
 
 ## Running the sample scripts in the Lab on Demand
 
-You can run the sample scripts in the NetApp Lab on Demand (LOD). The repository folder **lod** contains instructions as well as the script needed to initialize the LOD environment and get started using the Python samples.
+You can run the sample scripts in the NetApp Lab on Demand (LOD). The repository folder **lod** contains instructions as well as the initialization script needed to configure the LOD environment.
 
 ## Support
 

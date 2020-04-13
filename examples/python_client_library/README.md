@@ -10,7 +10,9 @@ Before running the example scripts , make sure the following packages are instal
 * requests 2.21.0 or later
 * marshmallow 3.2.1 or later
 
-**Note:-**
+See the [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/) package web page for more information.
+
+**Note:**
 If you are using ONTAP 9.6 "netapp_ontap" Python client library module, make sure to replace `from netapp_ontap import NetAppRestError` header with `from netapp_ontap.error import NetAppRestError` header.
 
 
