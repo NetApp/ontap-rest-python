@@ -14,8 +14,10 @@ Makes sure that you have the NetApp Support account to log in to the Lab On Dema
 
    `git clone https://github.com/NetApp/ontap-rest-python.git`
 
-3. Initialize the environment by running the lab init script.
+3. Initialize the environment by running the lab init script. If *permission denied* error is shown, give the lod_init.py script execution permission.  
+
+   `chmod 777 ./lod/lod_init.py`
 
    `./lod/lod_init.py`
 
-4. Execute scripts from examples/python-client-library and examples/rest-api subfolders.
+4. Execute the sample scripts from examples/python-client-library and examples/rest-api subfolders.
