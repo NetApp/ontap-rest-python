@@ -28,8 +28,8 @@ pip install --upgrade pip
 pip3 install --upgrade pip
 
 echo "--> Installing ONTAP Python client libraries and dependencies"
-pip install requests marshmallow
+pip install requests marshmallow texttable
 pip install netapp-lib
-pip3 install requests marshmallow
+pip3 install requests marshmallow texttable
 pip3 install netapp-lib
 pip3 install netapp-ontap
