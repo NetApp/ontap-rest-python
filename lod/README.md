@@ -8,7 +8,7 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
 ## Steps
 
-1. Using a browser, access the [Lab on Demand](https://labondemand.netapp.com/) web site and sign in using your NetApp account.
+1. Using a browser, access the [Lab on Demand](https://handsonlabs.netapp.com/lab/ontapapi) web site and sign in using your NetApp account.
 
 2. Click *Full Library* on the left and choose the *Exploring the ONTAP REST API v1.2* Lab-On-Demand solution.
 
