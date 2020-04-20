@@ -22,12 +22,13 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 
 | Script                               | Description       |
 |:------------------------------------|:-------------|
+| cert_auth.py  | Creates or updates user account to enable certificate based authentication for that account  |
 | cifs_setup.py  | Demonstrates how CIFS shares can be setup using ONTAP REST API Python Client Library. It creates a volume and then creates a share on the volume.   |
 | create_snap.py  | Creates a snapshot using ONTAP REST API Python Client Library on the specified volume.   |
 | create_volume.py  | Creates a volume using ONTAP REST API Python Client Library on the specified SVM .  |
 | iscsi_setup_restapi.py  | Demonstrates how ISCSI luns can be setup using ONTAP REST API Python Client Library. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group.  |
 | list_aggregates.py  | Lists all the aggregates using ONTAP REST API Python Client Library in a cluster. |
-| list_volume.py   | Lists all the volumes using ONTAP REST API Python Client Library in the specified SVM.  |  
+| list_volume.py   | Lists all the volumes using ONTAP REST API Python Client Library in the specified SVM.  |
 | nfs_setup_restapi.py   | Demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount.  |
 | qtree_operations.py   | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library.  |
 | snapmirror_operations.py   | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API Python Client Library. |
