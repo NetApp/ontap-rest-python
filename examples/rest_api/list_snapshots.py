@@ -36,7 +36,7 @@ def list_snaps(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
     """ List Snaps """
     key = get_key(cluster, volume_name, svm_name, headers_inc)
     url4 = "https://{}/api/storage/volumes/{}/snapshots".format(cluster, key)
-    response = requests.get(url4, headers=headers, verify=False)
+    response = requests.get(url4, headers=headers_inc, verify=False)
     return response.json()
 
 def get_key(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
