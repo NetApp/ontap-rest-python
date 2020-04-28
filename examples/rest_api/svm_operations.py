@@ -19,6 +19,7 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 import sys
+import time
 import base64
 import argparse
 import logging
