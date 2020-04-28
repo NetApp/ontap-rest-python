@@ -151,7 +151,7 @@ def show_volume(cluster: str, headers_inc: str):
     url = "https://{}/api/storage/volumes/?svm.name={}".format(
         cluster, svm_name)
     try:
-        response = requests.get(url, headers=headers, verify=False)
+        response = requests.get(url, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -274,7 +274,7 @@ def create_snapshot(cluster: str, headers_inc: str):
     print()
     vol_name = input(
         "Enter the name of the Volume on which the snapshot needs to be created:- ")
-    vol_uuid = get_key_volumes(vol_name, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
     snapshot_name = input("Enter the name of the Snapshot to be created:- ")
     dataobj = {}
     dataobj['name'] = snapshot_name
@@ -359,7 +359,7 @@ def patch_snapshot(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers, verify=False)
+        job_response = requests.get(job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
