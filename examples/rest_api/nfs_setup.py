@@ -153,7 +153,6 @@ def nfs_setup(cluster: str, headers_inc: str):
     url_text = response.json()
     if 'error' in url_text:
         print(url_text)
-        sys.exit(1)
 
     print()
     print("Create the Export Policy:-")
