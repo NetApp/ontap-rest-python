@@ -54,7 +54,7 @@ def get_snapshots(cluster: str, headers_inc: str, vol_uuid: str):
 def get_key_snapshot(snapshot_name: str, vol_uuid: str, cluster: str, headers_inc: str):
     """ Get Snapshot Key"""
     print()
-    tmp = dict(get_snapshots(cluster, headers, vol_uuid))
+    tmp = dict(get_snapshots(cluster, headers_inc, vol_uuid))
     snap = tmp['records']
     print()
     print("The UUID of the Snapshot is ")
@@ -182,14 +182,14 @@ def show_snapshot(cluster: str, headers_inc: str):
     print()
     vol_name = input(
         "Enter the Volume from which the Snapshot need to be listed:-")
-    vol_uuid = get_key_volumes(vol_name, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
     print()
     print("Getting Snapshot Details")
     print("======================")
     snap_api_url = "https://{}/api/storage/volumes/{}/snapshots".format(
         cluster, vol_uuid)
     try:
-        response = requests.get(snap_api_url, headers=headers, verify=False)
+        response = requests.get(snap_api_url, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -589,7 +589,7 @@ def clone_volume(cluster: str, headers_inc: str):
     show_volume(cluster, headers_inc)
     print()
     vol_name = input("Enter the name of the volume that needs to be Cloned:- ")
-    vol_uuid = get_key_volumes(vol_name, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
     print()
     show_svm(cluster, headers_inc)
     print()
