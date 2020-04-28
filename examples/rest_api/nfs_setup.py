@@ -165,7 +165,7 @@ def nfs_setup(cluster: str, headers_inc: str):
     clients = input("Enter client details [0.0.0.0/0]:- ")
 
     url2 = "https://{}/api/protocols/nfs/export-policies".format(cluster)
-    svm_uuid = get_key_svms(cluster, base64string, headers, svm_name)
+    svm_uuid = get_key_svms(cluster, headers_inc, svm_name)
     payload2 = {
         "name": export_policy_name,
         "rules": [
