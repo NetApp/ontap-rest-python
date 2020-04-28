@@ -69,7 +69,7 @@ def make_volume(
     try:
         job_status = "https://{}/{}".format(cluster,
                                             url_text['job']['_links']['self']['href'])
-        job_response = requests.get(job_status, headers=headers, verify=False)
+        job_response = requests.get(job_status, headers=headers_inc, verify=False)
         job_status = job_response.json()
         check_vol_job_status(cluster, job_status, headers_inc)
     except:
@@ -156,7 +156,7 @@ def check_job_status(
             job_status_url = "https://{}/api/cluster/jobs/{}".format(
                 cluster, job_status['uuid'])
             job_response = requests.get(
-                job_status_url, headers=headers, verify=False)
+                job_status_url, headers=headers_inc, verify=False)
             job_status = job_response.json()
             time.sleep(5)
             check_job_status(
