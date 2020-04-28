@@ -454,7 +454,7 @@ def patch_volume(cluster: str, headers_inc: str):
     print()
     nambool = input("Would you like to change the volume name (y/n):- ")
     if nambool == 'y':
-        nam = input("Enter the new name of the Volume (y/n): ")
+        nam = input("Enter the new name of the Volume: ")
         dataobj['name'] = nam
     print()
     sizebool = input("Would you like to change the volume size (y/n):- ")
@@ -590,8 +590,6 @@ def clone_volume(cluster: str, headers_inc: str):
     print()
     vol_name = input("Enter the name of the volume that needs to be Cloned:- ")
     vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
-    print()
-    show_svm(cluster, headers_inc)
     print()
     dataobj = {}
     clone_name = input("Enter the name of the clone:- ")
