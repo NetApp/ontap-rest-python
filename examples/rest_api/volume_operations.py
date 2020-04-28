@@ -211,7 +211,7 @@ def show_aggregate(cluster: str, headers_inc: str):
     """ list aggregates"""
     url = "https://{}/api/storage/aggregates".format(cluster)
     try:
-        response = requests.get(url, headers=headers, verify=False)
+        response = requests.get(url, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -249,13 +249,13 @@ def check_job_status(job_status: str, headers_inc: str, cluster: str):
             sys.exit(1)
         job_status = job_response.json()
         time.sleep(5)
-        check_job_status(job_status, headers, cluster)
+        check_job_status(job_status, headers_inc, cluster)
 
 def delete_volume(cluster: str, headers_inc: str):
     """ delete the volume"""
     print("=============================================")
     print()
-    show_volume(cluster, base64string, headers)
+    show_volume(cluster, headers_inc)
     print()
     volname = input("Enter the name of the volume that needs to be Deleted:- ")
     vol_uuid = get_key_volumes(volname, cluster, headers_inc)
@@ -264,7 +264,7 @@ def delete_volume(cluster: str, headers_inc: str):
     url = urlpath.format(cluster)
     try:
         response = requests.delete(
-            url, headers=headers, json=dataobj, verify=False)
+            url, headers=headers_inc, json=dataobj, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -546,7 +546,7 @@ def patch_volume(cluster: str, headers_inc: str):
         quotajson = {"enabled": bool(enable_quota)}
         dataobj['quota'] = quotajson
 
-    vol_uuid = get_key_volumes(volname, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(volname, cluster, headers_inc)
     print()
     urlpath = "https://{}/api/storage/volumes/" + vol_uuid
     url = urlpath.format(cluster)
@@ -597,7 +597,7 @@ def clone_volume(cluster: str, headers_inc: str):
     clone_name = input("Enter the name of the clone:- ")
     svm_name = input(
         "Enter the name of the SVM the parent volume belongs to:- ")
-    svm_uuid = get_key_svms(svm_name, cluster, base64string, headers)
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     tmp = {'uuid': svm_uuid}
     dataobj['svm'] = tmp
     dataobj['name'] = clone_name
