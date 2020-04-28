@@ -104,7 +104,7 @@ def get_svms(cluster: str, headers_inc: str):
 
 def get_key_svms(svm_name: str, cluster: str, headers_inc: str):
     """ Get SVM Key"""
-    tmp = dict(get_svms(cluster, base64string, headers_inc))
+    tmp = dict(get_svms(cluster, headers_inc))
     svms = tmp['records']
     print("The UUID of the SVM is ")
     for i in svms:
@@ -256,7 +256,7 @@ def patch_qtree(cluster: str, headers_inc: str):
     print()
     vol_name = input(
         "Enter the Volume Name on which the Qtree need to be Updated:-")
-    vol_uuid = get_key_volumes(vol_name, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
     print()
     qtree_id = input("Enter the ID of the Qtree to be Updated [ID Number]:-")
     print()
@@ -295,7 +295,7 @@ def delete_qtree(cluster: str, headers_inc: str):
     print()
     vol_name = input(
         "Enter the Volume Name on which the Qtree need to be Deleted:-")
-    vol_uuid = get_key_volumes(vol_name, cluster, base64string, headers)
+    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
     print()
     qtree_id = input("Enter the ID of the Qtree to be Deleted [ID Number]:-")
 
