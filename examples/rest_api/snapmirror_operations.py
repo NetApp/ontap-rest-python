@@ -167,7 +167,7 @@ def show_snapmirror(cluster: str, headers_inc: str):
         snap_api_url1 = "https://{}/api/snapmirror/relationships/{}".format(
             cluster, i['uuid'])
         try:
-            response1 = requests.get(snap_api_url1, headers=headers, verify=False)
+            response1 = requests.get(snap_api_url1, headers=headers_inc, verify=False)
         except requests.exceptions.HTTPError as err:
             print(str(err))
             sys.exit(1)
