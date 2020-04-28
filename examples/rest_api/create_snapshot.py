@@ -76,7 +76,7 @@ def make_snap(
         snapshot_name: str,
         headers_inc: str):
     """ Create Snapshot"""
-    vol_uuid = get_key(cluster, svm_name, volume_name, headers)
+    vol_uuid = get_key(cluster, svm_name, volume_name, headers_inc)
 
     data = {
         "name": snapshot_name
@@ -85,11 +85,11 @@ def make_snap(
     snap_api_url = "https://{}/api/storage/volumes/{}/snapshots".format(
         cluster, vol_uuid)
 
-    response = requests.post(snap_api_url, headers=headers, json=data, verify=False)
+    response = requests.post(snap_api_url, headers=headers_inc, json=data, verify=False)
     url_text = response.json()
     job_status_url = "https://{}/{}".format(cluster,
                                             url_text['job']['_links']['self']['href'])
-    job_response = requests.get(job_status_url, headers=headers, verify=False)
+    job_response = requests.get(job_status_url, headers=headers_inc, verify=False)
     job_status = job_response.json()
     check_job_status(
         cluster,
