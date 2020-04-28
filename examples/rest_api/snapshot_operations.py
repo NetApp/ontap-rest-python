@@ -234,7 +234,7 @@ def delete_snapshot(cluster: str, headers_inc: str):
     print()
     vol_uuid = input("Enter the UUID of the Volume  to be updated [UUID]:-")
     snapshot_uuid = input(
-        "Enter the UUID of the snapshot to be updated [UUID]:-")
+        "Enter the UUID of the snapshot to be Deleted [UUID]:-")
     urlpath = "https://{}/api/storage/volumes/" + \
         vol_uuid + "/snapshots/" + snapshot_uuid
     url = urlpath.format(cluster)
@@ -333,7 +333,7 @@ def patch_snapshot(cluster: str, headers_inc: str):
     if combool == 'y':
         snapcom = input("Enter the comment of the snapshot to be updated:-")
         dataobj['name'] = snapcom
-    expirybool = input("Would you like to update the comment (y/n):- ")
+    expirybool = input("Would you like to update the Expiry Date (y/n):- ")
     if expirybool == 'y':
         snapexpiry = input(
             "Enter the expiry date of the snapshot to be updated (format:- 2019-02-04T19:00:00Z):-")
