@@ -150,7 +150,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
             sys.exit(1)
     else:
         print()
-        show_volume(cluster, base64string, headers, svm_name)
+        show_volume(cluster, headers_inc, svm_name)
         vol_name = input(
             "Choose the volume on which you would like to create the LUN : ")
 
@@ -226,7 +226,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
     try:
         response = requests.post(
             url3,
-            headers=headers,
+            headers=headers_inc,
             json=payload3,
             verify=False)
     except requests.exceptions.HTTPError as err:
@@ -260,7 +260,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
     try:
         response = requests.post(
             url4,
-            headers=headers,
+            headers=headers_inc,
             json=payload4,
             verify=False)
     except requests.exceptions.HTTPError as err:
