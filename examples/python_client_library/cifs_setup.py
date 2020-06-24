@@ -26,45 +26,13 @@ import sys
 from netapp_ontap import config, HostConnection, NetAppRestError
 from netapp_ontap.resources import Svm, Volume
 from netapp_ontap.resources import CifsShare
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm
 
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
-
-def show_svm() -> None:
-    """ Shows SVM on the storage cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_volume() -> None:
-    """Shows Volumes in a SVM"""
-    print("The List of SVMs")
-    show_svm()
-    print()
-    svm_name = input(
-        "Enter the SVM from which the Volumes need to be listed:-")
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print(
-                "Volume name:-%s ; Volume uuid:-%s " %
-                (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
 def cifs_setup() -> None:
     """Script demostrates the CIFS setup using REST API PCL"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES CIFS SETUP USING REST API PCL.")
-    print("===========================================================")
+    print("===============================================================")
     print()
     show_svm()
     print()
@@ -74,7 +42,7 @@ def cifs_setup() -> None:
     print()
     print("Create the Volume:-")
     print("===================")
-    vol_name = input("Enter the Volume Name to create CIFS Share:-")
+    vol_name = input("Enter the Volume Name to be created for CIFS Share:-")
     vol_size = input("Enter the Volume Size in MBs :-")
     aggr_name = input("Enter the aggregate name:-")
 
@@ -95,7 +63,6 @@ def cifs_setup() -> None:
         if volume.post(poll=True):
             print("Volume created  %s created Successfully" % volume.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
         sys.exit()
 
@@ -118,23 +85,25 @@ def cifs_setup() -> None:
         if cifsshare.post(poll=True):
             print("cifsshare created Successfully")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
         sys.exit()
+
 
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details"),
-            ]
+    ]
     args = parse_args(
-        "Demonstrates CIFS Setup using REST API Python Client Library", arguments,
+        "Demonstrates CIFS Setup using REST API Python Client Library",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     cifs_setup()
+
 
 if __name__ == "__main__":
     main()

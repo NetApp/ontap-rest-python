@@ -19,99 +19,14 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 import sys
-import base64
-import argparse
-import logging
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_volume
 requests.packages.urllib3.disable_warnings()
-
-def get_size(vol_size):
-    """Convert Mbs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-def get_key_svms(svm_name: str):
-    """ get SVM Keys"""
-    tmp = dict(get_svms(cluster, headers_inc))
-    svms = tmp['records']
-    for i in svms:
-        if i['name'] == svm_name:
-            return i['uuid']
-
-
-def get_svms(cluster: str, headers_inc: str):
-    """Get SVM"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def show_svm(cluster: str, headers_inc: str):
-    """ List SVM"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of SVMs:- ")
-    print("================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_volume(cluster: str, headers_inc: str, svm_name: str):
-    """List Volumes"""
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(
-        cluster, svm_name)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of Volumes :- ")
-    print("===================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
 
 
 def iscsi_setup(cluster: str, headers_inc: str):
-    """Demonstrates ISCSI setup using Python Client Library"""
-    print("Demonstrates ISCSI setup using Python Client Library")
+    """Demonstrates ISCSI setup using REST API"""
+    print("Demonstrates ISCSI setup using REST API")
     print("====================================================")
     print()
     show_svm(cluster, headers_inc)
@@ -138,6 +53,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
         try:
             response = requests.post(
                 url, headers=headers_inc, json=payload, verify=False)
+            print("Volume creation completed.")
         except requests.exceptions.HTTPError as err:
             print(str(err))
             sys.exit(1)
@@ -189,6 +105,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
             headers=headers_inc,
             json=payload2,
             verify=False)
+        print("LUN Creation completed.")
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -200,7 +117,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
-    print(response.json)
+    print(response.json())
 
     print()
     igroup_name = input(
@@ -229,6 +146,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
             headers=headers_inc,
             json=payload3,
             verify=False)
+        print("Igroup creation completed.")
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -263,6 +181,7 @@ def iscsi_setup(cluster: str, headers_inc: str):
             headers=headers_inc,
             json=payload4,
             verify=False)
+        print("LUN Mapping completed.")
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -275,45 +194,21 @@ def iscsi_setup(cluster: str, headers_inc: str):
         sys.exit(1)
     print(response.json())
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
 
-    parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS ISCSI SETUP USING REST API.",
+def main() -> None:
+    """Main function"""
+
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates ISCSI Setup using REST API.", arguments,
     )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
-    )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
+    iscsi_setup(args.cluster, headers)
+    print("Script Complete")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    iscsi_setup(ARGS.cluster, headers)
-    print("Script Complete")
+    main()

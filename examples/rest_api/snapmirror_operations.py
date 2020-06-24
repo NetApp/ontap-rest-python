@@ -19,124 +19,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 import sys
-import base64
-import argparse
-import logging
-from getpass import getpass
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection
 requests.packages.urllib3.disable_warnings()
 
-def get_volumes(cluster: str, headers_inc: str):
-    """Get Volumes"""
-    url = "https://{}/api/storage/volumes/".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def get_key_volumes(vol_name: str, cluster: str, headers_inc: str):
-    """ Get Volume Keys"""
-    print()
-    tmp = dict(get_volumes(cluster, headers_inc))
-    vols = tmp['records']
-    print()
-    print("The UUID of the Volume is ")
-    for i in vols:
-        if i['name'] == vol_name:
-            print(i['uuid'])
-            return i['uuid']
-
-def get_svms(cluster: str, headers_inc: str):
-    """ Get SVMs"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def get_key_svms(svm_name: str, cluster: str, headers_inc: str):
-    """ Get SVM keys"""
-    tmp = dict(get_svms(cluster, headers_inc))
-    svms = tmp['records']
-    print("The UUID of the SVM is ")
-    for i in svms:
-        if (i['name']) == svm_name:
-            print(i['uuid'])
-            return i['uuid']
-
-def show_svm(cluster: str, headers_inc: str):
-    """ Show SVM"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print(" List of SVMs:- ")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_volume(cluster: str, headers_inc: str):
-    """ List Volumes"""
-    print("The List of SVMs")
-    show_svm(cluster, headers_inc)
-    print()
-    svm_name = input(
-        "Enter the SVM from which the Volumes need to be listed:-")
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(
-        cluster, svm_name)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = requests.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-
-    tmp = dict(requests.json())
-    svms = tmp['records']
-    print()
-    print("List of Volumes :- ")
-    print("===================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
 
 def show_snapmirror(cluster: str, headers_inc: str):
     """ Show Snapmirror"""
@@ -145,7 +31,10 @@ def show_snapmirror(cluster: str, headers_inc: str):
     print("==========================")
     snap_api_url = "https://{}/api/snapmirror/relationships".format(cluster)
     try:
-        response = requests.get(snap_api_url, headers=headers_inc, verify=False)
+        response = requests.get(
+            snap_api_url,
+            headers=headers_inc,
+            verify=False)
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -157,17 +46,18 @@ def show_snapmirror(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
-    tmp = dict(response.json())
-    sms = tmp['records']
+    snapmirrordict = dict(response.json())
+    sms = snapmirrordict['records']
     print()
     print(" List of Snapmirror :- ")
     print("=======================")
-    for i in sms:
-        print(i['uuid'])
+    for smitem in sms:
+        print(smitem['uuid'])
         snap_api_url1 = "https://{}/api/snapmirror/relationships/{}".format(
-            cluster, i['uuid'])
+            cluster, smitem['uuid'])
         try:
-            response1 = requests.get(snap_api_url1, headers=headers_inc, verify=False)
+            response1 = requests.get(
+                snap_api_url1, headers=headers_inc, verify=False)
         except requests.exceptions.HTTPError as err:
             print(str(err))
             sys.exit(1)
@@ -179,11 +69,12 @@ def show_snapmirror(cluster: str, headers_inc: str):
             print(url_text)
             sys.exit(1)
 
-        tmp1 = dict(response1.json())
-        print(tmp1['source']['path'])
-        print(tmp1['destination']['path'])
-        print(tmp1['state'])
+        smdict = dict(response1.json())
+        print(smdict['source']['path'])
+        print(smdict['destination']['path'])
+        print(smdict['state'])
         print("------------------------------")
+
 
 def delete_snapmirror(cluster: str, headers_inc: str):
     """Snapmirror Delete"""
@@ -212,11 +103,12 @@ def delete_snapmirror(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
+
 def create_snapmirror(cluster: str, headers_inc: str):
     """ Create snapmirror"""
     print()
     print("The List of Snapmirror Relations")
-    print("===============================")
+    print("================================")
     show_snapmirror(cluster, headers_inc)
     print()
     print("Please enter the following details:-")
@@ -251,9 +143,10 @@ def create_snapmirror(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
+
 def patch_snapmirror(cluster: str, headers_inc: str):
     """ Update SnapMirror"""
-    print("=============================================")
+    print("================================")
     print()
     show_snapmirror(cluster, headers_inc)
     print()
@@ -284,9 +177,10 @@ def patch_snapmirror(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
+
 def post_snapmirror_transfer(cluster: str, headers_inc: str):
-    """Snapmirror Transfer"""
-    print("=============================================")
+    """Snapmirror Intialize Transfer"""
+    print("================================")
     print()
     show_snapmirror(cluster, headers_inc)
     print()
@@ -310,14 +204,15 @@ def post_snapmirror_transfer(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
+
 def sm_ops(cluster: str, headers_inc: str):
     """Demonstrates SnapMirror Operations using REST APIs."""
     print("Demonstrates SnapMirror Operations using REST APIs.")
-    print("==============================================================")
+    print("===================================================")
     print()
     snapmirrorbool = input(
-        "What state Operation would you like? SnapMirror [show/create/update/delete/initialize] ")
-    if snapmirrorbool == 'show':
+        "What Operation would you like? SnapMirror [list/create/update/delete/initialize] ")
+    if snapmirrorbool == 'list':
         show_snapmirror(cluster, headers_inc)
     if snapmirrorbool == 'create':
         create_snapmirror(cluster, headers_inc)
@@ -328,43 +223,20 @@ def sm_ops(cluster: str, headers_inc: str):
     if snapmirrorbool == 'initialize':
         post_snapmirror_transfer(cluster, headers_inc)
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
 
-    parser = argparse.ArgumentParser(
-        description="This script will execute Snapmirror operations using ONTAP REST APIs.", )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details")
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+def main() -> None:
+    """Main function"""
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates SnapMirror Operations using REST API.", arguments,
+    )
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
 
-    return parsed_args
+    sm_ops(args.cluster, headers)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    sm_ops(ARGS.cluster, headers)
-    print("Script Complete")
+    main()

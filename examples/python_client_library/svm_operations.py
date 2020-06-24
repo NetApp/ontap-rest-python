@@ -18,23 +18,13 @@ You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
 """
+
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Node
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Svm
+from utils import Argument, parse_args, setup_logging, setup_connection, show_svm, show_node
 
-def show_node() -> None:
-    """List nodes"""
-    print(" Getting Node Details")
-    print("=====================")
 
-    try:
-        for node in Node.get_collection(fields="uuid"):
-            print("Node name:-%s ; Node uuid:-%s " % (node.name, node.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_svm() -> None:
+def list_svm() -> None:
     """List SVM in a cluster"""
     print("Getting SVM Details")
     print("===================")
@@ -44,8 +34,8 @@ def show_svm() -> None:
             svm.get()
             print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def create_svm() -> None:
     """Create SVM"""
@@ -124,8 +114,8 @@ def create_svm() -> None:
         if svm.post(poll=True):
             print("SVM  %s created Successfully" % svm.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def patch_svm() -> None:
     """Update SVM"""
@@ -158,8 +148,8 @@ def patch_svm() -> None:
         if svm.patch(poll=True):
             print("SVM  %s has been updated/patched Successfully" % svm.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def start_svm() -> None:
     """Start SVM"""
@@ -176,8 +166,8 @@ def start_svm() -> None:
         if svm.patch(poll=True):
             print("SVM  %s has been started Successfully" % svm.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def stop_svm() -> None:
     """Stop SVM"""
@@ -194,8 +184,8 @@ def stop_svm() -> None:
         if svm.patch(poll=True):
             print("SVM  %s has been stopped Successfully." % svm.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def delete_svm() -> None:
     """Delete SVM"""
@@ -207,26 +197,25 @@ def delete_svm() -> None:
     try:
         svm = Svm.find(name=svmname)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
         if svm.delete(poll=True):
             print("SVM  %s has been deleted Successfully." % svm.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def svm_ops() -> None:
     """SVM Operation"""
     print()
     print("Demonstrates SVM Operations using REST API Python Client Library:- ")
-    print("=================================================================================")
+    print("===================================================================")
     print()
     svmget = input(
-        "What SVM Operation would you like to do? [show/create/update/start/stop/delete:- ] ")
-    if svmget == 'show':
-        show_svm()
+        "What SVM Operation would you like to do? [list/create/update/start/stop/delete:- ] ")
+    if svmget == 'list':
+        list_svm()
     if svmget == 'create':
         create_svm()
     if svmget == 'update':
@@ -238,18 +227,21 @@ def svm_ops() -> None:
     if svmget == 'delete':
         delete_svm()
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates SVM Operations using REST API Python Client Library.", arguments,
+        "Demonstrates SVM Operations using REST API Python Client Library.",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     svm_ops()
+
 
 if __name__ == "__main__":
     main()

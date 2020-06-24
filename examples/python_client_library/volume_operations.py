@@ -19,32 +19,11 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, Aggregate
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Volume
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_aggregate, show_volume, get_key_svm, get_key_volume
 
-def show_aggregate() -> None:
-    """Lists the Aggregate"""
-    print("\n List of Aggregates:- \n")
-    try:
-        for aggregatelist in Aggregate.get_collection():
-            print(aggregatelist.name)
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
-def show_svm() -> None:
-    """Lists SVM"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_volume() -> None:
+def list_volume() -> None:
     """Lists Volumes"""
     show_svm()
     print()
@@ -60,8 +39,8 @@ def show_volume() -> None:
                 "Volume Name = %s;  Volume UUID = %s" %
                 (volume.name, volume.uuid))
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def create_volume() -> None:
     """Create volumes"""
@@ -202,14 +181,19 @@ def create_volume() -> None:
         if volume.post(poll=True):
             print("SVM  %s created Successfully" % volume.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def patch_volume() -> None:
     """Update Volume"""
     print("=============================================")
     print()
-    show_volume()
+    show_svm()
+    print()
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
     print()
     vol_name = input(
         "Enter the name  of the volume that needs to be modified:- ")
@@ -217,7 +201,6 @@ def patch_volume() -> None:
     try:
         vol = Volume.find(name=vol_name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     print()
@@ -341,46 +324,49 @@ def patch_volume() -> None:
         if vol.patch(poll=True):
             print("The Volume  has been updated/patched Successfully")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def delete_volume() -> None:
     """Delete Volume"""
     print("=============================================")
     print()
-    show_volume()
+    show_svm()
     print()
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
+    print()
+
     volname = input("Enter the name of the volume that needs to be Deleted:- ")
 
     try:
         vol = Volume.find(name=volname)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
         if vol.delete(poll=True):
             print("Volume  has been deleted Successfully.")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def clone_volume() -> None:
     """Clone volume"""
     print("=============================================")
     print()
-    show_volume()
-    print()
-    print("=============================================")
-    print("Please give in the following details for creating clone.")
+    show_svm()
     print()
     svm_name = input(
-        "Enter the NAME of the SVM the parent volume belongs to:-  ")
-    svm_uuid = input(
-        "Enter the UUID of the SVM the parent volume belongs to [UUID]:- ")
+        "Enter the SVM from which the Volumes need to be cloned:-")
+    print()
+    show_volume(svm_name)
+    print()
     vol_name = input("Enter the NAME of the volume that needs to be Cloned:- ")
-    vol_uuid = input(
-        "Enter the UUID of the volume that needs to be Cloned [UUID]:- ")
+    svm_uuid = get_key_svm(svm_name)
+    vol_uuid = get_key_volume(svm_name, vol_name)
     print()
     dataobj = {}
     clone_name = input("Enter the name of the clone:- ")
@@ -410,8 +396,8 @@ def clone_volume() -> None:
         if volume.post(poll=True):
             print("SVM  %s created Successfully" % volume.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def volume_ops() -> None:
     """Volume Operations"""
@@ -420,9 +406,9 @@ def volume_ops() -> None:
     print("====================================================================================")
     print()
     volumebool = input(
-        "What Volume Operation would you like to do? [show/create/update/delete/clone] ")
-    if volumebool == 'show':
-        show_volume()
+        "What Volume Operation would you like to do? [list/create/update/delete/clone] ")
+    if volumebool == 'list':
+        list_volume()
     if volumebool == 'create':
         create_volume()
     if volumebool == 'update':
@@ -432,18 +418,21 @@ def volume_ops() -> None:
     if volumebool == 'clone':
         clone_volume()
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates Batch Update Operations using REST API Python Client Library.", arguments,
+        "Demonstrates Volume Operations using REST API Python Client Library.",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     volume_ops()
+
 
 if __name__ == "__main__":
     main()

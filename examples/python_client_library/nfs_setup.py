@@ -18,57 +18,14 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, ExportPolicy, NfsService
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Volume, ExportPolicy, NfsService
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, get_key_svm
 
-def get_key_svms(svm_name) -> None:
-    """Get SVM Keys"""
-    print()
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            if svm.name == svm_name:
-                print(svm.uuid)
-                return svm.uuid
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
-def show_svm() -> None:
-    """Show the SVMs in the cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_volume() -> None:
-    """Show volumes in the SVMs"""
-    print("The List of SVMs")
-    show_svm()
-    print()
-    svm_name = input(
-        "Enter the SVM from which the Volumes need to be listed:-")
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print(
-                "Volume name:-%s ; Volume uuid:-%s " %
-                (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def nfs_setup() -> None:
+def nfs_setup():
     """Script demostrates NFS setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES NFS SETUP USING REST API .")
-    print("====================================================================")
+    print("===========================================================")
     print()
     show_svm()
     print()
@@ -113,7 +70,7 @@ def nfs_setup() -> None:
         "Enter the protocol name for the Export Policy(nfs/cifs/any):- ")
     clients = input("Enter client details [0.0.0.0/0]:- ")
 
-    svm_uuid = get_key_svms(svm_name)
+    svm_uuid = get_key_svm(svm_name)
     payload2 = {
         "name": export_policy_name,
         "rules": [
@@ -174,20 +131,20 @@ def nfs_setup() -> None:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-    return
-
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates NFS Setup using REST API Python Client Library", arguments,
+        "Demonstrates NFS Setup using REST API Python Client Library",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     nfs_setup()
+
 
 if __name__ == "__main__":
     main()

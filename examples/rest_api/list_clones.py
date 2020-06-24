@@ -10,13 +10,10 @@ standard NetApp product.
 Purpose: Script to list all clone volumes in a cluster using ONTAP REST API.
 
 usage: python3 list_clones.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-list_clones.py: the following arguments are required: -c/--cluster
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -30,12 +27,14 @@ import requests
 import texttable as tt
 requests.packages.urllib3.disable_warnings()
 
+
 def get_clones(cluster: str, headers_inc: str):
     """Get the Clones"""
     url = "https://{}/api/storage/volumes/?clone.is_flexclone=true".format(
         cluster)
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
+
 
 def disp_vol(cluster: str, headers_inc: str):
     """ Display volume"""
@@ -55,6 +54,7 @@ def disp_vol(cluster: str, headers_inc: str):
     print("Number of Cloned Volumes in this cluster:{}".format(ctr))
     cloneoutput = tab.draw()
     print(cloneoutput)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""

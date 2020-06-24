@@ -18,27 +18,14 @@ You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
 """
+
 import sys
-import time
-import base64
-import argparse
-import logging
-from getpass import getpass
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection, get_key_svms, show_svm, check_job_status
 requests.packages.urllib3.disable_warnings()
 
-def get_key_svms(cluster: str, headers_inc: str):
-    """ returns SVM keys"""
-    print()
-    svm_name = input("Enter the name of the SVM: ")
-    tmp = dict(get_svms(cluster, headers_inc))
-    svms = tmp['records']
-    for i in svms:
-        if (i['name']) == svm_name:
-            print(i['uuid'])
-            return i['uuid']
 
-def get_svm(cluster: str, headers_inc: str):
+def list_svm(cluster: str, headers_inc: str):
     """ returns SVM list"""
     url = "https://{}/api/svm/svms".format(cluster)
     try:
@@ -53,17 +40,13 @@ def get_svm(cluster: str, headers_inc: str):
     if 'error' in url_text:
         print(url_text)
         sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
+    svmsdict = dict(response.json())
+    svms = svmsdict['records']
     print()
     print("List of SVMs:- ")
     print("===============")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def get_svms(cluster: str, headers_inc: str):
-    """ returns SM json file"""
+    for svm in svms:
+        print(svm['name'])
     url = "https://{}/api/svm/svms".format(cluster)
     try:
         response = requests.get(url, headers=headers_inc, verify=False)
@@ -77,41 +60,18 @@ def get_svms(cluster: str, headers_inc: str):
     if 'error' in url_text:
         print(url_text)
         sys.exit(1)
-    return response.json()
 
-def check_job_status(job_status: str, headers_inc: str, cluster: str):
-    """ checks for job status"""
-    if job_status['state'] == "failure":
-        if job_status['code'] == 460770:
-            print("SVM Already Exists")
-        else:
-            print("Operation failed due to :{}".format(job_status['message']))
-            return
-    elif job_status['state'] == "success":
-        print("Operation completed successfully.")
-    else:
-        job_status_url = "https://{}/api/cluster/jobs/{}".format(
-            cluster, job_status['uuid'])
-        try:
-            job_response = requests.get(
-                job_status_url, headers=headers_inc, verify=False)
-        except requests.exceptions.HTTPError as err:
-            print(err)
-            sys.exit(1)
-        except requests.exceptions.RequestException as err:
-            print(err)
-            sys.exit(1)
-        job_status = job_response.json()
-        time.sleep(5)
-        check_job_status(job_status, headers_inc, cluster)
 
 def start_svm(cluster: str, headers_inc: str):
     """ starts svm"""
-    get_svm(cluster, headers_inc)
+    show_svm(cluster, headers_inc)
     print()
     print("=============================================")
     print("This option starts a SVM: ")
-    svm_uuid = get_key_svms(cluster, headers_inc)
+    print()
+    svm_name = input(
+        "Enter the SVM which needs to be started:-")
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     print()
     print("The UUID of the requested SVM is:-")
     print(svm_uuid)
@@ -134,7 +94,8 @@ def start_svm(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -148,12 +109,16 @@ def start_svm(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def stop_svm(cluster: str, headers_inc: str):
     """stops the svm"""
-    get_svm(cluster, headers_inc)
+    show_svm(cluster, headers_inc)
     print("=============================================")
     print("This option stops a SVM: ")
-    svm_uuid = get_key_svms(cluster, headers_inc)
+    print()
+    svm_name = input(
+        "Enter the SVM which needs to be stopped:-")
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     print()
     print("The UUID of the requested SVM is:-")
     print(svm_uuid)
@@ -176,7 +141,8 @@ def stop_svm(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -190,12 +156,16 @@ def stop_svm(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def delete_svm(cluster: str, headers_inc: str):
     """ delete svm"""
-    get_svm(cluster, headers_inc)
+    show_svm(cluster, headers_inc)
     print("=============================================")
     print("This option stops a SVM: ")
-    svm_uuid = get_key_svms(cluster, headers_inc)
+    print()
+    svm_name = input(
+        "Enter the SVM which needs to be deleted:-")
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     print()
     print("The UUID of the requested SVM is:-")
     print(svm_uuid)
@@ -218,7 +188,8 @@ def delete_svm(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -231,6 +202,7 @@ def delete_svm(cluster: str, headers_inc: str):
         sys.exit(1)
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
+
 
 def create_svm(cluster: str, headers_inc: str):
     """ create svm"""
@@ -246,7 +218,7 @@ def create_svm(cluster: str, headers_inc: str):
         mgmtlif = input("Enter the name of Management LIF: ")
         ipadd = input("Enter the IP address: ")
         nmask = input("Enter the NetMask: ")
-        show_node(cluster,headers_inc)
+        show_node(cluster, headers_inc)
         hnode = input("Enter the Home Node: ")
         uuid = input("Enter the UUID: ")
         intjson = [
@@ -315,7 +287,8 @@ def create_svm(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         print(job_response)
@@ -331,13 +304,15 @@ def create_svm(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def update_svm(cluster: str, headers_inc: str):
     """ updates the svm"""
-    get_svm(cluster, headers_inc)
-    print()
-    print("=============================================")
+    show_svm(cluster, headers_inc)
     print("This option Updates a SVM: ")
-    svm_uuid = get_key_svms(cluster,headers_inc)
+    print()
+    svm_name = input(
+        "Enter the SVM which needs to be updated:-")
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     print()
     print("The UUID of the requested SVM is:-")
     print(svm_uuid)
@@ -387,7 +362,8 @@ def update_svm(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -401,6 +377,7 @@ def update_svm(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def svm_ops(cluster: str, headers_inc: str):
     """Demostrates SVM Operations"""
     print()
@@ -408,9 +385,9 @@ def svm_ops(cluster: str, headers_inc: str):
     print("============================================================")
     print()
     svmget = input(
-        "What SVM Operation would you like to do? [show/create/update/start/stop/delete] ")
-    if svmget == 'show':
-        get_svm(cluster, headers_inc)
+        "What SVM Operation would you like to do? [list/create/update/start/stop/delete] ")
+    if svmget == 'list':
+        list_svm(cluster, headers_inc)
     if svmget == 'create':
         create_svm(cluster, headers_inc)
     if svmget == 'update':
@@ -422,42 +399,21 @@ def svm_ops(cluster: str, headers_inc: str):
     if svmget == 'delete':
         delete_svm(cluster, headers_inc)
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
 
-    parser = argparse.ArgumentParser(
-        description="This script will execute SVM operations using ONTAP REST APIs.", )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details")
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+def main() -> None:
+    """Main function"""
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates Volume Operations using REST API Python Client Library.",
+        arguments,
+    )
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
 
-    return parsed_args
+    svm_ops(args.cluster, headers)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    svm_ops(ARGS.cluster, headers)
+    main()

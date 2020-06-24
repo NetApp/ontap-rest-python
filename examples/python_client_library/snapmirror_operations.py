@@ -19,64 +19,11 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, SnapmirrorRelationship, Snapshot
-from utils import Argument, parse_args, setup_logging, setup_connection
+from netapp_ontap.resources import SnapmirrorRelationship
+from utils import Argument, parse_args, setup_logging, setup_connection, show_snapmirror
 
-def show_svm() -> None:
-    """Show SVMs in a cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
-def show_volume() -> None:
-    """List volumes in a SVM"""
-    print("The List of SVMs")
-    print("===================")
-    show_svm()
-    print()
-    svm_name = input(
-        "Enter the SVM from which the Volumes need to be listed:-")
-    print()
-    print("Getting Volume Details")
-    print("===================")
-
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_snapshot() -> None:
-    """List Snapshots in a volume"""
-    print()
-    print("The List of SVMs:-")
-    show_svm()
-    print()
-    svm_name = input(
-        "Enter the SVM from which the Volumes need to be listed:-")
-    print()
-    show_volume(svm_name)
-    print()
-    vol_uuid = input(
-        "Enter the Volume UUID from which the Snapshots need to be listed [UUID]:-")
-
-    print("The List of Snapshots:-")
-    try:
-        for snapshot in Snapshot.get_collection(vol_uuid):
-            print(snapshot.name)
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_snapmirror() -> None:
+def list_snapmirror() -> None:
     """List Snapmirror"""
     print("List of SnapMirror Relationships:")
     print("=================================")
@@ -92,8 +39,8 @@ def show_snapmirror() -> None:
             print(snapmirror1.state)
             print("-----------------------------")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def create_snapmirror() -> None:
     """Create snapmirror relationship"""
@@ -116,8 +63,8 @@ def create_snapmirror() -> None:
         if snapmirrorrelationship.post(poll=True):
             print("SnapmirrorRelationship  %s created Successfully")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def patch_snapmirror() -> None:
     """Update Snapmirror Relation"""
@@ -128,14 +75,14 @@ def patch_snapmirror() -> None:
     snapmirror_uuid = input("Enter the UUID of the snapmirror to be updated:-")
     snapmirrortransfer = SnapmirrorRelationship.find(uuid=snapmirror_uuid)
     snapchoice = input(
-        "What state update would you like?                                                                                         [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
+        "What state update would you like? [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
     snapmirrortransfer.state = snapchoice
     try:
         if snapmirrortransfer.patch(poll=True):
             print("Snapmirror Relationship   Updated Successfully")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def delete_snapmirror() -> None:
     """Delete Snapmirror"""
@@ -150,8 +97,8 @@ def delete_snapmirror() -> None:
         if snapmirrorrelationship.delete(poll=True):
             print("Snapmirror Relationship has been deleted Successfully.")
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def sm_ops() -> None:
     """SnapMirror Operations"""
@@ -159,10 +106,9 @@ def sm_ops() -> None:
     print("========================================================================")
     print()
     snapmirrorbool = input(
-        "What state SnapMirror Operation would you like? SnapMirror [show/create/update/delete] ")
-    if snapmirrorbool == 'show':
-        print("====")
-        show_snapmirror()
+        "What state SnapMirror Operation would you like? SnapMirror [list/create/update/delete] ")
+    if snapmirrorbool == 'list':
+        list_snapmirror()
     if snapmirrorbool == 'create':
         create_snapmirror()
     if snapmirrorbool == 'update':
@@ -170,18 +116,21 @@ def sm_ops() -> None:
     if snapmirrorbool == 'delete':
         delete_snapmirror()
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates SnapMirror Operations using REST API Python Client Library.", arguments,
+        "Demonstrates SnapMirror Operations using REST API Python Client Library.",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     sm_ops()
+
 
 if __name__ == "__main__":
     main()

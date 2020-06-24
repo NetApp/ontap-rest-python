@@ -11,13 +11,10 @@ Purpose: Script to create snapshot using ONTAP REST API.
 
 usage: python3 create_snapshot.py [-h] -c CLUSTER -v VOLUME_NAME -s SNAPSHOT_NAME -vs SVM_NAME
                           [-u API_USER] [-p API_PASS]
-create_snapshot.py: the following arguments are required: -c/--cluster, -v/--volume_name, -s/--snapshot_name -vs/--svm_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -29,6 +26,7 @@ from getpass import getpass
 import logging
 import requests
 requests.packages.urllib3.disable_warnings()
+
 
 def get_volumes(cluster: str, svm_name: str, headers_inc: str):
     """Get Volumes"""
@@ -69,6 +67,7 @@ def check_job_status(
             job_status,
             headers_inc)
 
+
 def make_snap(
         cluster: str,
         svm_name: str,
@@ -85,17 +84,25 @@ def make_snap(
     snap_api_url = "https://{}/api/storage/volumes/{}/snapshots".format(
         cluster, vol_uuid)
 
-    response = requests.post(snap_api_url, headers=headers_inc, json=data, verify=False)
+    response = requests.post(
+        snap_api_url,
+        headers=headers_inc,
+        json=data,
+        verify=False)
     url_text = response.json()
     job_status_url = "https://{}/{}".format(cluster,
                                             url_text['job']['_links']['self']['href'])
-    job_response = requests.get(job_status_url, headers=headers_inc, verify=False)
+    job_response = requests.get(
+        job_status_url,
+        headers=headers_inc,
+        verify=False)
     job_status = job_response.json()
     check_job_status(
         cluster,
         job_status_url,
         job_status,
         headers_inc)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
@@ -130,6 +137,7 @@ def parse_args() -> argparse.Namespace:
         parsed_args.api_pass = getpass()
 
     return parsed_args
+
 
 if __name__ == "__main__":
     logging.basicConfig(

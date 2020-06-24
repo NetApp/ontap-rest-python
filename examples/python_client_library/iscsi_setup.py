@@ -17,36 +17,11 @@ You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
 """
+
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, Igroup, Lun, LunMap
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Volume, Igroup, Lun, LunMap
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_volume
 
-def show_svm() -> None:
-    """Show SVMs in a cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_volume(svm_name) -> None:
-    """Show volumes in a SVM"""
-    print()
-    print("Getting Volume Details")
-    print("===================")
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print(
-                "Volume name:-%s ; Volume uuid:-%s " %
-                (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
 def iscsi_setup() -> None:
     """ Script demostrates the ISCSI Lun Setup"""
@@ -182,18 +157,21 @@ def iscsi_setup() -> None:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates ISCSI Setup using REST API Python Client Library", arguments,
+        "Demonstrates ISCSI Setup using REST API Python Client Library",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     iscsi_setup()
+
 
 if __name__ == "__main__":
     main()

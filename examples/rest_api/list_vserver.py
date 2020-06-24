@@ -10,13 +10,10 @@ standard NetApp product.
 Purpose: Script to list SVMs using ONTAP REST API.
 
 Usage: list_vserver.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-list_vserver.py: the following arguments are required: -c/--cluster
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -28,13 +25,16 @@ from getpass import getpass
 import logging
 import texttable as tt
 import requests
+from utils import parse_args
 requests.packages.urllib3.disable_warnings()
+
 
 def get_vservers(cluster: str, headers_inc: str):
     """ Get vServer"""
     url = "https://{}/api/svm/svms".format(cluster)
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
+
 
 def disp_vservers(cluster: str, headers_inc: str):
     """ Display vServer"""
@@ -54,6 +54,7 @@ def disp_vservers(cluster: str, headers_inc: str):
     print("Number of Storage VMs on this NetApp cluster :{}".format(ctr))
     setdisplay = tab.draw()
     print(setdisplay)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
