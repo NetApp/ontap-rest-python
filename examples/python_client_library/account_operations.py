@@ -26,6 +26,7 @@ from netapp_ontap.resources import (
     Role,
     RolePrivilege
 )
+import getpass
 from utils import Argument, step, substep, parse_args, setup_connection, setup_logging
 
 
@@ -54,7 +55,7 @@ def create_account():
     print("======================")
     accname = input(
         "Enter the name of the Account to be created:- ")
-    accpwd = getpass()
+    accpwd = getpass.getpass()
     accapp = input(
         "Enter the Application type for the Account [http/snmp/ontapi/ssh/rsh/telnet]:- ")
     accauth = input(
