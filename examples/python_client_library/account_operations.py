@@ -110,10 +110,7 @@ def create_account():
 
 
 def update_account():
-    """Call the /volumes API and list the current volumes. We should be allowed
-    to do this. Then modify our role to deny the access and call it again. This
-    time we should get an error.
-    """
+    """Module to update the account details with new role"""
 
     step("Update the account with new roles")
     show_account()
@@ -160,7 +157,7 @@ def delete_account():
     step("Delete the limited account and role")
     show_account()
     accname = input(
-        "Enter the name of the Account that needs to be updated with the new role:- ")
+        "Enter the name of the Account that needs to be deleted:- ")
     try:
         account = Account.find(name=accname)
     except NetAppRestError as error:
