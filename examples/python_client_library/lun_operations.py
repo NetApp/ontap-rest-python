@@ -21,8 +21,8 @@ https://opensource.org/licenses/BSD-3-Clause
 
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Lun
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_volume, show_lun
-
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import get_size, show_svm, show_volume, show_lun
 
 def list_lun():
     """ List LUN"""
