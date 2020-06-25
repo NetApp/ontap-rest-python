@@ -194,7 +194,7 @@ def show_volume(svm_name) -> None:
         print("Exception caught :" + str(error))
 
 
-def get_key_svm(svm_name):
+def get_key_svm(svm_name) -> None:
     """Get key of a SVM"""
     print()
     print("Getting SVM Details")
@@ -208,7 +208,7 @@ def get_key_svm(svm_name):
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-def get_key_volume(svm_name, volume_name):
+def get_key_volume(svm_name, volume_name) -> None:
     """Lists Volumes"""
     print()
     print("Getting Volume Details")
