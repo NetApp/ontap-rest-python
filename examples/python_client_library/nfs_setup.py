@@ -19,21 +19,18 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Volume, ExportPolicy, NfsService
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, get_key_svm
-
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, get_size, show_svm, get_key_svm
 
 def nfs_setup():
     """Script demostrates NFS setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES NFS SETUP USING REST API .")
     print("===========================================================")
-    print()
     show_svm()
     print()
     svm_name = input(
         "Choose the SVM on which you would like to create a NFS Share :")
     print("Make sure that NAS  LIFs on each nodes are created on the SVM.")
-    print()
-
     nfsbool = input(
         "Would you like to enable NFS protocol on the vserver (y/n):-")
     if nfsbool == 'y':
@@ -49,8 +46,6 @@ def nfs_setup():
             }
         }
 
-        print(payload1)
-
         try:
             nfsservice = NfsService.from_dict(payload1)
             if nfsservice.post(poll=True):
@@ -61,7 +56,6 @@ def nfs_setup():
                 error.http_err_response.http_response.text)
             print("Exception caught :" + str(error))
 
-    print()
     print("Create the Export Policy:-")
     print("==========================")
 
@@ -94,7 +88,6 @@ def nfs_setup():
         "svm.uuid": svm_uuid
     }
 
-    print(payload2)
     exportpolicy = ExportPolicy.from_dict(payload2)
     try:
         if exportpolicy.post(poll=True):
@@ -103,7 +96,6 @@ def nfs_setup():
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-    print()
     print("Create the Volume:-")
     print("===================")
     vol_name = input("Enter new  Volume Name to create NFS Share:-")
