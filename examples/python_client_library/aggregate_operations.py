@@ -20,7 +20,8 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Aggregate
-from utils import Argument, parse_args, setup_logging, setup_connection, show_aggregate, show_node, show_disk
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, show_aggregate, show_node, show_disk
 
 
 def list_aggregate() -> None:
@@ -50,7 +51,7 @@ def create_aggregate() -> None:
     aggrobj = {
         "block_storage": {
             "mirror": {
-                "enabled": false
+                "enabled": "false"
             },
             "primary": {
                 "checksum_style": "block",
