@@ -199,11 +199,10 @@ def get_key_svm(svm_name) -> None:
     print()
     print("Getting SVM Details")
     print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            if svm.name == svm_name:
-                print(svm.uuid)
-                return svm.uuid
+    for svm in Svm.get_collection(
+                **{'svm.name': svm_name}, fields="uuid"):
+            print(svm.uuid)
+            return svm.uuid
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
