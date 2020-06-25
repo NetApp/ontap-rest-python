@@ -36,11 +36,11 @@ def show_account() -> None:
     substep("List Accounts")
     print("======================")
     try:
-        for accounts in Account.get_collection():
+        for account in Account.get_collection():
             print("=====")
-            print("Account Name = %s" % accounts.name)
-            print("Account  Owner Name = %s" % accounts.owner.name)
-            print("Account Owner UUID = %s" % accounts.owner.uuid)
+            print("Account Name = %s" % account.name)
+            print("Account Owner Name = %s" % account.owner.name)
+            print("Account Owner UUID = %s" % account.owner.uuid)
     except NetAppRestError as error:
         print("Exception caught :" + str(error))
 
@@ -55,8 +55,7 @@ def create_account():
     print("======================")
     accname = input(
         "Enter the name of the Account to be created:- ")
-    accpwd = input(
-        "Enter the password of the Account:- ")
+    accpwd = getpass()
     accapp = input(
         "Enter the Application type for the Account [http/snmp/ontapi/ssh/rsh/telnet]:- ")
     accauth = input(
@@ -72,11 +71,11 @@ def create_account():
     )
 
     try:
-        account.post()
+        account.post(hydrate=True)
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
-    print("New account created: %s" % Account.find(name=accname))
+    print("New account created: %s" % account.name)
     print("======================")
     substep("Create the test role")
     rolename = input(
