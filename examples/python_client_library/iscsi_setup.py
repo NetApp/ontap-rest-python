@@ -61,7 +61,6 @@ def iscsi_setup() -> None:
         vol_name = input(
             "Choose the volume on which you would like to create the LUN : ")
 
-    print()
     lun_name = input("Enter the name of the LUN  : ")
     lun_name_ext = "/vol/" + vol_name + "/" + lun_name
     os_type = input("Enter the name of the OS-TYPE  : ")
