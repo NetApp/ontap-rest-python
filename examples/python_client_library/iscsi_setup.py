@@ -20,20 +20,17 @@ https://opensource.org/licenses/BSD-3-Clause
 
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Volume, Igroup, Lun, LunMap
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_volume
-
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, get_size, show_svm, show_volume
 
 def iscsi_setup() -> None:
     """ Script demostrates the ISCSI Lun Setup"""
     print("THE FOLLOWING SCRIPT DEMOSTRATES ISCSI LUN SETUP USING REST API PCL.")
     print("====================================================================")
-    print()
     show_svm()
-    print()
     svm_name = input(
         "Choose the SVM on which you would like to create a lun : ")
     print("Make sure that ISCSI protocol and LIFs on each nodes are created on the SVM")
-    print()
     volbool = input("Would you like to create a new volume (y/n) :-")
     if volbool == 'y':
         vol_name = input("Enter the Volume Name:-")
@@ -49,7 +46,6 @@ def iscsi_setup() -> None:
             "size": v_size
         }
 
-        print(payload1)
         volume = Volume.from_dict(payload1)
         try:
             if volume.post(poll=True):
@@ -61,7 +57,6 @@ def iscsi_setup() -> None:
             print("Exception caught :" + str(error))
 
     else:
-        print()
         show_volume(svm_name)
         vol_name = input(
             "Choose the volume on which you would like to create the LUN : ")
@@ -103,7 +98,6 @@ def iscsi_setup() -> None:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-    print()
 
     igroup_name = input(
         "Enter the name of the Igroup that you would like to create  : ")
