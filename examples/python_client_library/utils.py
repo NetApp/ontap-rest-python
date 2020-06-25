@@ -194,7 +194,7 @@ def show_volume(svm_name) -> None:
         print("Exception caught :" + str(error))
 
 
-def get_key_svm(svm_name): -> None:
+def get_key_svm(svm_name) -> None:
     """Get key of a SVM"""
     print()
     print("Getting SVM Details")
