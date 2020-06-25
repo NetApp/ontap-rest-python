@@ -20,8 +20,8 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Volume
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_aggregate, show_volume, get_key_svm, get_key_volume
-
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from utils import show_svm, show_aggregate, show_volume, get_key_svm, get_key_volume
 
 def list_volume() -> None:
     """Lists Volumes"""
