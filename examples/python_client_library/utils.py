@@ -200,7 +200,7 @@ def get_key_svm(svm_name) -> None:
     print("Getting SVM Details")
     print("===================")
     for svm in Svm.get_collection(
-                **{'svm.name': svm_name}, fields="uuid"):
+            **{'svm.name': svm_name}, fields="uuid"):
             print(svm.uuid)
             return svm.uuid
     except NetAppRestError as error:
@@ -214,8 +214,7 @@ def get_key_volume(svm_name, volume_name) -> None:
     print("======================")
     try:
         for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            if volume.name == volume_name:
+                **{"svm.name": svm_name, 'volume.name': volume_name}, fields="uuid"):
                 print(volume.uuid)
                 return volume.uuid
     except NetAppRestError as error:
