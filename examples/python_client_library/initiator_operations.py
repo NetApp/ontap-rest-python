@@ -21,8 +21,8 @@ https://opensource.org/licenses/BSD-3-Clause
 
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Igroup, IgroupInitiator
-from utils import Argument, parse_args, setup_logging, setup_connection, show_svm, show_igroup, get_key_igroup
-
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, show_svm, show_igroup, get_key_igroup
 
 def list_igroup() -> None:
     """Lists Initiator Group."""
