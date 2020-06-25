@@ -13,7 +13,8 @@ from getpass import getpass
 import logging
 import subprocess
 from typing import List, Union
-from netapp_ontap.resources import Svm, Volume, Aggregate, Snapshot, SnapmirrorRelationship, Qtree, QuotaRule, Igroup
+from netapp_ontap.resources import Svm, Volume, Aggregate, Snapshot
+from netapp_ontap.resources import SnapmirrorRelationship, Qtree, QuotaRule, Igroup
 from netapp_ontap.resources import IgroupInitiator, Disk, Node, IpInterface, Lun
 from netapp_ontap import config, HostConnection
 from netapp_ontap import NetAppRestError
@@ -193,8 +194,8 @@ def show_volume(svm_name) -> None:
         print("Exception caught :" + str(error))
 
 
-def get_key_svm(svm_name):
-    """Lists SVM"""
+def get_key_svm(svm_name): -> None:
+    """Get key of a SVM"""
     print()
     print("Getting SVM Details")
     print("===================")
@@ -206,7 +207,6 @@ def get_key_svm(svm_name):
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
-
 
 def get_key_volume(svm_name, volume_name) -> None:
     """Lists Volumes"""
@@ -271,7 +271,7 @@ def show_snapmirror() -> None:
         print("Exception caught :" + str(error))
 
 
-def show_qtree(svm_name, volume_name):
+def show_qtree(svm_name, volume_name) -> None:
     """List Qtrees in a Volume"""
     vol_uuid = get_key_volume(svm_name, volume_name)
     print("The List of Qtrees:-")
@@ -300,7 +300,7 @@ def show_quotarule() -> None:
 
 
 def get_key_quotarule_qtree(svm_name, volume_name, qtree_name) -> None:
-    """Lists Quota Rule"""
+    """Lists Quota Rule in a qtree"""
     print()
     print("Getting Quota Rule Details")
     print("==========================")
@@ -317,7 +317,7 @@ def get_key_quotarule_qtree(svm_name, volume_name, qtree_name) -> None:
 
 
 def get_key_quotarule_volume(svm_name, volume_name) -> None:
-    """Lists Quota Rule"""
+    """Gets key of Quota Rule of volume"""
     print()
     print("Getting Quota Rule Details")
     print("==========================")
@@ -334,6 +334,7 @@ def get_key_quotarule_volume(svm_name, volume_name) -> None:
 
 
 def show_igroup(svm_name) -> None:
+    """Lists iGroup"""
     print()
     print("Getting Initiator Group Details")
     print("===============================")
@@ -349,6 +350,7 @@ def show_igroup(svm_name) -> None:
 
 
 def show_initiator(svm_name, igroup_name) -> None:
+    """Lists initiator"""
     igroup_uuid = get_key_igroup(svm_name, igroup_name)
     try:
         for ini in IgroupInitiator.get_collection(
@@ -361,7 +363,8 @@ def show_initiator(svm_name, igroup_name) -> None:
         print("Exception caught :" + str(error))
 
 
-def get_key_igroup(svm_name, igroup_name):
+def get_key_igroup(svm_name, igroup_name) -> None:
+    """Gets the key for iGroup"""
     print()
     print("Getting Initiator Group Details")
     print("===============================")
@@ -377,7 +380,8 @@ def get_key_igroup(svm_name, igroup_name):
         print("Exception caught :" + str(error))
 
 
-def show_disk():
+def show_disk() -> None:
+    """Lists disks details in cluster"""
     print()
     print("Getting Disk Details")
     print("===============================")
@@ -391,7 +395,7 @@ def show_disk():
         print("Exception caught :" + str(error))
 
 
-def show_interface():
+def show_interface() -> None:
     """ List Interface"""
     print("\n List of Interface:- \n")
     try:
@@ -404,7 +408,7 @@ def show_interface():
         print("Exception caught :" + str(error))
 
 
-def show_lun():
+def show_lun() -> None:
     """ List LUN"""
     print("\n List of LUN:- \n")
     try:
