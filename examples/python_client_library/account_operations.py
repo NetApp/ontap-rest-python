@@ -18,7 +18,7 @@ You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
 """
-
+import getpass
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import (
     Account,
@@ -26,7 +26,6 @@ from netapp_ontap.resources import (
     Role,
     RolePrivilege
 )
-import getpass
 from utils import Argument, step, substep, parse_args, setup_connection, setup_logging
 
 
