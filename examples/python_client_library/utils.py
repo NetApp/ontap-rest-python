@@ -202,8 +202,8 @@ def get_key_svm(svm_name) -> None:
     try:
         for svm in Svm.get_collection(
                 **{'svm.name': svm_name}, fields="uuid"):
-                print(svm.uuid)
-                return svm.uuid
+            print(svm.uuid)
+            return svm.uuid
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
@@ -216,8 +216,8 @@ def get_key_volume(svm_name, volume_name) -> None:
     try:
         for volume in Volume.get_collection(
                 **{"svm.name": svm_name, 'volume.name': volume_name}, fields="uuid"):
-                print(volume.uuid)
-                return volume.uuid
+            print(volume.uuid)
+            return volume.uuid
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
