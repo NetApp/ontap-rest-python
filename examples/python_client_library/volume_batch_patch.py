@@ -6,7 +6,7 @@ ONTAP REST API Python Sample Scripts
 This script was developed by NetApp to help demonstrate NetApp technologies. This
 script is not officially supported as a standard NetApp product.
 
-Purpose: THE FOLLOWING SCRIPT SHOWS VOLUME BATCH PATCHING OPERATIONS USING REST API PYTHON CLIENT LIBRARY
+Purpose: THIS SCRIPT SHOWS VOLUME BATCH PATCHING OPERATIONS USING REST API PYTHON CLIENT LIBRARY
 
 usage: python3 volume_batch_patch.py [-h] -c CLUSTER [-u API_USER]
                                          [-p API_PASS]
@@ -25,7 +25,6 @@ from utils import Argument, parse_args, setup_logging, setup_connection, show_sv
 
 def patch_collection_volume() -> None:
     """Update the volume collection"""
-    """Turn the given volumes off then on again"""
     print("=============================================")
     print()
     show_svm()
