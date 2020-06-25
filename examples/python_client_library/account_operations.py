@@ -20,7 +20,6 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 from netapp_ontap import NetAppRestError
-from netapp_ontap.error import NetAppRestError
 from netapp_ontap.resources import (
     Account,
     AccountApplication,
