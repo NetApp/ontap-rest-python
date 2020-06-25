@@ -40,8 +40,7 @@ from netapp_ontap.error import NetAppRestError
 from netapp_ontap.resources import CLI, Node, Software, SoftwarePackage, SoftwarePackageDownload
 
 from utils import (
-    Argument, parse_args, setup_logging, setup_connection, step, substep,
-    LiveMultilineOutput
+    Argument, parse_args, setup_logging, setup_connection, step, substep
 )
 
 
@@ -155,7 +154,7 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details", required=True),
         Argument(
             "-p", "--port", "The port to open as an HTTP server to serve the ONTAP image from",
-            default=7654, arg_type=int,
+            default=7654
         ),
         Argument(
             "-i", "--image-path", "The path to an ONTAP image which will be downloaded by ONTAP",
