@@ -30,11 +30,11 @@ def list_license() -> None:
     print("Getting License Details")
     print("=======================")
     try:
-        for license in LicensePackage.get_collection(
+        for lic in LicensePackage.get_collection(
                 fields="licenses.serial_number"):
             print(
                 "License Name = %s, License Serial Number = %s" %
-                (license.name, license.licenses[0].serial_number))
+                (lic.name, lic.licenses[0].serial_number))
     except NetAppRestError as error:
         print("Exception caught :" + str(error))
 
@@ -58,13 +58,13 @@ def delete_license() -> None:
         "which license would you like to delete:- ")
 
     try:
-        license = LicensePackage.find(name=license_type)
+        licen = LicensePackage.find(name=license_type)
     except NetAppRestError as error:
         print("Exception caught :" + str(error))
 
     try:
-        if license.delete(poll=True):
-            print("License submitted successfully.")
+        if licen.delete(poll=True):
+            print("License deleted successfully.")
     except NetAppRestError as error:
         print("Exception caught :" + str(error))
 
