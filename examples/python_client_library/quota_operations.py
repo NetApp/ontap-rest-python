@@ -22,7 +22,7 @@ https://opensource.org/licenses/BSD-3-Clause
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import QuotaRule
 from utils import Argument, parse_args, setup_logging, setup_connection
-from utils import show_svm, show_volume, show_qtree, get_key_quotarule_qtree
+from utils import show_svm, show_volume, show_qtree
 
 
 def list_quotarule() -> None:
