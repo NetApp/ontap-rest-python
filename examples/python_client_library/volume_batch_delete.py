@@ -40,7 +40,6 @@ def delete_collection_volume() -> None:
     volume_names = list(map(str, input(
         "\nEnter the Volume names to be Deleted [eg: aaa bbb ccc] : ").strip().split()))[:noofnames]
     volume_names_final = '|'.join([str(v) for v in volume_names])
-    page_size = min(len(volume_names_final) - 1, 1)
 
     try:
         Volume.delete_collection(name=volume_names_final)
