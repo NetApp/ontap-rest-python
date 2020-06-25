@@ -75,7 +75,7 @@ def patch_snapmirror() -> None:
     snapmirror_uuid = input("Enter the UUID of the snapmirror to be updated:-")
     snapmirrortransfer = SnapmirrorRelationship.find(uuid=snapmirror_uuid)
     snapchoice = input(
-        "What state update would you like? [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
+        "Enter the state to update?[snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
     snapmirrortransfer.state = snapchoice
     try:
         if snapmirrortransfer.patch(poll=True):
