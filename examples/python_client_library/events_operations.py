@@ -97,7 +97,7 @@ def show_emsfilter() -> None:
                     pprint.pprint(ruleindex.message_criteria.snmp_trap_types)
                     pprint.pprint(ruleindex.type)
                 except Exception as e:
-                    print("Index cannot be processed")
+                    print("Exception: ", e)
     except NetAppRestError as error:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
