@@ -18,13 +18,10 @@ You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
 """
-import argparse
-from getpass import getpass
-import logging
 import sys
 
-from netapp_ontap import config, HostConnection, NetAppRestError
-from netapp_ontap.resources import Svm, Volume
+from netapp_ontap import NetAppRestError
+from netapp_ontap.resources import Volume
 from netapp_ontap.resources import CifsShare
 from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm
 
