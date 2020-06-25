@@ -21,7 +21,8 @@ https://opensource.org/licenses/BSD-3-Clause
 
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import QuotaRule
-from utils import Argument, parse_args, setup_logging, setup_connection, show_svm, show_volume, get_key_svm, get_key_volume, show_qtree, get_key_quotarule_qtree
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import show_svm, show_volume, show_qtree, get_key_quotarule_qtree
 
 
 def list_quotarule() -> None:
@@ -66,12 +67,12 @@ def create_quotarule() -> None:
         dataobj['qtree'] = tmp3
         dataobj['type'] = "tree"
     if quota_type == 'users':
-        dataobj['type'] = user
+        dataobj['type'] = "user"
         dataobj['user_mapping'] = False
         tmp3 = []
         dataobj['users'] = tmp3
     if quota_type == 'group':
-        dataobj['type'] = group
+        dataobj['type'] = "group"
         dataobj['group'] = {}
     spahali = input(
         "Enter the Space Hard-Limit:- ")
@@ -131,8 +132,6 @@ def patch_quotarule() -> None:
         show_qtree(svm_name, volume_name)
         qtree_name = input(
             "Enter the name of the qtree for which the quota needs to be modified:- ")
-        quotarule_uuid = get_key_quotarule_qtree(
-            svm_name, volume_name, qtree_name)
         try:
             quotarule = QuotaRule.find(
                 svm=svm_name, volume=volume_name, qtree=qtree_name)
@@ -162,7 +161,7 @@ def patch_quotarule() -> None:
             "Enter the File Hard-Limit:- ")
         fisoli = input(
             "Enter the File Soft-Limit:- ")
-        quotarule.files = {"hard_limit": fihali, "soft_limit": spasoli}
+        quotarule.files = {"hard_limit": fihali, "soft_limit": fisoli}
 
     try:
         if quotarule.patch(poll=True):
@@ -200,8 +199,6 @@ def delete_quotarule() -> None:
         show_qtree(svm_name, volume_name)
         qtree_name = input(
             "Enter the name of the qtree for which the quota needs to be modified:- ")
-        quotarule_uuid = get_key_quotarule_qtree(
-            svm_name, volume_name, qtree_name)
         try:
             quotarule = QuotaRule.find(
                 svm=svm_name, volume=volume_name, qtree=qtree_name)
