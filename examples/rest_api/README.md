@@ -8,6 +8,7 @@ Before running the example scripts , make sure the following packages are instal
 
 * requests 2.21.0 or later
 * texttable 1.6.2
+* python-dateutil
 
 ## Summary of the REST API scripts
 
