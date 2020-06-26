@@ -20,36 +20,14 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, Qtree
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Qtree
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import show_svm, show_volume, get_key_volume, show_qtree
 
-def show_svm() -> None:
-    """ Show SVMs in a cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
-def show_volume(svm_name) -> None:
-    """Show volumes in a SVM"""
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_qtree():
+def list_qtree():
     """List Qtrees in a Volume"""
+    print()
     print()
     print("The List of SVMs:-")
     show_svm()
@@ -59,17 +37,20 @@ def show_qtree():
     print()
     show_volume(svm_name)
     print()
-    vol_uuid = input(
-        "Enter the Volume UUID from which the Qtrees need to be listed [UUID]:-")
+    volume_name = input(
+        "Enter the Volume from which the Qtrees need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    print()
     print("The List of Qtrees:-")
     print("====================")
     try:
         for qtree in Qtree.get_collection(**{"volume.uuid": vol_uuid}):
             print("Name:- %s  ID:- %s" % (qtree.name, qtree.id))
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
     return vol_uuid
+
 
 def create_qtree() -> None:
     """Create qtrees"""
@@ -99,15 +80,26 @@ def create_qtree() -> None:
         if qtree.post(poll=True):
             print("Qtree  %s created Successfully" % qtree.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def patch_qtree() -> None:
     """Update Qtree"""
     print("=============================================")
     print()
-    vol_uuid = show_qtree()
-
+    print("The List of SVMs:-")
+    show_svm()
+    print()
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
+    print()
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    show_qtree(svm_name, volume_name)
     print()
     print("=============================================")
     print("Enter the following details to Update a qtree")
@@ -117,7 +109,6 @@ def patch_qtree() -> None:
     try:
         qtree = Qtree.find(vol_uuid, name=qtree_name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     nambool = input("Would you like to update the Qtree name (y/n): ")
@@ -129,14 +120,26 @@ def patch_qtree() -> None:
         if qtree.patch(poll=True):
             print("Qtree  %s Updated Successfully" % qtree.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def delete_qtree() -> None:
     """Delete Qtree"""
     print("=============================================")
     print()
-    vol_uuid = show_qtree()
+    print("The List of SVMs:-")
+    show_svm()
+    print()
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
+    print()
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    show_qtree(svm_name, volume_name)
     print()
     print("=============================================")
     print("Enter the following details to Delete a qtree")
@@ -146,25 +149,24 @@ def delete_qtree() -> None:
     try:
         qtree = Qtree.find(vol_uuid, name=qtree_name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
         if qtree.delete(poll=True):
             print("Qtree  %s has been deleted Successfully." % qtree.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def qtree_ops() -> None:
     """Qtree Operations"""
     print("Demonstrates Qtree Operations using REST API Python Client Library.")
-    print("==================================================================")
+    print("===================================================================")
     print()
     qtreebool = input(
-        "What Qtree Operation would you like to do? [show/create/update/delete] ")
-    if qtreebool == 'show':
-        show_qtree()
+        "What Qtree Operation would you like to do? [list/create/update/delete] ")
+    if qtreebool == 'list':
+        list_qtree()
     if qtreebool == 'create':
         create_qtree()
     if qtreebool == 'update':
@@ -172,19 +174,21 @@ def qtree_ops() -> None:
     if qtreebool == 'delete':
         delete_qtree()
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates Qtree Operations using REST API Python Client Library.", arguments,
+        "Demonstrates Qtree Operations using REST API Python Client Library.",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     qtree_ops()
 
+
 if __name__ == "__main__":
     main()
-    

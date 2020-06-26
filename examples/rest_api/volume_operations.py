@@ -19,132 +19,13 @@ https://opensource.org/licenses/BSD-3-Clause
 
 """
 import sys
-import time
-import base64
-import argparse
-import logging
-from getpass import getpass
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, get_key_snapshot, get_key_volumes, get_key_svms, show_svm, show_volume, show_snapshot, show_aggregate, check_job_status
 requests.packages.urllib3.disable_warnings()
 
-def get_size(vol_size):
-    """ convert to bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
 
-def get_snapshots(cluster: str, headers_inc: str, vol_uuid: str):
-    """ get snapshots json"""
-    snap_api_url = "https://{}/api/storage/volumes/{}/snapshots".format(
-        cluster, vol_uuid)
-    try:
-        job_response = requests.get(
-            snap_api_url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    url_text = job_response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return job_response.json()
-
-def get_key_snapshot(snapshot_name: str, vol_uuid: str, cluster: str, headers_inc: str):
-    """ Get Snapshot Key"""
-    print()
-    tmp = dict(get_snapshots(cluster, headers_inc, vol_uuid))
-    snap = tmp['records']
-    print()
-    print("The UUID of the Snapshot is ")
-    for i in snap:
-        if i['name'] == snapshot_name:
-            print(i['uuid'])
-            return i['uuid']
-
-def get_volumes(cluster: str, headers_inc: str):
-    """ get volumes json"""
-    url = "https://{}/api/storage/volumes/".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def get_key_volumes(vol_name: str, cluster: str, headers_inc: str):
-    """ get volume keys"""
-    print()
-    tmp = dict(get_volumes(cluster, headers_inc))
-    vols = tmp['records']
-    print()
-    print("The UUID of the Volume is ")
-    for i in vols:
-        if i['name'] == vol_name:
-            print(i['uuid'])
-            return i['uuid']
-
-def get_svms(cluster: str, headers_inc: str):
-    """ get the svm json"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def get_key_svms(svm_name: str, cluster: str, headers_inc: str):
-    """ get svm key"""
-    tmp = dict(get_svms(cluster, headers_inc))
-    svms = tmp['records']
-    print("The UUID of the SVM is ")
-    for i in svms:
-        if (i['name']) == svm_name:
-            print(i['uuid'])
-            return i['uuid']
-
-def show_svm(cluster: str, headers_inc: str):
-    """ List the svm"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print(" List of SVMs:- ")
-    print("================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_volume(cluster: str, headers_inc: str):
-    """ list the volumes"""
+def list_volume(cluster: str, headers_inc: str):
+    """ List the volumes"""
     print("The List of SVMs")
     show_svm(cluster, headers_inc)
     print()
@@ -175,90 +56,20 @@ def show_volume(cluster: str, headers_inc: str):
     for i in svms:
         print("Volume Name :- %s; Volume UUID :- %s" % (i['name'], i['uuid']))
 
-def show_snapshot(cluster: str, headers_inc: str):
-    """ list snapshots"""
-    print("The List of Volumes")
-    show_volume(cluster, headers_inc)
-    print()
-    vol_name = input(
-        "Enter the Volume from which the Snapshot need to be listed:-")
-    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
-    print()
-    print("Getting Snapshot Details")
-    print("======================")
-    snap_api_url = "https://{}/api/storage/volumes/{}/snapshots".format(
-        cluster, vol_uuid)
-    try:
-        response = requests.get(snap_api_url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_aggregate(cluster: str, headers_inc: str):
-    """ list aggregates"""
-    url = "https://{}/api/storage/aggregates".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(err)
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(err)
-        sys.exit(1)
-    tmp = dict(response.json())
-    aggr = tmp['records']
-    print()
-    print("List of Aggregates:- ")
-    print("=====================")
-    for i in aggr:
-        print(i['name'])
-
-def check_job_status(job_status: str, headers_inc: str, cluster: str):
-    """ check job status"""
-    if job_status['state'] == "failure":
-        if job_status['code'] == 460770:
-            print("SVM Already Exists")
-        else:
-            print("Operation failed due to :{}".format(job_status['message']))
-    elif job_status['state'] == "success":
-        print("Operation completed successfully.")
-    else:
-        job_status_url = "https://{}/api/cluster/jobs/{}".format(
-            cluster, job_status['uuid'])
-        try:
-            job_response = requests.get(
-                job_status_url, headers=headers_inc, verify=False)
-        except requests.exceptions.HTTPError as err:
-            print(err)
-            sys.exit(1)
-        except requests.exceptions.RequestException as err:
-            print(err)
-            sys.exit(1)
-        job_status = job_response.json()
-        time.sleep(5)
-        check_job_status(job_status, headers_inc, cluster)
 
 def delete_volume(cluster: str, headers_inc: str):
-    """ delete the volume"""
+    """ Delete the volume"""
     print("=============================================")
+    show_svm(cluster, headers_inc)
     print()
-    show_volume(cluster, headers_inc)
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
     print()
-    volname = input("Enter the name of the volume that needs to be Deleted:- ")
-    vol_uuid = get_key_volumes(volname, cluster, headers_inc)
+    show_volume(cluster, headers_inc, svm_name)
+    print()
+    volume_name = input(
+        "Enter the name of the volume that needs to be Deleted:- ")
+    vol_uuid = get_key_volumes(svm_name, volume_name, cluster, headers_inc)
     dataobj = {}
     urlpath = "https://{}/api/storage/volumes/" + vol_uuid
     url = urlpath.format(cluster)
@@ -278,7 +89,8 @@ def delete_volume(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -292,8 +104,9 @@ def delete_volume(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def create_volume(cluster: str, headers_inc: str):
-    """ create volume"""
+    """Create volume"""
     print()
     show_svm(cluster, headers_inc)
     print()
@@ -427,7 +240,8 @@ def create_volume(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -441,11 +255,16 @@ def create_volume(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def patch_volume(cluster: str, headers_inc: str):
-    """ update a volume"""
+    """ Update a volume"""
     print("=============================================")
+    show_svm(cluster, headers_inc)
     print()
-    show_volume(cluster, headers_inc)
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(cluster, headers_inc, svm_name)
     print()
     volname = input(
         "Enter the name of the volume that needs to be modified:- ")
@@ -462,6 +281,7 @@ def patch_volume(cluster: str, headers_inc: str):
         vol_size = input("Enter the new size of the Volume: ")
         vol_size_format = get_size(vol_size)
         dataobj['size'] = vol_size_format
+    print()
     autosizebool = input("Would you like to change autosize options (y/n):- ")
     if autosizebool == 'y':
         print("Enter the following Details")
@@ -546,7 +366,7 @@ def patch_volume(cluster: str, headers_inc: str):
         quotajson = {"enabled": bool(enable_quota)}
         dataobj['quota'] = quotajson
 
-    vol_uuid = get_key_volumes(volname, cluster, headers_inc)
+    vol_uuid = get_key_volumes(svm_name, volname, cluster, headers_inc)
     print()
     urlpath = "https://{}/api/storage/volumes/" + vol_uuid
     url = urlpath.format(cluster)
@@ -566,7 +386,8 @@ def patch_volume(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -585,16 +406,19 @@ def patch_volume(cluster: str, headers_inc: str):
 def clone_volume(cluster: str, headers_inc: str):
     """ Clone a volume"""
     print("=============================================")
+    show_svm(cluster, headers_inc)
     print()
-    show_volume(cluster, headers_inc)
-    print()
-    vol_name = input("Enter the name of the volume that needs to be Cloned:- ")
-    vol_uuid = get_key_volumes(vol_name, cluster, headers_inc)
-    print()
-    dataobj = {}
-    clone_name = input("Enter the name of the clone:- ")
     svm_name = input(
-        "Enter the name of the SVM the parent volume belongs to:- ")
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(cluster, headers_inc, svm_name)
+    print()
+    volume_name = input(
+        "Enter the name of the volume that needs to be Cloned:- ")
+    vol_uuid = get_key_volumes(svm_name, volume_name, cluster, headers_inc)
+    print()
+    clone_name = input("Enter the name of the clone:- ")
+    dataobj = {}
     svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     tmp = {'uuid': svm_uuid}
     dataobj['svm'] = tmp
@@ -602,18 +426,20 @@ def clone_volume(cluster: str, headers_inc: str):
     clone_volume_json = {
         "is_flexclone": bool("true"), "parent_svm": {
             "name": svm_name, "uuid": svm_uuid}, "parent_volume": {
-            "name": vol_name, "uuid": vol_uuid}}
+                "name": volume_name, "uuid": vol_uuid}}
     dataobj['clone'] = clone_volume_json
     clonesnapshot = input("Would you like to Clone from Snapshot (y/n): ")
     if clonesnapshot == 'y':
+        show_snapshot(svm_name, volume_name, cluster, headers_inc)
         snapshot_name = input(
             "Enter the name of the snapshot that needs to be Cloned:- ")
-        snapshot_uuid = get_key_snapshot(snapshot_name, vol_uuid, cluster, headers_inc)
+        snapshot_uuid = get_key_snapshot(
+            svm_name, volume_name, snapshot_name, cluster, headers_inc)
         clone_snapshot_json = {
             "is_flexclone": bool("true"), "parent_snapshot": {
                 "name": snapshot_name, "uuid": snapshot_uuid}, "parent_svm": {
-                "name": svm_name, "uuid": svm_uuid}, "parent_volume": {
-                "name": vol_name, "uuid": vol_uuid}}
+                    "name": svm_name, "uuid": svm_uuid}, "parent_volume": {
+                        "name": volume_name, "uuid": vol_uuid}}
         dataobj['clone'] = clone_snapshot_json
     print(dataobj)
     url = "https://{}/api/storage/volumes".format(cluster)
@@ -636,7 +462,8 @@ def clone_volume(cluster: str, headers_inc: str):
     job_status = "https://{}{}".format(cluster,
                                        url_text['job']['_links']['self']['href'])
     try:
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
     except requests.exceptions.HTTPError as err:
         print(err)
         sys.exit(1)
@@ -650,6 +477,7 @@ def clone_volume(cluster: str, headers_inc: str):
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
 
+
 def volume_ops(cluster: str, headers_inc: str):
     """Volume Operation"""
     print()
@@ -657,9 +485,9 @@ def volume_ops(cluster: str, headers_inc: str):
     print("====================================")
     print()
     volumebool = input(
-        "What Volume Operation would you like to do? [show/create/update/delete/clone] ")
-    if volumebool == 'show':
-        show_volume(cluster, headers_inc)
+        "What Volume Operation would you like to do? [list/create/update/delete/clone] ")
+    if volumebool == 'list':
+        list_volume(cluster, headers_inc)
     if volumebool == 'create':
         create_volume(cluster, headers_inc)
     if volumebool == 'update':
@@ -668,47 +496,20 @@ def volume_ops(cluster: str, headers_inc: str):
         delete_volume(cluster, headers_inc)
     if volumebool == 'clone':
         clone_volume(cluster, headers_inc)
-    return
 
+def main() -> None:
+    """Main function"""
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates Volume Operations using REST API.", arguments,
+    )
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
 
-    parser = argparse.ArgumentParser(
-        description="THE FOLLOWING SCRIPT SHOWS VOLUME OPERATIONS USING REST API.", )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details")
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
-
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-
-    return parsed_args
+    volume_ops(args.cluster, headers)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    volume_ops(ARGS.cluster, headers)
-
-    print("Script Complete")
+    main()

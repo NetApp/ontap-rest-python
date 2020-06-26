@@ -20,87 +20,9 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 import sys
-import base64
-import argparse
-import logging
-from getpass import getpass
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm
 requests.packages.urllib3.disable_warnings()
-
-def get_size(vol_size):
-    """Convert MBs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-
-def get_svms(cluster: str, headers_inc: str):
-    """Get SVMs in a cluster"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as error:
-        print(str(error))
-        sys.exit(1)
-    except requests.exceptions.RequestException as error:
-        print(str(error))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def show_svm(cluster: str, headers_inc: str):
-    """List SVMs"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as error:
-        print(str(error))
-        sys.exit(1)
-    except requests.exceptions.RequestException as error:
-        print(str(error))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of SVMs:- ")
-    print("===============")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_volume(cluster: str, headers_inc: str, svm_name: str):
-    """ List volumes"""
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(
-        cluster, svm_name)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as error:
-        print(str(error))
-        sys.exit(1)
-    except requests.exceptions.RequestException as error:
-        print(str(error))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of Volumes :- ")
-    print("===================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
 
 
 def cifs_setup(cluster: str, headers_inc: str):
@@ -154,7 +76,6 @@ def cifs_setup(cluster: str, headers_inc: str):
     url_text = response.json()
     if 'error' in url_text:
         print(url_text)
-        sys.exit(1)
     print()
     print("Create the Volume:-")
     print("===================")
@@ -219,43 +140,20 @@ def cifs_setup(cluster: str, headers_inc: str):
         print(url_text)
         sys.exit(1)
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
 
-    parser = argparse.ArgumentParser(
-        description="This script will execute CIFS operations using ONTAP REST APIs.", )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details"
-    )
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+def main() -> None:
+    """Main function"""
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
-    return parsed_args
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates CIFS setup using REST API.", arguments,
+        )
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
+
+    cifs_setup(args.cluster, headers)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s")
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace(
-        '\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    cifs_setup(ARGS.cluster, headers)
-    print("Script Complete")
+    main()

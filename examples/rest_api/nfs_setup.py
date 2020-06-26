@@ -20,97 +20,10 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 import sys
-import base64
-import argparse
-import logging
-from getpass import getpass
 import requests
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size, get_key_svms, show_svm
 requests.packages.urllib3.disable_warnings()
 
-def get_size(vol_size):
-    """Convert MBs to Bytes"""
-    tmp = int(vol_size) * 1024 * 1024
-    return tmp
-
-def get_key_svms(cluster: str, headers_inc: str, svm_name: str):
-    """ Get SVM key"""
-    tmp = dict(get_svms(cluster, headers_inc))
-    svms = tmp['records']
-    for i in svms:
-        if i['name'] == svm_name:
-            # print i
-            return i['uuid']
-
-def get_svms(cluster: str, headers_inc: str):
-    """ get SVMs"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-    return response.json()
-
-def show_svm(cluster: str, headers_inc: str):
-    """ Show SVM"""
-    url = "https://{}/api/svm/svms".format(cluster)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of SVMs:- ")
-    print("================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
-
-def show_volume(cluster: str, headers_inc: str, svm_name: str):
-    """ Show Volume"""
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    url = "https://{}/api/storage/volumes/?svm.name={}".format(
-        cluster, svm_name)
-    try:
-        response = requests.get(url, headers=headers_inc, verify=False)
-    except requests.exceptions.HTTPError as err:
-        print(str(err))
-        sys.exit(1)
-    except requests.exceptions.RequestException as err:
-        print(str(err))
-        sys.exit(1)
-    url_text = response.json()
-    if 'error' in url_text:
-        print(url_text)
-        sys.exit(1)
-
-    tmp = dict(response.json())
-    svms = tmp['records']
-    print()
-    print("List of Volumes :- ")
-    print("===================")
-    for i in svms:
-        print(i['name'])
-    return response.json()
 
 def nfs_setup(cluster: str, headers_inc: str):
     """Demonstrates NFS Setup using REST APIs."""
@@ -164,7 +77,7 @@ def nfs_setup(cluster: str, headers_inc: str):
     clients = input("Enter client details [0.0.0.0/0]:- ")
 
     url2 = "https://{}/api/protocols/nfs/export-policies".format(cluster)
-    svm_uuid = get_key_svms(cluster, headers_inc, svm_name)
+    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     payload2 = {
         "name": export_policy_name,
         "rules": [
@@ -233,6 +146,7 @@ def nfs_setup(cluster: str, headers_inc: str):
             headers=headers_inc,
             json=payload3,
             verify=False)
+        print("Volume %s created" % vol_name)
     except requests.exceptions.HTTPError as err:
         print(str(err))
         sys.exit(1)
@@ -243,43 +157,24 @@ def nfs_setup(cluster: str, headers_inc: str):
     if 'error' in url_text:
         print(url_text)
         sys.exit(1)
+    print("NAS creation script completed.")
 
-def parse_args() -> argparse.Namespace:
-    """Parse the command line arguments from the user"""
 
-    parser = argparse.ArgumentParser(
-        description="Demonstrates NFS Setup using REST API.", )
-    parser.add_argument(
-        "-c", "--cluster", required=True, help="API server IP:port details")
-    parser.add_argument(
-        "-u",
-        "--api_user",
-        default="admin",
-        help="API Username")
-    parser.add_argument("-p", "--api_pass", help="API Password")
-    parsed_args = parser.parse_args()
+def main() -> None:
+    """Main function"""
 
-    # collect the password without echo if not already provided
-    if not parsed_args.api_pass:
-        parsed_args.api_pass = getpass()
+    arguments = [
+        Argument("-c", "--cluster", "API server IP:port details")]
+    args = parse_args(
+        "Demonstrates Volume Operations using REST API Python Client Library.",
+        arguments,
+    )
+    setup_logging()
+    headers = setup_connection(args.api_user, args.api_pass)
 
-    return parsed_args
+    nfs_setup(args.cluster, headers)
+    print("Script Complete")
+
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
-    )
-    ARGS = parse_args()
-    base64string = base64.encodestring(
-        ('%s:%s' %
-         (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
-
-    headers = {
-        'authorization': "Basic %s" % base64string,
-        'content-type': "application/json",
-        'accept': "application/json"
-    }
-
-    nfs_setup(ARGS.cluster, headers)
-    print("Script Complete")
+    main()

@@ -10,13 +10,10 @@ standard NetApp product.
 Purpose: Script to list all the aggregates in a cluster using ONTAP REST API.
 
 usage:python3 list_aggregates.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-list_aggregates.py:  the following arguments are required: -c/--cluster
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -36,6 +33,7 @@ def get_aggr(cluster: str, headers_inc: str):
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
 
+
 def disp_aggr(cluster: str, headers_inc: str):
     ctr = 0
     tmp = dict(get_aggr(cluster, headers_inc))
@@ -53,6 +51,7 @@ def disp_aggr(cluster: str, headers_inc: str):
     print("Number of Aggregates for the NetApp cluster:{}".format(ctr))
     setdisplay = tab.draw()
     print(setdisplay)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""

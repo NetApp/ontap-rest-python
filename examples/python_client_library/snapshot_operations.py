@@ -20,35 +20,12 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 
 from netapp_ontap import NetAppRestError
-from netapp_ontap.resources import Svm, Volume, Snapshot
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from netapp_ontap.resources import Snapshot
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import show_svm, show_volume, get_key_volume, show_snapshot
 
-def show_svm() -> None:
-    """Show SVM in a cluster"""
-    print()
-    print("Getting SVM Details")
-    print("===================")
-    try:
-        for svm in Svm.get_collection(fields="uuid"):
-            print("SVM name:-%s ; SVM uuid:-%s " % (svm.name, svm.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
 
-def show_volume(svm_name):
-    """List volumes in a SVM"""
-    print()
-    print("Getting Volume Details")
-    print("======================")
-    try:
-        for volume in Volume.get_collection(
-                **{"svm.name": svm_name}, fields="uuid"):
-            print("Name = %s; UUID = %s" % (volume.name, volume.uuid))
-    except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
-        print("Exception caught :" + str(error))
-
-def show_snapshot() -> None:
+def list_snapshot() -> None:
     """List Snapshots in a volume"""
     print()
     print("The List of SVMs:-")
@@ -59,31 +36,35 @@ def show_snapshot() -> None:
     print()
     show_volume(svm_name)
     print()
-    vol_uuid = input(
-        "Enter the Volume UUID from which the Snapshots need to be listed [UUID]:-")
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    print()
     print("The List of Snapshots:-")
     print("=======================")
     try:
         for snapshot in Snapshot.get_collection(vol_uuid):
             print(snapshot.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
-    return vol_uuid
+
 
 def create_snapshot() -> None:
     """Create snapshot """
     print()
-    print("The List of SVMs")
+    print("The List of SVMs:-")
     show_svm()
     print()
     svm_name = input(
-        "Enter the SVM on which the Volume Snapshot need to be created:-")
+        "Enter the SVM from which the Volumes need to be listed:-")
     print()
     show_volume(svm_name)
     print()
-    vol_uuid = input(
-        "Enter the Volume UUID on which the Snapshots need to be created[UUID]:-")
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
 
     print()
     snapshot_name = input("Enter the name of the snapshot to be created:-")
@@ -99,17 +80,26 @@ def create_snapshot() -> None:
         if snapshot.post(poll=True):
             print("Snapshot  %s created Successfully" % snapshot.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def patch_snapshot() -> None:
     """Update Snapshot"""
-    print("=============================================")
     print()
-    vol_uuid = show_snapshot()
+    print("The List of SVMs:-")
+    show_svm()
     print()
-    print("=============================================")
-    print("Please enter the following to update the required snapshot")
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
+    print()
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    show_snapshot(svm_name, volume_name)
+    print()
 
     snapshot_name = input("Enter the name of the snapshot to be updated:-")
 
@@ -132,24 +122,34 @@ def patch_snapshot() -> None:
         if snapshot.patch(poll=True):
             print("Snapshot  %s Updated Successfully" % snapshot.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def delete_snapshot() -> None:
     """Delete Snapshot"""
-    print("=============================================")
+
     print()
-    vol_uuid = show_snapshot()
+    print("The List of SVMs:-")
+    show_svm()
     print()
-    print("=============================================")
-    print("please enter the following the details to delete snapshot.")
+    svm_name = input(
+        "Enter the SVM from which the Volumes need to be listed:-")
+    print()
+    show_volume(svm_name)
+    print()
+    volume_name = input(
+        "Enter the Volume from which the Snapshots need to be listed:-")
+    print()
+    vol_uuid = get_key_volume(svm_name, volume_name)
+    show_snapshot(svm_name, volume_name)
+    print()
+
     snapshotname = input(
         "Enter the name of the snapshot that needs to be Deleted:- ")
 
     try:
         snapshot = Snapshot.find(vol_uuid, name=snapshotname)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
     try:
@@ -158,8 +158,8 @@ def delete_snapshot() -> None:
                 "Snapshot  %s has been deleted Successfully." %
                 snapshot.name)
     except NetAppRestError as error:
-        print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
+
 
 def snapshot_ops() -> None:
     """Snapshot Operation"""
@@ -167,9 +167,9 @@ def snapshot_ops() -> None:
     print("======================================================================")
     print()
     snapshotbool = input(
-        "What Snapshot Operation would you like to do? [show/create/update/delete] ")
-    if snapshotbool == 'show':
-        show_snapshot()
+        "What Snapshot Operation would you like to do? [list/create/update/delete] ")
+    if snapshotbool == 'list':
+        list_snapshot()
     if snapshotbool == 'create':
         create_snapshot()
     if snapshotbool == 'update':
@@ -177,19 +177,21 @@ def snapshot_ops() -> None:
     if snapshotbool == 'delete':
         delete_snapshot()
 
+
 def main() -> None:
     """Main function"""
 
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates Snapshot Operations using REST API Python Client Library.", arguments,
+        "Demonstrates Snapshot Operations using REST API Python Client Library.",
+        arguments,
     )
     setup_logging()
     setup_connection(args.cluster, args.api_user, args.api_pass)
 
     snapshot_ops()
 
+
 if __name__ == "__main__":
     main()
-    

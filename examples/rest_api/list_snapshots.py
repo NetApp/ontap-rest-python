@@ -11,14 +11,10 @@ Purpose: Script to list all the snapshots in a cluster using ONTAP REST API.
 
 Usage: python3 list_snapshots.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME [-u API_USER]
                          [-p API_PASS]
-list_snapshots.py:  the following arguments are required: 
--c/--cluster, -vs/--svm_name ,-v/--volume_name API Password> ]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -32,12 +28,18 @@ import texttable as tt
 import requests
 requests.packages.urllib3.disable_warnings()
 
-def list_snaps(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
+
+def list_snaps(
+        cluster: str,
+        volume_name: str,
+        svm_name: str,
+        headers_inc: str):
     """ List Snaps """
     key = get_key(cluster, volume_name, svm_name, headers_inc)
     url4 = "https://{}/api/storage/volumes/{}/snapshots".format(cluster, key)
     response = requests.get(url4, headers=headers_inc, verify=False)
     return response.json()
+
 
 def get_key(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
     """ Get volume key"""
@@ -47,6 +49,7 @@ def get_key(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
         if i['name'] == volume_name:
             return i['uuid']
 
+
 def get_volumes(cluster: str, svm_name: str, headers_inc: str):
     """ Get Volumes"""
     url = "https://{}/api/storage/volumes?svm.name={}".format(
@@ -54,7 +57,12 @@ def get_volumes(cluster: str, svm_name: str, headers_inc: str):
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
 
-def disp_snaps(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
+
+def disp_snaps(
+        cluster: str,
+        volume_name: str,
+        svm_name: str,
+        headers_inc: str):
     tmp = dict(
         list_snaps(
             cluster,
@@ -74,6 +82,7 @@ def disp_snaps(cluster: str, volume_name: str, svm_name: str, headers_inc: str):
         tab.set_cols_align(['c'])
     detailtable = tab.draw()
     print(detailtable)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""

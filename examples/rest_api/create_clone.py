@@ -12,15 +12,10 @@ Purpose: Script to create a clone using ONTAP REST API.
 usage: python3 create_clone.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME -s
                        SNAPSHOT_NAME -cn CLONE_NAME  [-u API_USER]
                        [-p API_PASS]
-create_clone.py: the following arguments are required: -c/--cluster,
- -v/--volume_name, -vs/--svm_name, -s/--snapshot_name, -cn/--clone_name,
- -a/--aggr_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -35,6 +30,7 @@ import requests
 
 requests.packages.urllib3.disable_warnings()
 
+
 def get_key_vol(cluster: str, volume_name: str, headers_inc: str):
     """Get volume key"""
     tmp = dict(get_vols(cluster, headers_inc))
@@ -43,11 +39,13 @@ def get_key_vol(cluster: str, volume_name: str, headers_inc: str):
         if i['name'] == volume_name:
             return i['uuid']
 
+
 def get_vols(cluster: str, headers_inc: str):
     """Get Volumes"""
     url = "https://{}/api/storage/volumes/".format(cluster)
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
+
 
 def check_job_status(cluster: str, job_status, headers_inc: str):
     """Check Job Status"""
@@ -60,9 +58,11 @@ def check_job_status(cluster: str, job_status, headers_inc: str):
         time.sleep(2)
         url_text = '/api/cluster/jobs/' + job_status['uuid']
         job_status = "https://{}/{}".format(cluster, url_text)
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
         job_status = job_response.json()
-        check_job_status(cluster , job_status, headers_inc)
+        check_job_status(cluster, job_status, headers_inc)
+
 
 def make_clone(
         cluster: str,
@@ -81,13 +81,18 @@ def make_clone(
         "name": clone_name
     }
 
-    response = requests.post(url, headers=headers_inc, json=payload, verify=False)
+    response = requests.post(
+        url,
+        headers=headers_inc,
+        json=payload,
+        verify=False)
     url_text = response.json()
     job_status = "https://{}/{}".format(cluster,
                                         url_text['job']['_links']['self']['href'])
     job_response = requests.get(job_status, headers=headers_inc, verify=False)
     job_status = job_response.json()
     check_job_status(cluster, job_status, headers_inc)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""

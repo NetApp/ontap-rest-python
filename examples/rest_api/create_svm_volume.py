@@ -13,13 +13,10 @@ usage: python3 create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME
                             -sz VOLUME_SIZE -a AGGR_NAME -er
                             EXPORT_POLICY_RULE -en EXPORT_POLICY_NAME
                             [-u API_USER] [-p API_PASS]
-create_svm_volume.py:  the following arguments are required: -c/--cluster, -v/--volume_name, -vs/--svm_name, -sz/--volume_size, -a/--aggr_name, -er/--export_policy_rule, -en/--export_policy_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -33,10 +30,12 @@ import logging
 import requests
 requests.packages.urllib3.disable_warnings()
 
+
 def get_size(volume_size: int):
     """ Convert Mbs to Bytes"""
     tmp = int(volume_size) * 1024 * 1024
     return tmp
+
 
 def make_volume(
         cluster: str,
@@ -63,17 +62,23 @@ def make_volume(
         }
     }
 
-    response = requests.post(url, headers=headers_inc, json=payload, verify=False)
+    response = requests.post(
+        url,
+        headers=headers_inc,
+        json=payload,
+        verify=False)
     time.sleep(5)
     url_text = response.json()
     try:
         job_status = "https://{}/{}".format(cluster,
                                             url_text['job']['_links']['self']['href'])
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
         job_status = job_response.json()
         check_vol_job_status(cluster, job_status, headers_inc)
-    except:
+    except BaseException:
         print(url_text)
+
 
 def get_key_svms(cluster: str, svm_name: str, headers_inc: str):
     """Get SVM Keys"""
@@ -83,11 +88,13 @@ def get_key_svms(cluster: str, svm_name: str, headers_inc: str):
         if i['name'] == svm_name:
             return i['uuid']
 
+
 def get_svms(cluster: str, headers_inc: str):
     """Get SVMs"""
     url = "https://{}/api/svm/svms".format(cluster)
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
+
 
 def create_export_policy(
         cluster: str,
@@ -119,7 +126,12 @@ def create_export_policy(
         "svm.uuid": svm_uuid
     }
 
-    response = requests.post(url, headers=headers_inc, json=payload, verify=False)
+    response = requests.post(
+        url,
+        headers=headers_inc,
+        json=payload,
+        verify=False)
+
 
 def check_job_status(
         cluster: str,
@@ -169,9 +181,10 @@ def check_job_status(
                 export_policy_rule,
                 export_policy_name,
                 headers_inc)
-        except:
+        except BaseException:
             print("The job errored out.")
-            print(url_text)  
+            print(url_text)
+
 
 def check_vol_job_status(cluster: str, job_status, headers_inc: str):
     """ Check Volume Job Status"""
@@ -197,6 +210,7 @@ def check_vol_job_status(cluster: str, job_status, headers_inc: str):
         except BaseException:
             print("The job errored out.")
 
+
 def make_svm(
         cluster: str,
         volume_name: str,
@@ -210,13 +224,18 @@ def make_svm(
     payload = {
         "name": svm_name
     }
-    response = requests.post(url, headers=headers_inc, json=payload, verify=False)
+    response = requests.post(
+        url,
+        headers=headers_inc,
+        json=payload,
+        verify=False)
     time.sleep(5)
     url_text = response.json()
     try:
         job_status = "https://{}{}".format(cluster,
                                            url_text['job']['_links']['self']['href'])
-        job_response = requests.get(job_status, headers=headers_inc, verify=False)
+        job_response = requests.get(
+            job_status, headers=headers_inc, verify=False)
         job_status = job_response.json()
         check_job_status(
             cluster,
@@ -228,9 +247,10 @@ def make_svm(
             export_policy_rule,
             export_policy_name,
             headers_inc)
-    except:
+    except BaseException:
         print("The job errored out.")
         print(url_text)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""

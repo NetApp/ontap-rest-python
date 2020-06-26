@@ -11,13 +11,10 @@ Purpose: Script to list volumes using ONTAP REST API.
 
 Usage: list_volumes.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                        [-p API_PASS]
-list_volumes.py: the following arguments are required: -c/--cluster, -vs/--svm_name
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
-
 Licensed under the BSD 3-Clause “New” or Revised” License (the "License");
 you may not use this file except in compliance with the License.
-
 You may obtain a copy of the License at
 https://opensource.org/licenses/BSD-3-Clause
 
@@ -30,12 +27,14 @@ import texttable as tt
 import requests
 requests.packages.urllib3.disable_warnings()
 
+
 def get_volumes(cluster: str, svm_name: str, headers_inc: str):
     """Get Volumes"""
     url = "https://{}/api/storage/volumes/?svm.name={}".format(
         cluster, svm_name)
     response = requests.get(url, headers=headers_inc, verify=False)
     return response.json()
+
 
 def disp_vol(cluster: str, svm_name: str, headers_inc: str):
     """Display Volumes"""
@@ -55,6 +54,7 @@ def disp_vol(cluster: str, svm_name: str, headers_inc: str):
     print("Number of Volumes for this Storage Tenant:{}")
     setdisplay = tab.draw()
     print(setdisplay)
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
