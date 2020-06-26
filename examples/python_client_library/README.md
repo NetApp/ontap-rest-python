@@ -39,7 +39,6 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 | list_volumes.py                      | Lists all the volumes in a SVM using ONTAP REST API Python Client Library.     |   
 | list_vserver.py                      | Lists all the SVMs in a cluster using ONTAP REST API Python Client Library.      |    
 | lun_operations.py                    | Demonstrates lun creation, deletion, updation and listing using ONTAP REST API Python Client Library.      |    
-| ndu_upgrade.py 		   | Demonstrates cluster ONTAP upgrade using ONTAP REST API Python Client Library. The script lists the current version and available packages and downloads new software package to update.     |   
 | nfs_setup.py             | Demonstrates NFS Setup using ONTAP REST API Python Client Library. The script creates an export-policy and a volume and then, sets up a mount.      |     
 | qtree_operations.py      | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library.      |    
 | quota_operations.py      | Demonstrates quota operations like quota creation, updation, deletion and listing using ONTAP REST API Python Client Library.      |    
