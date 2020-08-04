@@ -54,7 +54,6 @@ The following table summaries the scripts used to access the ONTAP REST API usin
 | qtree_operations.py      | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API Python Client Library.      |    
 | quota_operations.py      | Demonstrates quota operations like quota creation, updation, deletion and listing using ONTAP REST API Python Client Library.      |    
 | snapmirror_operations.py | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API Python Client Library.       |     
-| snapshot_operations.py   | Demonstrates snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API Python Client Library.     |
 | volume_batch_delete.py   | Demonstrates volume batch delete operations using ONTAP REST API Python Client Library.     |   
 | volume_batch_patch.py    | Demonstrates volume batch update operations using ONTAP REST API Python Client Library.     |   
 | volume_operations.py     | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API Python Client Library.      |    
