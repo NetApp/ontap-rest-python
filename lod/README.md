@@ -28,4 +28,4 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
 ## After you finish
 
-You can run the sample Python scripts contained in the repository subfolders [**examples/python_client_library**]((https://github.com/NetApp/ontap-rest-python/tree/master/examples/rest_api) and [**examples/rest-api**](https://github.com/NetApp/ontap-rest-python/tree/master/examples/rest_api).
+You can run the sample Python scripts contained in the repository subfolders [**examples/python_client_library**](https://github.com/NetApp/ontap-rest-python/tree/master/examples/rest_api) and [**examples/rest-api**](https://github.com/NetApp/ontap-rest-python/tree/master/examples/rest_api).
