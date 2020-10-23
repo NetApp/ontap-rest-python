@@ -419,7 +419,7 @@ def show_lun() -> None:
         print("Error:- " % error.http_err_response.http_response.text)
         print("Exception caught :" + str(error))
 
-        
+
 class LiveMultilineOutput:
     """This is a class for managing multiline text output on the screen.
     While inside this class' context, the application can change the output's
@@ -457,4 +457,4 @@ class LiveMultilineOutput:
 
     def __exit__(self, exception_type, exception_value, traceback):
         # move down to the bottom
-        print("\033[%sB" % (self._lines_drawn - 1)).
+        print("\033[%sB" % (self._lines_drawn - 1))
