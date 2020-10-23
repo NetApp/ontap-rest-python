@@ -51,7 +51,7 @@ def disp_vol(cluster: str, svm_name: str, headers_inc: str):
         row = [vol]
         tab.add_row(row)
         tab.set_cols_align(['c'])
-    print("Number of Volumes for this Storage Tenant:{}")
+    print("Number of Volumes for this Storage Tenant: {}".format(ctr))
     setdisplay = tab.draw()
     print(setdisplay)
 
