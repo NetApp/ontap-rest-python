@@ -150,7 +150,7 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodestring(
+    base64string = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
