@@ -27,6 +27,7 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 |:------------------------------------|:-------------|
 | account_operations.py    	           | Demonstrates user account creation, deletion, updation and listing using ONTAP REST API      |
 | cifs_setup.py            			   | Demonstrates how CIFS shares can be setup using ONTAP REST API. It creates a volume and then creates a share on the volume. |
+| file_analytics_enable_disable.py              | Demonstrates enabling and disabling of File System analytics using ONTAP REST API      |    
 | initiator_operations.py              | Demonstrates initiator creation, deletion, updation and listing using ONTAP REST API      |    
 | iscsi_setup.py           | Demonstrates how ISCSI luns can be setup using ONTAP REST API. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group.      |    
 | nfs_setup.py             | Demonstrates NFS Setup using ONTAP REST API. The script creates an export-policy and a volume and then, sets up a mount.      |     
@@ -42,6 +43,7 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | create_svm_volume.py      |  Demonstrates SVM creation, volume creation and the associated Export Policy creation using ONTAP REST API.     |
 | create_volume.py                     | Demonstrates volume creation using ONTAP REST API on the specified SVM.     |  
 | events.py                 |   Demonstrates events management usecases in ONTAP such as listing of events, look for specific message and severity,workflow to notify specific event with event,filter and destination creation using ONTAP REST API.    |
+| file_system_analytics.py                  | Demonstrates File System Analytics usecases using using ONTAP REST API.      |   
 | list_aggregates.py                   | Lists all the aggregates in a cluster using ONTAP REST API.      |   
 | list_clones.py                       | Lists all the clones in a cluster using ONTAP REST API.       |     
 | list_snapshots.py                    | Lists all the snapshots in the specified volume using ONTAP REST API.      |     
@@ -49,7 +51,19 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | list_vserver.py                      | Lists all the SVMs in a cluster using ONTAP REST API.      |    
 | lun_operations.py                    | Demonstrates lun creation, deletion, updation and listing using ONTAP REST API      |    
 | qtree_operations.py      | Demonstrates qtree operations like qtree creation, updation, deletion and listing using ONTAP REST API.      |    
+| qtree_quota_metrics.py      | Demonstrates NAS usecase of qtree creation in a volume, Enabling Quota and displaying raw metrics of Qtree using ONTAP REST API.      |    
 | quota_operations.py      | Demonstrates quota operations like quota creation, updation, deletion and listing using ONTAP REST API.      |    
+| schedules_policies_sm_relationship.py | Demonstrates workflow of creating new schedules using cron or interval and retriving list of policies using ONTAP REST API.       |  
 | snapmirror_operations.py | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API.       |     
 | svm_operations.py        | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API.      |   
 | volume_operations.py     | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API.      |    
+
+## CLI Passthrough Scripts:
+To assist CLI and ONTAPI API users in their transition to the ONTAP REST API, ONTAP provides a REST endpoint to access the CLI. You can use this passthrough feature to execute any CLI command. For more information, Read [NetApp Documentation](https://docs.netapp.com/ontap-9/index.jsp?topic=%2Fcom.netapp.doc.dot-rest-api%2FGUID-BC72E449-FD75-4687-96C0-6A9A68708FBF.html).
+
+| Script                               | Description       |
+|:------------------------------------|:-------------|
+| service_policy.py  	           | Demonstrates network interface service-policy Diag mode CLI command usage in ONTAP REST API      |
+| system_fru_check.py              | Demonstrates fru-check show CLI command usage in ONTAP REST API.      |    
+| vserver_file_security_cli_passthrough.py               | Demonstrates vserver security file-directory CLI usage in ONTAP REST API      |    
+
