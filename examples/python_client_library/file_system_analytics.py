@@ -6,9 +6,9 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list volumes using ONTAP REST API Python Client Library.
+Purpose: Script to list file system analytics of volume using ONTAP REST API Python Client Library.
 
-usage: python3 file_system_analytics_cli.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
+usage: python3 file_system_analytics.py [-h] -c CLUSTER -vs SVM_NAME [-u API_USER]
                           [-p API_PASS]
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
