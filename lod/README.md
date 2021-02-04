@@ -18,7 +18,7 @@ You need a NetApp support account to sign in to the Lab on Demand.
 
    `git clone https://github.com/NetApp/ontap-rest-python.git`
 
-5. Initialize the lab environment by running the `lod_init.sh` script provided in the **lod** folder of this repository.
+5. Initialize the lab environment by running the `lod_init.sh` script provided in the **lod** folder of this repository. This script contains dependencies for scripts to run.
 
    `./lod/lod_init.sh`
 
