@@ -20,6 +20,8 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | aggregate_operations.py  	           | Demonstrates aggregate creation, deletion, updation and listing using ONTAP REST API      |
 | interface_operations.py              | Demonstrates interface creation, deletion, updation and listing using ONTAP REST API.      |    
 | license_operations.py                | Demonstrates license creation, deletion and listing using ONTAP REST API      |    
+| ndu_upgrade.py                | Demonstrates cluster software upgrade using ONTAP REST API      |    
+
 
 ## Day 1 Scripts:
 
@@ -55,6 +57,7 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | quota_operations.py      | Demonstrates quota operations like quota creation, updation, deletion and listing using ONTAP REST API.      |    
 | schedules_policies_sm_relationship.py | Demonstrates workflow of creating new schedules using cron or interval and retriving list of policies using ONTAP REST API.       |  
 | snapmirror_operations.py | Demonstrates SnapMirror operations like SnapMirror relationship creation, deletion, updation and listing using ONTAP REST API.       |     
+| svm_dr.py        | Demonstrates SVM disaster recovery from destination cluster using ONTAP REST API.      |   
 | svm_operations.py        | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API.      |   
 | volume_operations.py     | Demonstrates volume operations like volume creation, deletion, updation, cloning and listing using ONTAP REST API.      |    
 
@@ -65,5 +68,9 @@ To assist CLI and ONTAPI API users in their transition to the ONTAP REST API, ON
 |:------------------------------------|:-------------|
 | service_policy.py  	           | Demonstrates network interface service-policy Diag mode CLI command usage in ONTAP REST API      |
 | system_fru_check.py              | Demonstrates fru-check show CLI command usage in ONTAP REST API.      |    
-| vserver_file_security_cli_passthrough.py               | Demonstrates vserver security file-directory CLI usage in ONTAP REST API      |    
+| system_node_power.py.py  	           | Demonstrates system node power show  CLI command usage in ONTAP REST API      |
+| system_node_power_off_diag.py              | Demonstrates system node power off -node Diag mode CLI command usage in ONTAP REST API.      |    
+| system_node_power_on_diag.py              | Demonstrates system node power on -node Diag mode CLI command usage in ONTAP REST API.      |    
+| vserver_file_security_cli_passthrough.py               | Demonstrates vserver security file-directory CLI usage in ONTAP REST API      |
+
 
