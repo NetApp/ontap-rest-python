@@ -7,10 +7,10 @@ This script was developed by NetApp to help demonstrate NetApp technologies.
 This script is not officially supported as a
 standard NetApp product.
 
-Purpose: This Module covers fru-check show CLI command usage via ONTAP REST API
+Purpose: This Module covers system node power CLI command usage via ONTAP REST API
 
-Usage: system_fru_check.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-system_fru_check.py: the following arguments are required: -c/--cluster,
+Usage: system_node_power.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+system_node_power.py: the following arguments are required: -c/--cluster,
 -u admin, -p/--password
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
@@ -32,7 +32,7 @@ ur.disable_warnings()
 
 
 def get_system_node_power(cluster: str, headers_inc: str):
-    "Get system fru_check CLI command"
+    "Get system node power CLI command"
     endpoint = "api/private/cli/system/node/power"
     url = "https://{}/{}?fields=node,status".format(
         cluster, endpoint)
@@ -42,7 +42,7 @@ def get_system_node_power(cluster: str, headers_inc: str):
 
 
 def get_system_node(cluster: str, headers_inc: str):
-    "Display events call output"
+    "Display system node status output"
     ctr = 0
     print()
     tmp = dict(get_system_node_power(cluster, headers_inc))
@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(
         level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message                                                                             )s",
+        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
     BASE64STRING = base64.encodebytes(

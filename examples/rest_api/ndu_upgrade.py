@@ -8,6 +8,7 @@ This script is not officially supported as a
 standard NetApp product.
 
 Purpose: This Module covers ndu upgrade via ONTAP REST API
+Assuming the package is already added in cluster.
 
 Usage: ndu_upgrade.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
 system_fru_check.py: the following arguments are required: -c/--cluster,
@@ -61,6 +62,7 @@ def get_system_update_details(cluster: str, headers_inc: str):
 
 def get_cluster_jobs(cluster: str, headers_inc: str):
     "update the ONTAP cluster software version"
+    #assuming the package of ONTAP is already added"
     ontap_version = input(
         "Enter the ontap software version to upgrade to :  ")
     dataobj = {
@@ -130,7 +132,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(
         level=logging.INFO,
-        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message                                                                             )s",
+        format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
     BASE64STRING = base64.encodebytes(

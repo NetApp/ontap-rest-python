@@ -9,8 +9,9 @@ standard NetApp product.
 
 Purpose: This Module covers system/node/power/off CLI diagnostic mode usage using ONTAP REST API
 
-Usage: service_policy.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-service_policy.py: the following arguments are required: -c/--cluster, -u/--admin, -p/--password
+Usage: system_node_power_off_diag.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+system_node_power_off_diag.py: the following arguments are required: -c/--cluster,
+-u/--admin, -p/--password
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 
@@ -32,7 +33,7 @@ ur.disable_warnings()
 
 
 def system_node_power_off(cluster: str, headers_inc: str):
-    """Module to Turn off power nodes"""
+    """Module to Turn off power of node"""
     print(" \n System node power off")
     node_name = input("\n Enter the Node name to turn OFF : ")
     dataobj = {

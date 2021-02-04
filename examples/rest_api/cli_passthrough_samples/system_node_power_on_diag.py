@@ -7,10 +7,11 @@ This script was developed by NetApp to help demonstrate NetApp technologies.
 This script is not officially supported as a
 standard NetApp product.
 
-Purpose: This Module covers network/interface/service-policy/ CLI usage using ONTAP REST API
+Purpose: This Module covers system_node_power_on_diag CLI usage using ONTAP REST API
 
-Usage: service_policy.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
-service_policy.py: the following arguments are required: -c/--cluster, -u/--admin, -p/--password
+Usage: system_node_power_on_diag.py [-h] -c CLUSTER [-u API_USER] [-p API_PASS]
+system_node_power_on_diag.py: the following arguments are required: -c/--cluster,
+-u/--admin, -p/--password
 
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 
