@@ -32,8 +32,10 @@ python3 create_volume.py -h
 
 ## Running the sample scripts in the Lab on Demand
 
-You can run the sample scripts in the NetApp Lab on Demand (LOD). The repository folder **lod** contains instructions as well as the initialization script needed to configure the LOD environment.
+You can run the sample scripts in the NetApp Lab on Demand (LOD). The repository folder [lod](https://github.com/NetApp/ontap-rest-python/tree/master/lod) contains instructions as well as the initialization script needed to configure the LOD environment.
 
 ## Support
 
 Report any issues to: https://github.com/NetApp/ontap-rest-api/issues. For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
+
+To learn more about ONTAP REST APIs, visit https://devnet.netapp.com/restapi.php 
