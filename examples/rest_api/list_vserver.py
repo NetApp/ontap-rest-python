@@ -25,8 +25,8 @@ from getpass import getpass
 import logging
 import texttable as tt
 import requests
-from utils import parse_args
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+ur.disable_warnings()
 
 
 def get_vservers(cluster: str, headers_inc: str):
@@ -58,7 +58,6 @@ def disp_vservers(cluster: str, headers_inc: str):
 
 def parse_args() -> argparse.Namespace:
     """Parse the command line arguments from the user"""
-
     parser = argparse.ArgumentParser(
         description="This script will list SVMs")
     parser.add_argument(
@@ -84,12 +83,12 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodestring(
+    BASE64STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
     headers = {
-        'authorization': "Basic %s" % base64string,
+        'authorization': "Basic %s" % BASE64STRING,
         'content-type': "application/json",
         'accept': "application/json"
     }

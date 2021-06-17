@@ -30,7 +30,7 @@ import base64
 import argparse
 from getpass import getpass
 import logging
-import texttable as tt
+import texttable
 import requests
 from dateutil.parser import parse
 import urllib3 as ur
@@ -72,7 +72,7 @@ def get_events(cluster: str, headers_inc: str, answer: int):
     if answer == '2':
         tmp = dict(get_method_call_sever(cluster, headers_inc))
     vols = tmp['records']
-    tab = tt.Texttable()
+    tab = texttable.Texttable()
     header = ['Events name', 'Time', 'Severity']
     tab.header(header)
     tab.set_cols_align(['c', 'c', 'c'])
@@ -278,7 +278,7 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    BASE64STRING = base64.encodestring(
+    BASE64STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 

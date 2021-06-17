@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, get_key_svms, show_svm
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, get_size, get_key_svms, show_svm
+ur.disable_warnings()
 
 
 def nfs_setup(cluster: str, headers_inc: str):

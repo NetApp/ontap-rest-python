@@ -22,8 +22,9 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
+import urllib3 as ur
 from utils import Argument, parse_args, setup_logging, setup_connection
-requests.packages.urllib3.disable_warnings()
+ur.disable_warnings()
 
 
 def list_license(cluster: str, headers_inc: str) -> None:
@@ -108,12 +109,12 @@ def delete_license(cluster: str, headers_inc: str) -> None:
     licdict = dict(response.json())
     lics = licdict['records']
     for lic in lics:
-        if (lic['name'] == license_type):
+        if lic['name'] == license_type:
             sn_api_url = "https://{}/api/cluster/licensing/licenses/{}".format(
                 cluster, lic['name'])
             response1 = requests.delete(
                 sn_api_url, headers=headers_inc, verify=False)
-            url_text = response.json()
+            url_text = response1.json()
             if 'error' in url_text:
                 print(url_text)
                 sys.exit(1)

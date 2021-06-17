@@ -25,7 +25,8 @@ import argparse
 import logging
 from getpass import getpass
 import requests
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+ur.disable_warnings()
 
 
 def get_svms(cluster: str, headers_inc: str):
@@ -42,6 +43,7 @@ def get_key_svms(cluster: str, svm_name: str, headers_inc: str):
     for i in svms:
         if i['name'] == svm_name:
             return i['uuid']
+        return None
 
 
 def get_vols(cluster: str, headers_inc: str):
@@ -81,7 +83,7 @@ def make_volume(
         aggr_name: str,
         volume_size,
         headers_inc: str):
-    svm_key = get_key_svms(cluster, svm_name, headers_inc)
+    """Module to create a volume"""
     v_size = get_size(volume_size)
     print("Vol Size is :{}".format(v_size))
 
@@ -150,12 +152,12 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodebytes(
+    BASE64STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
     headers = {
-        'authorization': "Basic %s" % base64string,
+        'authorization': "Basic %s" % BASE64STRING,
         'content-type': "application/json",
         'accept': "application/json"
     }

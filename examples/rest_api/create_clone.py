@@ -27,8 +27,8 @@ import argparse
 from getpass import getpass
 import logging
 import requests
-
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+ur.disable_warnings()
 
 
 def get_key_vol(cluster: str, volume_name: str, headers_inc: str):
@@ -38,7 +38,7 @@ def get_key_vol(cluster: str, volume_name: str, headers_inc: str):
     for i in vols:
         if i['name'] == volume_name:
             return i['uuid']
-
+        return None
 
 def get_vols(cluster: str, headers_inc: str):
     """Get Volumes"""
@@ -137,12 +137,12 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodestring(
+    BASE64STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
     headers = {
-        'authorization': "Basic %s" % base64string,
+        'authorization': "Basic %s" % BASE64STRING,
         'content-type': "application/json",
         'accept': "application/json"
     }

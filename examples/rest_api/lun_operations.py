@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm, show_volume, show_lun, get_key_lun
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import get_size, show_svm, show_volume, show_lun, get_key_lun
+ur.disable_warnings()
 
 
 def list_lun(cluster: str, headers_inc: str) -> None:

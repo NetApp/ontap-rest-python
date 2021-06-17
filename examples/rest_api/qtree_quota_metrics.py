@@ -97,7 +97,11 @@ def create_qtree(cluster: str, headers_inc: str):
         sys.exit(1)
 
     url_text = response.json()
-    print("\n Qtree {} created successfully under Volume {}".format(qtree_name, volume_name))
+    print(
+        "\n Qtree {} created successfully under Volume {}".format(
+            qtree_name,
+            volume_name))
+
 
 def create_quotarule(cluster: str, headers_inc: str) -> None:
     """Create Quota Rule """
@@ -241,23 +245,25 @@ def get_texttable(cluster: str, headers_inc: str):
     setdisplay = tab2.draw()
     print(setdisplay)
 
+
 def qr_ops(cluster, headers_inc) -> None:
     """Quota-Rule Operations"""
     loop = 'y'
     while loop == 'y':
-        print("====================================================================================")
+        print("==================================================================================")
         print("\n1) Creation of Qtree \n2) Enable Quota and \n3) Show Metrics for Qtree")
-        print("====================================================================================")
+        print("==================================================================================")
         volumebool = input(
             "\n Which operation would you like to do [e.g. 1,2,3]?: ")
         if volumebool == '1':
-                create_qtree(cluster, headers_inc)
+            create_qtree(cluster, headers_inc)
         if volumebool == '2':
-                create_quotarule(cluster, headers_inc)
+            create_quotarule(cluster, headers_inc)
         if volumebool == '3':
-                get_texttable(cluster, headers_inc)
+            get_texttable(cluster, headers_inc)
         loop = input("\n To continue press 'y' to exit press 'n':")
     print("\n")
+
 
 def main() -> None:
     """Main function"""
@@ -265,7 +271,8 @@ def main() -> None:
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates Qtree, Quota, Metrics workflow using REST API.", arguments,
+        "Demonstrates Qtree, Quota, Metrics workflow using REST API.",
+        arguments,
     )
     setup_logging()
     headers = setup_connection(args.api_user, args.api_pass)

@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_key_accountowner, show_account
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, get_key_accountowner, show_account
+ur.disable_warnings()
 
 
 def list_account(cluster: str, headers_inc: str) -> None:

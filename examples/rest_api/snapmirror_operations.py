@@ -20,14 +20,14 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 import sys
 import requests
+import urllib3 as ur
 from utils import Argument, parse_args, setup_logging, setup_connection
-requests.packages.urllib3.disable_warnings()
+ur.disable_warnings()
 
 
 def show_snapmirror(cluster: str, headers_inc: str):
     """ Show Snapmirror"""
     print()
-    print("Getting Snapmirror Details")
     print("==========================")
     snap_api_url = "https://{}/api/snapmirror/relationships".format(cluster)
     try:
@@ -74,6 +74,41 @@ def show_snapmirror(cluster: str, headers_inc: str):
         print(smdict['destination']['path'])
         print(smdict['state'])
         print("------------------------------")
+
+
+def specific_relationship(cluster: str, headers_inc: str):
+    """ Show Snapmirror"""
+    print()
+    show_snapmirror(cluster, headers_inc)
+    print()
+    uuid = input("\n\n Enter a UUID from above list to get more details: ")
+    specific_fields = "fields=healthy,transfer.total_duration,transfer.end_time,transfer.bytes_transferred,transfer.state"
+    snap_api_url = "https://{}/api/snapmirror/relationships/{}?{}".format(
+        cluster, uuid, specific_fields)
+    try:
+        response = requests.get(
+            snap_api_url,
+            headers=headers_inc,
+            verify=False)
+    except requests.exceptions.HTTPError as err:
+        print(str(err))
+        sys.exit(1)
+    except requests.exceptions.RequestException as err:
+        print(str(err))
+        sys.exit(1)
+    url_text = response.json()
+    if 'error' in url_text:
+        print(url_text)
+        sys.exit(1)
+
+    smdict = dict(response.json())
+    print("\n-------------------------------------------")
+    print("Healthy status: ", smdict['healthy'])
+    print("Transfer Total Duration: ", smdict['transfer']['total_duration'])
+    print("Transfer End time: ", smdict['transfer']['end_time'])
+    print("Bytes Transferred: ", smdict['transfer']['bytes_transferred'])
+    print("Transfer State: ", smdict['transfer']['state'])
+    print("---------------------------------------------")
 
 
 def delete_snapmirror(cluster: str, headers_inc: str):
@@ -153,9 +188,9 @@ def patch_snapmirror(cluster: str, headers_inc: str):
     snapmirror_uuid = input("Enter the UUID of the snapmirror to be patched:-")
 
     dataobj = {}
-
+    print("\nWhat state update would you like to perform?")
     snapchoice = input(
-        "What state update would you like? [snapmirrored/paused/broken_off/uninitialized/synchronizing] ")
+        "[snapmirrored/paused/broken_off/uninitialized/synchronizing] : ")
 
     dataobj['state'] = snapchoice
 
@@ -207,11 +242,11 @@ def post_snapmirror_transfer(cluster: str, headers_inc: str):
 
 def sm_ops(cluster: str, headers_inc: str):
     """Demonstrates SnapMirror Operations using REST APIs."""
-    print("Demonstrates SnapMirror Operations using REST APIs.")
+    print("Demonstrates SnapMirror Operations using REST APIs")
     print("===================================================")
-    print()
+    print("\nWhat Operation would you like in SnapMirror ")
     snapmirrorbool = input(
-        "What Operation would you like? SnapMirror [list/create/update/delete/initialize] ")
+        "\n[list/create/update/delete/initialize/specifics]: ")
     if snapmirrorbool == 'list':
         show_snapmirror(cluster, headers_inc)
     if snapmirrorbool == 'create':
@@ -222,6 +257,8 @@ def sm_ops(cluster: str, headers_inc: str):
         delete_snapmirror(cluster, headers_inc)
     if snapmirrorbool == 'initialize':
         post_snapmirror_transfer(cluster, headers_inc)
+    if snapmirrorbool == 'specifics':
+        specific_relationship(cluster, headers_inc)
 
 
 def main() -> None:

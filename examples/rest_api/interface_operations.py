@@ -22,8 +22,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, show_svm, get_key_svms, show_node, show_interface
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import show_svm, get_key_svms, show_node, show_interface
+ur.disable_warnings()
 
 
 def list_interface(cluster: str, headers_inc: str):
@@ -116,8 +118,7 @@ def patch_interface(cluster: str, headers_inc: str) -> None:
     print("=======================")
     print()
     show_interface(cluster, headers_inc)
-    int_name = input("Enter the name of the Interface Name :- ")
-    int_uuid = input("Enter the name of the Interface UUID :- ")
+    int_uuid = input("Enter the UUID of the Interface:- ")
     int_new_name = input(
         "Enter the new name of the interface  to be updated :- ")
     intpatchobj = {"name": int_new_name}
@@ -149,8 +150,8 @@ def delete_interface(cluster: str, headers_inc: str) -> None:
     print("=======================")
     print()
     show_interface(cluster, headers_inc)
-    int_name = input("Enter the name of the Interface Name :- ")
-    int_uuid = input("Enter the name of the Interface UUID :- ")
+
+    int_uuid = input("Enter the UUID of the Interface:- ")
 
     url = "https://{}/api/network/ip/interfaces/{}".format(cluster, int_uuid)
     try:

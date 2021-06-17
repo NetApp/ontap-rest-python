@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_key_snapshot, get_key_volumes, show_svm, show_volume, show_snapshot
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import get_key_snapshot, get_key_volumes, show_svm, show_volume, show_snapshot
+ur.disable_warnings()
 
 
 def list_snapshot(cluster: str, headers_inc: str):

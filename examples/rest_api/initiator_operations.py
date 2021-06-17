@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, show_svm, show_igroup, get_key_igroup
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, show_svm, show_igroup, get_key_igroup
+ur.disable_warnings()
 
 
 def list_initiator(cluster: str, headers_inc: str) -> None:

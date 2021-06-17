@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_key_svms, show_svm, check_job_status
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, show_node
+from utils import setup_connection, get_key_svms, show_svm, check_job_status
+ur.disable_warnings()
 
 
 def list_svm(cluster: str, headers_inc: str):
@@ -341,7 +343,7 @@ def update_svm(cluster: str, headers_inc: str):
     if aggrbool == 'y':
         aggr = input(
             "Enter the name of aggregates(with commas) that needs to ne updated : ")
-        dataobj['aggregate'] = {"aggregates": {"name": ["aggr"]}}
+        dataobj['aggregates'] = {"aggregates": {"name": ["aggr"]}}
     print()
     print("\n JSON file to be submitted:-")
     print(dataobj)

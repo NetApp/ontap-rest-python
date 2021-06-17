@@ -25,7 +25,8 @@ from getpass import getpass
 import logging
 import texttable as tt
 import requests
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+ur.disable_warnings()
 
 
 def get_volumes(cluster: str, svm_name: str, headers_inc: str):
@@ -87,12 +88,12 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodebytes(
+    BASE_64_STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
     headers = {
-        'authorization': "Basic %s" % base64string,
+        'authorization': "Basic %s" % BASE_64_STRING,
         'content-type': "application/json",
         'accept': "application/json"
     }

@@ -7,7 +7,7 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to create SVM, Volume and associated Export Policy using ONTAP REST API.
+Purpose: Script to create SVM, Volume and associate Export Policy using ONTAP REST API.
 
 usage: python3 create_svm_volume.py [-h] -c CLUSTER -v VOLUME_NAME -vs SVM_NAME
                             -sz VOLUME_SIZE -a AGGR_NAME -er
@@ -28,7 +28,8 @@ import argparse
 from getpass import getpass
 import logging
 import requests
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+ur.disable_warnings()
 
 
 def get_size(volume_size: int):
@@ -76,8 +77,8 @@ def make_volume(
             job_status, headers=headers_inc, verify=False)
         job_status = job_response.json()
         check_vol_job_status(cluster, job_status, headers_inc)
-    except BaseException:
-        print(url_text)
+    except Exception as exp:
+        print('An exception occured %r', exp)
 
 
 def get_key_svms(cluster: str, svm_name: str, headers_inc: str):
@@ -87,7 +88,7 @@ def get_key_svms(cluster: str, svm_name: str, headers_inc: str):
     for i in svms:
         if i['name'] == svm_name:
             return i['uuid']
-
+        return None
 
 def get_svms(cluster: str, headers_inc: str):
     """Get SVMs"""
@@ -125,7 +126,6 @@ def create_export_policy(
                 ]}],
         "svm.uuid": svm_uuid
     }
-
     response = requests.post(
         url,
         headers=headers_inc,
@@ -181,9 +181,9 @@ def check_job_status(
                 export_policy_rule,
                 export_policy_name,
                 headers_inc)
-        except BaseException:
+        except Exception:
             print("The job errored out.")
-            print(url_text)
+            print(job_status_url)
 
 
 def check_vol_job_status(cluster: str, job_status, headers_inc: str):
@@ -210,7 +210,6 @@ def check_vol_job_status(cluster: str, job_status, headers_inc: str):
         except BaseException:
             print("The job errored out.")
 
-
 def make_svm(
         cluster: str,
         volume_name: str,
@@ -220,6 +219,7 @@ def make_svm(
         export_policy_rule: str,
         export_policy_name: str,
         headers_inc: str):
+    """Module to create svm"""
     url = "https://{}/api/svm/svms".format(cluster)
     payload = {
         "name": svm_name
@@ -247,7 +247,7 @@ def make_svm(
             export_policy_rule,
             export_policy_name,
             headers_inc)
-    except BaseException:
+    except Exception:
         print("The job errored out.")
         print(url_text)
 
@@ -304,12 +304,12 @@ if __name__ == "__main__":
         format="[%(asctime)s] [%(levelname)5s] [%(module)s:%(lineno)s] %(message)s",
     )
     ARGS = parse_args()
-    base64string = base64.encodestring(
+    BASE64STRING = base64.encodebytes(
         ('%s:%s' %
          (ARGS.api_user, ARGS.api_pass)).encode()).decode().replace('\n', '')
 
     headers = {
-        'authorization': "Basic %s" % base64string,
+        'authorization': "Basic %s" % BASE64STRING,
         'content-type': "application/json",
         'accept': "application/json"
     }

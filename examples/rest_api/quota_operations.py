@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, show_qtree, show_quotarule, show_svm, show_volume, get_key_svms, get_key_volumes
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, setup_connection
+from utils import show_qtree, show_quotarule, show_svm, show_volume
+ur.disable_warnings()
 
 
 def list_quotarule(cluster: str, headers_inc: str) -> None:
@@ -62,14 +64,12 @@ def create_quotarule(cluster: str, headers_inc: str) -> None:
     print()
     svm_name = input(
         "Enter the SVM from which the Volumes need to be listed:-")
-    svm_uuid = get_key_svms(svm_name, cluster, headers_inc)
     print()
     show_volume(cluster, headers_inc, svm_name)
     print()
     volume_name = input(
         "Enter the Volume on which the Quotas needs to be created:-")
     print()
-    vol_uuid = get_key_volumes(svm_name, volume_name, cluster, headers_inc)
     dataobj = {}
     tmp1 = {"name": svm_name}
     dataobj['svm'] = tmp1
@@ -85,12 +85,12 @@ def create_quotarule(cluster: str, headers_inc: str) -> None:
         dataobj['qtree'] = tmp3
         dataobj['type'] = "tree"
     if quota_type == 'users':
-        dataobj['type'] = user
+        dataobj['type'] = "user"
         dataobj['user_mapping'] = False
         tmp3 = []
         dataobj['users'] = tmp3
     if quota_type == 'group':
-        dataobj['type'] = group
+        dataobj['type'] = "group"
         dataobj['group'] = {}
     spahali = input(
         "Enter the Space Hard-Limit:- ")

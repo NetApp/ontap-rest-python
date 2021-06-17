@@ -21,8 +21,9 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
+import urllib3 as ur
 from utils import Argument, parse_args, setup_logging, setup_connection, get_size, show_svm
-requests.packages.urllib3.disable_warnings()
+ur.disable_warnings()
 
 
 def cifs_setup(cluster: str, headers_inc: str):
@@ -148,7 +149,7 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
         "Demonstrates CIFS setup using REST API.", arguments,
-        )
+    )
     setup_logging()
     headers = setup_connection(args.api_user, args.api_pass)
 

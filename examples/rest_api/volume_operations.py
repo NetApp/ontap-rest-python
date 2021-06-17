@@ -20,8 +20,11 @@ https://opensource.org/licenses/BSD-3-Clause
 """
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, get_size, get_key_snapshot, get_key_volumes, get_key_svms, show_svm, show_volume, show_snapshot, show_aggregate, check_job_status
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging, setup_connection, get_size
+from utils import get_key_volumes, get_key_svms, show_svm, show_volume, show_snapshot
+from utils import get_key_snapshot, show_aggregate, check_job_status
+ur.disable_warnings()
 
 
 def list_volume(cluster: str, headers_inc: str):
@@ -56,6 +59,58 @@ def list_volume(cluster: str, headers_inc: str):
     for i in svms:
         print("Volume Name :- %s; Volume UUID :- %s" % (i['name'], i['uuid']))
 
+def space_used_snap_vol(cluster: str, headers_inc: str, space_per_snap: str):
+    """Filter volumes by % of snapshot reserve size that has been used"""
+    print("\n\nFilter volumes by Percentage of snapshot reserve size that has been used")
+    print("========================================================================")
+    url = "https://{}/api/storage/volumes/?space.snapshot.space_used_percent={}".format(
+        cluster, space_per_snap)
+    try:
+        response = requests.get(url, headers=headers_inc, verify=False)
+    except requests.exceptions.HTTPError as err:
+        print(err)
+        sys.exit(1)
+    except requests.exceptions.RequestException as err:
+        print(err)
+        sys.exit(1)
+    url_text = response.json()
+    if 'error' in url_text:
+        print(url_text)
+        sys.exit(1)
+    tmp = dict(response.json())
+    svms = tmp['records']
+    print()
+    print("List of Volumes :- ")
+    print("===================")
+    for i in svms:
+        print("Volume Name :- %s \nVolume UUID :- %s\n\n" % (i['name'], i['uuid']))
+
+
+def space_avail_vol_per(cluster: str, headers_inc: str, space_per: str):
+    """Filter volumes by % of snapshot reserve size that has been used"""
+    print("\n\nFilter volumes by the space available, as a percent.")
+    print("========================================================================")
+    url = "https://{}/api/storage/volumes/?space.available_percent={}".format(
+        cluster, space_per)
+    try:
+        response = requests.get(url, headers=headers_inc, verify=False)
+    except requests.exceptions.HTTPError as err:
+        print(err)
+        sys.exit(1)
+    except requests.exceptions.RequestException as err:
+        print(err)
+        sys.exit(1)
+    url_text = response.json()
+    if 'error' in url_text:
+        print(url_text)
+        sys.exit(1)
+    tmp = dict(response.json())
+    svms = tmp['records']
+    print()
+    print("List of Volumes :- ")
+    print("===================")
+    for i in svms:
+        print("Volume Name :- %s \nVolume UUID :- %s\n\n" % (i['name'], i['uuid']))        
 
 def delete_volume(cluster: str, headers_inc: str):
     """ Delete the volume"""
@@ -400,7 +455,6 @@ def patch_volume(cluster: str, headers_inc: str):
         sys.exit(1)
     job_status = job_response.json()
     check_job_status(job_status, headers_inc, cluster)
-    return
 
 
 def clone_volume(cluster: str, headers_inc: str):
@@ -484,8 +538,9 @@ def volume_ops(cluster: str, headers_inc: str):
     print("Demostrates the Volume Operations:- ")
     print("====================================")
     print()
-    volumebool = input(
-        "What Volume Operation would you like to do? [list/create/update/delete/clone] ")
+    print("What Volume Operation would you like to do? [list/create/update/delete/clone/] ")
+    print("Filter volumes by: \n 1.  Percentage of snapshot reserve size that has been used : \n 2.  Space available, as a percent")
+    volumebool = input ("\n\nenter an option: ")    
     if volumebool == 'list':
         list_volume(cluster, headers_inc)
     if volumebool == 'create':
@@ -496,6 +551,12 @@ def volume_ops(cluster: str, headers_inc: str):
         delete_volume(cluster, headers_inc)
     if volumebool == 'clone':
         clone_volume(cluster, headers_inc)
+    if volumebool == '1':
+        space_per_snap = input("\n\nEnter the Percentage of snapshot reserve size that has been used: ")
+        space_used_snap_vol(cluster, headers_inc, space_per_snap)
+    if volumebool == '2':
+        space_per = input("\n\nEnter the required filter space available, as a percent: ")
+        space_avail_vol_per(cluster, headers_inc, space_per)    
 
 def main() -> None:
     """Main function"""

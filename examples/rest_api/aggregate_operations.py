@@ -21,8 +21,10 @@ https://opensource.org/licenses/BSD-3-Clause
 
 import sys
 import requests
-from utils import Argument, parse_args, setup_logging, setup_connection, show_aggregate, show_node, show_disk
-requests.packages.urllib3.disable_warnings()
+import urllib3 as ur
+from utils import Argument, parse_args, setup_logging
+from utils import setup_connection, show_aggregate, show_node, show_disk
+ur.disable_warnings()
 
 
 def list_aggregate(cluster: str, headers_inc: str) -> None:
@@ -108,8 +110,7 @@ def patch_aggregate(cluster: str, headers_inc: str) -> None:
     print("----------Upate Aggregate-----------")
     print()
     show_aggregate(cluster, headers_inc)
-    aggr_name = input("Enter the name of the Aggregate Name :- ")
-    aggr_uuid = input("Enter the name of the Aggregate UUID :- ")
+    aggr_uuid = input("Enter the UUID of Aggregate :- ")
     aggr_new_name = input(
         "Enter the new name of the aggregate to be updated :- ")
     aggrobj = {"name": aggr_new_name}
@@ -139,8 +140,7 @@ def delete_aggregate(cluster: str, headers_inc: str) -> None:
     print("----------Delete Aggregate-----------")
     print()
     show_aggregate(cluster, headers_inc)
-    aggr_name = input("Enter the name of the Aggregate Name to be Deleted:- ")
-    aggr_uuid = input("Enter the name of the Aggregate UUID to be Deleted:- ")
+    aggr_uuid = input("Enter the UUID of the Aggregate to be Deleted:- ")
     url = "https://{}/api/storage/aggregates/{}".format(cluster, aggr_uuid)
     try:
         response = requests.delete(
