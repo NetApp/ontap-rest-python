@@ -7,7 +7,7 @@ The repository folder **rest_api** contains samples scripts you can refer to und
 Before running the example scripts , make sure the following packages are installed:
 
 * requests 2.21.0 or later
-* texttable 1.6.2
+* texttable 1.6.2 or later
 * python-dateutil
 
 ## Summary of the REST API scripts
@@ -33,6 +33,7 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | initiator_operations.py              | Demonstrates initiator creation, deletion, updation and listing using ONTAP REST API      |    
 | iscsi_setup.py           | Demonstrates how ISCSI luns can be setup using ONTAP REST API. It creates a lun within a volume and creates a new initiator group. The script, then, maps the lun to the initiator group.      |    
 | nfs_setup.py             | Demonstrates NFS Setup using ONTAP REST API. The script creates an export-policy and a volume and then, sets up a mount.      |     
+| portset_operations.py   | Demonstrates portset operations like portset creation, deletion, updation and listing using ONTAP REST API.     |
 | snapshot_operations.py   | Demonstrates snapshot operations like snapshot creation, deletion, updation and listing using ONTAP REST API.     |
 | svm_operations.py        | Demonstrates SVM operations like SVM creation, deletion, updation and listing using ONTAP REST API.      |   
 
@@ -46,6 +47,7 @@ The following table summaries the scripts used to access the ONTAP REST API . Ma
 | create_volume.py                     | Demonstrates volume creation using ONTAP REST API on the specified SVM.     |  
 | events.py                 |   Demonstrates events management usecases in ONTAP such as listing of events, look for specific message and severity,workflow to notify specific event with event,filter and destination creation using ONTAP REST API.    |
 | file_system_analytics.py                  | Demonstrates File System Analytics usecases using using ONTAP REST API.      |   
+| file_security_permissions.py                  | Demonstrates File Security permissions settings applied on a file or directory using using ONTAP REST API.      |   
 | list_aggregates.py                   | Lists all the aggregates in a cluster using ONTAP REST API.      |   
 | list_clones.py                       | Lists all the clones in a cluster using ONTAP REST API.       |     
 | list_snapshots.py                    | Lists all the snapshots in the specified volume using ONTAP REST API.      |     
