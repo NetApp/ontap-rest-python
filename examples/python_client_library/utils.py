@@ -1,6 +1,7 @@
 """
 This module is used by the other example modules in this directory. It is not
-meant as a stand-alone application.
+meant as a stand-alone application. 
+Common API calls such as getting key for SVM, volumes, displaying methods are added for ease of use of other modules
 Copyright (c) 2020 NetApp, Inc. All Rights Reserved.
 Licensed under the BSD 3-Clause "New" or "Revised" License (the "License");
 you may not use this file except in compliance with the License.
