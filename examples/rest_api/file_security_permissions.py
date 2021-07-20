@@ -29,7 +29,7 @@ ur.disable_warnings()
 
 
 def get_file_security_permissions(cluster: str, headers_inc: str):
-    """ Retrieving summary of all portsets in the cluster"""
+    """ Retrieving file security permissions"""
     print()
     print("=======================================")
     print("  Getting File Security Permissions  ")
@@ -261,9 +261,9 @@ def patch_file_permissions(cluster: str, headers_inc: str):
 def file_permissions(cluster: str, headers_inc: str):
     """Demonstrates File security permission operations"""
     print()
-    print("THE FOLLOWING SCRIPT SHOWS PORTSET OPERATIONS USING REST API.")
+    print("THE SCRIPT SHOWS FILE SECURITY PERMISSIONS USING REST API.")
     print("==================================================================")
-    print("Choose the Portset operation?")
+    print("Choose the operation?")
     snapshotbool = input(
         "\n1.list \n2.create \n3.update \n4.delete \n\n[enter option]: ")
     if snapshotbool == '1':
@@ -281,7 +281,7 @@ def main() -> None:
     arguments = [
         Argument("-c", "--cluster", "API server IP:port details")]
     args = parse_args(
-        "Demonstrates Snapshot Operations using REST API.", arguments,
+        "Demonstrates file security Operations using REST API.", arguments,
     )
     setup_logging()
     headers = setup_connection(args.api_user, args.api_pass)
