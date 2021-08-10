@@ -36,6 +36,6 @@ You can run the sample scripts in the NetApp Lab on Demand (LOD). The repository
 
 ## Support
 
-Report any issues to: https://github.com/NetApp/ontap-rest-api/issues. For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
+Report any issues to: https://github.com/NetApp/ontap-rest-api/issues. For any questions or concerns, send an email to: ng-ontap-restapi-queries@netapp.com, post on the [community forums](https://community.netapp.com/t5/ONTAP-Rest-API-Discussions/bd-p/ONTAP-Rest-API-discussions) or connect with us through [Slack](https://netapppub.slack.com/archives/C1E4AJHDM).
 
 To learn more about ONTAP REST APIs, visit https://devnet.netapp.com/restapi.php 
