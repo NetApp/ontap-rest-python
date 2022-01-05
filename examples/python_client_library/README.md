@@ -12,9 +12,13 @@ Before running the example scripts, make sure the following packages are install
 
 See the [PyPI netapp-ontap](https://pypi.org/project/netapp-ontap/) package web page for more information.
 
-**Note: **
-If you are using ONTAP 9.6 "netapp_ontap" Python client library module, make sure to replace `from netapp_ontap import NetAppRestError` header with `from netapp_ontap.error import NetAppRestError` header.  
+**Note:**
 
+a) If you are using ONTAP 9.6 "netapp_ontap" Python client library module, make sure to replace `from netapp_ontap import NetAppRestError` header with `from netapp_ontap.error import NetAppRestError` header.  
+
+b) [utils.py](https://github.com/NetApp/ontap-rest-python/blob/master/examples/python_client_library/utils.py) module in this directory is used by the other example modules in this directory. It is not meant as a stand-alone application. Hence, the utils.py code module needs to be in the same directory structure as of the code executed by the user.
+
+For e.g: If user executes list_volumes.py code in a directory structure a/b/c, ensure utils.py code exists in the same directory a/b/c.
 
 # Summary of the Python client library scripts  
 
