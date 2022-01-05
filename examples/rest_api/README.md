@@ -13,6 +13,11 @@ Before running the example scripts , make sure the following packages are instal
 ## Summary of the REST API scripts
 
 The following table summaries the scripts used to access the ONTAP REST API . Make sure to run each of the scripts with the appropriate parameters.
+
+**Note:** [**utils.py**](https://github.com/NetApp/ontap-rest-python/blob/master/examples/rest_api/utils.py) module in this directory is used by the other example modules in this directory. It is not meant as a stand-alone application. Hence, the utils.py code module needs to be in the same directory structure as of the code executed by the user. 
+
+For e.g: If user executes list_volumes.py code in a directory structure a/b/c, ensure utils.py code exists in the same directory a/b/c.
+
 ## Day 0 Scripts:
 
 | Script                               | Description       |
