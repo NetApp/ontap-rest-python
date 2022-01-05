@@ -230,7 +230,7 @@ def create_svm(cluster: str, headers_inc: str):
                     "netmask": nmask},
                 "location": {
                     "broadcast_domain": {
-                        "name": "Default_ckjfbvsnkfdjasbdkfsndlfe_cbekjrvckujeakbxjwc"},
+                        "name": "Default"},
                     "home_node": {
                         "name": hnode,
                         "uuid": uuid}},
