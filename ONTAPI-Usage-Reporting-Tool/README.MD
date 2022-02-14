@@ -8,10 +8,9 @@ ONTAPI Usage Reporting Tool
 
 INTRODUCTION
 ------------
-In order to help our professional services, Customers and Partners to help them identify the ONTAPI usage in their cluster environment, ONTAPI Usage Reporting tool has been developed covering 3 different usecases. 
-These scripts are python-based.
+In order to help our professional services, Customers and Partners to help them identify the ONTAPI(ZAPI) usage in their cluster environment, ONTAPI Usage Reporting tool has been developed covering 3 different usecases. These scripts are python-based.
 
-The scripts provided in this wheel file:
+The scripts provided in this wheel file are,
 
 Script        |  Description
 ------------- | -------------
@@ -37,7 +36,14 @@ Python3.7 or higher is required to run the scripts. If there are compatibility i
 
 * six - https://pypi.org/project/six/#files
 
-Command to install the wheel file: **pip install netapp_ztools-1.0.0-py3-none-any**
+INSTALLATION 
+------------
+Download the wheel file and input the command to install the wheel file: **pip install netapp_ztools-1.0.0-py3-none-any**
+- The above command installs all the required dependencies.
+- Visit the python_folder\Lib\site-packages\netapp_ztools\ to see the installed scripts,
+
+  ![image](https://user-images.githubusercontent.com/61284863/153841819-c974006b-e52a-4287-950a-00b6b7278d4c.png)
+
 
 USAGE
 -----
@@ -83,7 +89,7 @@ USAGE
 
 The CLI equivalent of the session_stats.py commands is: **security session request-statistics show-by-{application|location|request|user|vserver}**
 
-![image](https://user-images.githubusercontent.com/61284863/153811433-5b087671-eaf2-48dc-9a53-1f8007223f8f.png)
+    ![image](https://user-images.githubusercontent.com/61284863/153811433-5b087671-eaf2-48dc-9a53-1f8007223f8f.png)
 
 #### Script_3: python zapi_to_rest.py -h ####
 --------------------------------
@@ -99,10 +105,10 @@ The CLI equivalent of the session_stats.py commands is: **security session reque
   - -attrs ATTRS, -a ATTRS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comma separated list of attributes to map REST field equivalents
   - --version VERSION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify target ONTAP version { 9_10_1 | 9_9_1 | 9_8 }
 
-![image](https://user-images.githubusercontent.com/61284863/153816352-4b1fc5c0-ffe0-4356-9823-9ed3c6b51099.png)
+    ![image](https://user-images.githubusercontent.com/61284863/153816352-4b1fc5c0-ffe0-4356-9823-9ed3c6b51099.png)
 
 
 SUPPORT
 -----------
 
-These scripts were developed by the CSI team at NetApp. For questions and for addressing bugs, please reach out to ng-ontap-rest-queries@netapp.com
+For questions and for addressing bugs, please reach out to ng-ontap-rest-queries@netapp.com
