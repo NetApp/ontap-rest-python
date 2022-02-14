@@ -89,7 +89,8 @@ USAGE
 
 The CLI equivalent of the session_stats.py commands is: **security session request-statistics show-by-{application|location|request|user|vserver}**
 
-    ![image](https://user-images.githubusercontent.com/61284863/153811433-5b087671-eaf2-48dc-9a53-1f8007223f8f.png)
+ ![image](https://user-images.githubusercontent.com/61284863/153852694-9ba389a9-6d1a-4849-8d2e-4dd6c90a4060.png)
+
 
 #### Script_3: python zapi_to_rest.py -h ####
 --------------------------------
