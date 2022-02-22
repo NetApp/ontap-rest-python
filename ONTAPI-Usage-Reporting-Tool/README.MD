@@ -93,7 +93,7 @@ The CLI equivalent of the session_stats.py commands is: **security session reque
 
 
 #### Script_3: python zapi_to_rest.py -h ####
---------------------------------
+
 - **Description:** Tools to find REST details of ZAPI and attributes passed
 
 - **usage:** zapi_to_rest.py [-h] [-attrs ATTRS] zapi
@@ -112,4 +112,4 @@ The CLI equivalent of the session_stats.py commands is: **security session reque
 SUPPORT
 -----------
 
-For questions and for addressing bugs, please reach out to ng-ontap-rest-queries@netapp.com
+For questions and for addressing bugs, please reach out to ng-ontap-restapi-queries@netapp.com
