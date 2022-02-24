@@ -20,6 +20,8 @@ b) [utils.py](https://github.com/NetApp/ontap-rest-python/blob/master/examples/p
 
 For e.g: If user executes list_volumes.py code in a directory structure a/b/c, ensure utils.py code exists in the same directory a/b/c.
 
+Master Page for ONTAP REST - https://devnet.netapp.com/restapi.php
+
 # Summary of the Python client library scripts  
 
 The following table summaries the scripts used to access the ONTAP REST API using the Python client library. Make sure to run each of the scripts with the appropriate parameters.  
