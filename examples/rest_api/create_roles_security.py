@@ -7,7 +7,7 @@ This script was developed by NetApp to help demonstrate NetApp
 technologies.  This script is not officially supported as a
 standard NetApp product.
 
-Purpose: Script to list legacy and rest-roles (RBAC) using ONTAP REST API.
+Purpose: Script to list legacy and rest-roles (RBAC)using ONTAP REST API.
 
 Usage: security_rbac.py [-h] -c CLUSTER [-u API_USER]
                        [-p API_PASS]
