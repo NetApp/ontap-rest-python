@@ -10,8 +10,8 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         issue-message: |
-          Thank you for reporting an issue! If you haven't already [joined our Slack community](https://join.slack.com/t/netapppub/shared_invite/zt-njcjx2sh-1VR2mEDvPcJAmPutOnP~mg),
+          Thank you for reporting an issue! If you haven't already [joined our Discord community](https://discord.com/invite/NetApp),
           then we invite you to do so. This is a great place to get help and ask questions from our community.
         pr-message: |
-          Thank you for submitting a pull request! If you haven't already [joined our Slack community](https://join.slack.com/t/netapppub/shared_invite/zt-njcjx2sh-1VR2mEDvPcJAmPutOnP~mg),
+          Thank you for submitting a pull request! If you haven't already [joined our Discord community](https://discord.com/invite/NetApp),
           then we invite you to do so. It is a good place to discuss requests with the community.
