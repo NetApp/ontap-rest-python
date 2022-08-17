@@ -79,7 +79,7 @@ def setup_logging() -> None:
 def setup_connection(api_user: str, api_pass: str):
     """Configure the default connection for the application"""
 
-    base64string = base64.encodestring(
+    base64string = base64.encodebytes(
         ('%s:%s' %
          (api_user, api_pass)).encode()).decode().replace('\n', '')
 
