@@ -63,29 +63,28 @@ def create_file(volume, pathname, contents):
 
 def file_handling(volume_name):
     try:
-        all_volumes = list(Volume.get_collection())
+        all_volumes = list(Volume.get_collection(name=volume_name))
         for vol in all_volumes:
-            if vol.name == volume_name:
-                print(f"Volume: {vol.name} ({vol.uuid})")
-                create_file(vol, "alice", "lorem ipsum")
+            print(f"Volume: {vol.name} ({vol.uuid})")
+            create_file(vol, "alice", "lorem ipsum")
 
-                create_directory(vol, "bobsfiles")
-                create_file(vol, "bobsfiles/bob", "lorem ipsum")
+            create_directory(vol, "bobsfiles")
+            create_file(vol, "bobsfiles/bob", "lorem ipsum")
 
-                create_directory(vol, "bobsfiles/charliesfiles")
-                create_file(
-                    vol, "bobsfiles/charliesfiles/charlie1", "lorem ipsum")
-                create_file(
-                    vol, "bobsfiles/charliesfiles/charlie2", "lorem ipsum")
-                create_file(
-                    vol, "bobsfiles/charliesfiles/charlie3", "lorem ipsum")
+            create_directory(vol, "bobsfiles/charliesfiles")
+            create_file(
+                vol, "bobsfiles/charliesfiles/charlie1", "lorem ipsum")
+            create_file(
+                vol, "bobsfiles/charliesfiles/charlie2", "lorem ipsum")
+            create_file(
+                vol, "bobsfiles/charliesfiles/charlie3", "lorem ipsum")
 
-                list_files(vol, "/")
+            list_files(vol, "/")
 
-                print("Cleaning up...")
-                delete(vol, "/alice", False)
-                delete(vol, "/bobsfiles", True)
-                print("Done.")
+            print("Cleaning up...")
+            delete(vol, "/alice", False)
+            delete(vol, "/bobsfiles", True)
+            print("Done.")
     except NetAppRestError as error:
         print("Exception :" + str(error))
 
@@ -97,7 +96,7 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details"),
         Argument("-v", "--volume_name", "Volume Name")]
     args = parse_args(
-        "This script will demo          nstrate enumerating volumes, file and directory creation, file and directory creation deletion",
+        "This script will demonstrate enumerating volumes, file and directory creation, file and directory creation deletion",
         arguments,
     )
 
