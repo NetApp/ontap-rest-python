@@ -1,3 +1,5 @@
+"""Demonstrates creating writing, and deleting files/ folders on a NetApp volume.
+"""
 import logging
 from netapp_ontap import NetAppRestError
 from netapp_ontap.resources import Volume
@@ -15,13 +17,13 @@ from utils import Argument, parse_args, setup_connection
 def list_files(volume, path):
     """Recursively list files on a volume"""
     files = FileInfo.get_collection(volume.uuid, path)
-    for f in files:
-        if f.name != "." and f.name != "..":
-            if f.type == "file":
-                print(f"{path}{f.name}")
-            elif f.type == "directory" and f.name != ".snapshot":
-                print(f"{path}{f.name}/")
-                list_files(volume, f"{path}{f.name}/")
+    for file_info in files:
+        if file_info.name not in (".", ".."):
+            if file_info.type == "file":
+                print(f"{path}{file_info.name}")
+            elif file_info.type == "directory" and file_info.name != ".snapshot":
+                print(f"{path}{file_info.name}/")
+                list_files(volume, f"{path}{file_info.name}/")
 
 
 def delete(volume, pathname, recursive=False):
@@ -34,8 +36,8 @@ def delete(volume, pathname, recursive=False):
             extra = "(recursively) "
         else:
             extra = ""
-        logging.critical(
-            f"delete: File or directory {pathname} was not deleted {extra}on {volume.name} ({error})")
+        message = f"delete: File or dir {pathname} wasn't deleted {extra}on {volume.name} ({error})"
+        logging.critical(message)
 
 
 def create_directory(volume, pathname):
@@ -46,22 +48,35 @@ def create_directory(volume, pathname):
     try:
         resource.post()
     except NetAppRestError as error:
-        logging.critical(
-            f"create_directory: Directory {pathname} was not created on {volume.name} ({error})")
+        message = f"create_directory: dir {pathname} wasn't created on {volume.name} ({error})"
+        logging.critical(message)
 
 
-def create_file(volume, pathname, contents):
+def create_file(volume, pathname, contents=""):
+    """Create a file on a volume
+
+    Args:
+        volume (string): volume object to create file on
+        pathname (string): path to file that is to be created
+        contents (string): contents of file to be written
+    """
     try:
         resource = FileInfo(volume.uuid, pathname)
         resource.post(
-            hydrate=True, data="the data to be written to the new file")
+            hydrate=True, data=contents)
         resource.patch()
     except NetAppRestError as error:
-        logging.critical(
-            f"create_file: File {pathname} was not created on {volume.name} ({error})")
+        message = f"create_file: File {pathname} was not created on {volume.name} ({error})"
+        logging.critical(message)
 
 
 def file_handling(volume_name):
+    """Demonstrate file handling on NetApp
+    Writes some files and directories to the volume then cleans up what it has written
+    Note: Does not check for existing content.
+    Args:
+        volume_name (string): Volume name to us 
+    """
     try:
         all_volumes = list(Volume.get_collection(name=volume_name))
         for vol in all_volumes:
@@ -96,7 +111,7 @@ def main() -> None:
         Argument("-c", "--cluster", "API server IP:port details"),
         Argument("-v", "--volume_name", "Volume Name")]
     args = parse_args(
-        "This script will demonstrate enumerating volumes, file and directory creation, file and directory creation deletion",
+        "Demonstrates file and directory creation, file and directory creation deletion",
         arguments,
     )
 
