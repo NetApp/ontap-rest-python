@@ -6,7 +6,7 @@ from netapp_ontap.resources import Volume
 from netapp_ontap.resources import FileInfo
 from utils import Argument, parse_args, setup_connection
 
-# REFERENCES
+# REFERENCES:
 # https://devnet.netapp.com/restapi.php
 # https://pypi.org/project/netapp-ontap/
 # https://library.netapp.com/ecmdocs/ECMLP2858435/html/resources/volume.html
