@@ -6,7 +6,12 @@ jobs:
   greeting:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/first-interaction@v1
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+      with:
+        egress-policy: audit
+
+    - uses: actions/first-interaction@3c71ce730280171fd1cfb57c00c774f8998586f7 # v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         issue-message: |
